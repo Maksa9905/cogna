@@ -4,14 +4,6 @@
 	"testEnvironment": "node",
 	"testRegex": ".e2e-spec.ts$",
 	"transform": {
-		"^.+\\.(t|j)s$": ["ts-jest", {
-			"tsconfig": {
-				"emitDecoratorMetadata": true,
-				"experimentalDecorators": true,
-				"esModuleInterop": true,
-				"allowSyntheticDefaultImports": true
-			},
-			"isolatedModules": false
-		}]
+		"^.+\\.(t|j)s$": "ts-jest"
 	}
 }

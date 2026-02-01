@@ -7,16 +7,11 @@ module.exports = {
       tsconfig: {
         emitDecoratorMetadata: true,
         experimentalDecorators: true,
-        esModuleInterop: true,
-        allowSyntheticDefaultImports: true,
       },
-      isolatedModules: false,
     }],
   },
   collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
-  moduleNameMapper: {
-    '^src/(.*)$': '<rootDir>/$1',
-  },
+  setupFilesAfterEnv: ['<rootDir>/../test/setup.ts'],
 };
