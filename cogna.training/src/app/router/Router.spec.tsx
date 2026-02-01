@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
-import Router from "./router";
+import Router from "./Router";
 
 describe("App routing", () => {
 	describe("Auth routes", () => {

@@ -1,14 +1,24 @@
-name: CI
+name: Training CI
 
 on:
   push:
     branches: [main, master]
+    paths:
+      - 'cogna.training/**'
+      - '.github/workflows/training-ci.yml'
   pull_request:
     branches: [main, master]
+    paths:
+      - 'cogna.training/**'
+      - '.github/workflows/training-ci.yml'
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: cogna.training
 
     strategy:
       matrix:
@@ -27,6 +37,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
+          cache-dependency-path: 'cogna.training/pnpm-lock.yaml'
 
       - name: Установка зависимостей
         run: pnpm install --frozen-lockfile
@@ -46,7 +57,7 @@ jobs:
       - name: Загрузка отчета о покрытии
         uses: codecov/codecov-action@v3
         with:
-          files: ./coverage/coverage-final.json
+          files: ./cogna.training/coverage/coverage-final.json
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
