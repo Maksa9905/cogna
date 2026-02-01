@@ -1,2 +1,1 @@
-cd cogna.training
 pnpm lint-staged

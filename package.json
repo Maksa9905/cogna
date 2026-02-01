@@ -1,0 +1,25 @@
+{
+  "name": "cogna",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.2",
+  "lint-staged": {
+    "cogna.training/**/*.{ts,tsx}": [
+      "cd cogna.training && pnpm format",
+      "cd cogna.training && pnpm lint",
+      "cd cogna.training && pnpm typecheck",
+      "cd cogna.training && pnpm test:run"
+    ]
+  },
+  "devDependencies": {
+    "husky": "9.1.7",
+    "lint-staged": "16.2.7"
+  }
+}
