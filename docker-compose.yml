@@ -65,6 +65,25 @@ services:
       - cogna-network
     command: pnpm run dev -- --host 0.0.0.0
 
+  # pgAdmin - веб-интерфейс для PostgreSQL
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: cogna-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cogna.ru
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - cogna-network
+    depends_on:
+      - postgres
+
   nginx:
     image: nginx:alpine
     container_name: cogna-nginx
@@ -76,6 +95,7 @@ services:
     depends_on:
       - backend
       - frontend
+      - pgadmin
     networks:
       - cogna-network
 
@@ -85,3 +105,4 @@ networks:
 
 volumes:
   postgres_data:
+  pgadmin_data:
