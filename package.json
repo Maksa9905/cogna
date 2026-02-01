@@ -15,6 +15,12 @@
       "cd cogna.training && pnpm lint",
       "cd cogna.training && pnpm typecheck",
       "cd cogna.training && pnpm test:run"
+    ],
+    "cogna.backend/**/*.{ts}": [
+      "cd cogna.backend && pnpm format",
+      "cd cogna.backend && pnpm lint",
+      "cd cogna.backend && pnpm typecheck",
+      "cd cogna.backend && pnpm test"
     ]
   },
   "devDependencies": {
