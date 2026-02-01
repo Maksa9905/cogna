@@ -9,6 +9,8 @@ import TicketPage from "@/pages/TicketPage";
 import { routes } from "@/shared/router";
 
 function Router() {
+	fetch('/api/')
+
 	return (
 		<Routes>
 			<Route path={routes.auth} element={<AuthPage />}>

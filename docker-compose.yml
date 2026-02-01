@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cogna-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cogna
+      POSTGRES_PASSWORD: cogna_dev_password
+      POSTGRES_DB: cogna
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cogna-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cogna -d cogna"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend - NestJS
+  backend:
+    container_name: cogna-backend
+    build:
+      context: ./cogna.backend
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./cogna.backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=cogna
+      - DATABASE_PASSWORD=cogna_dev_password
+      - DATABASE_NAME=cogna
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - cogna-network
+    command: pnpm run start:dev
+
+  frontend:
+    container_name: cogna-frontend
+    build:
+      context: ./cogna.training
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./cogna.training:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://dev.cogna.ru/api
+    networks:
+      - cogna-network
+    command: pnpm run dev -- --host 0.0.0.0
+
+  nginx:
+    image: nginx:alpine
+    container_name: cogna-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - cogna-network
+
+networks:
+  cogna-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
