@@ -1,5 +1,5 @@
 function RegisterPage() {
-	return "register page";
+	return <div data-testid="register-page">register page</div>;
 }
 
 export default RegisterPage;

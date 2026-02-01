@@ -1,5 +1,5 @@
 function LoginPage() {
-	return "login page";
+	return <div data-testid="login-page">login page</div>;
 }
 
 export default LoginPage;

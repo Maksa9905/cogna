@@ -1,5 +1,5 @@
 function IndexCoursesPage() {
-	return "index courses page";
+	return <div data-testid="index-courses-page">index courses page</div>;
 }
 
 export default IndexCoursesPage;
