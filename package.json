@@ -18,7 +18,8 @@
 		"@mantine/hooks": "^8.3.13",
 		"path": "^0.12.7",
 		"react": "^19.2.0",
-		"react-dom": "^19.2.0"
+		"react-dom": "^19.2.0",
+		"react-router-dom": "^7.13.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.13",
