@@ -36,8 +36,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
-          cache-dependency-path: 'cogna.backend/pnpm-lock.yaml'
+#          cache: 'pnpm'
+#          cache-dependency-path: 'cogna.backend/pnpm-lock.yaml'
 
       - name: Установка зависимостей
         run: pnpm install --frozen-lockfile
