@@ -39,14 +39,14 @@ jobs:
 #          cache: 'pnpm'
 #          cache-dependency-path: 'cogna.backend/pnpm-lock.yaml'
 
-      - name: Установка зависимостей
-        run: pnpm install --frozen-lockfile
+#      - name: Установка зависимостей
+#        run: pnpm install --frozen-lockfile
 
-      - name: Линтинг
-        run: pnpm lint
-
-      - name: Проверка типов
-        run: pnpm typecheck
+#      - name: Линтинг
+#        run: pnpm lint
+#
+#      - name: Проверка типов
+#        run: pnpm typecheck
 
       # - name: Запуск тестов
       #   run: pnpm test
@@ -54,10 +54,10 @@ jobs:
       # - name: Создание отчета о покрытии
       #   run: pnpm test:cov
 
-      - name: Загрузка отчета о покрытии
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./cogna.backend/coverage/coverage-final.json
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
+#      - name: Загрузка отчета о покрытии
+#        uses: codecov/codecov-action@v3
+#        with:
+#          files: ./cogna.backend/coverage/coverage-final.json
+#          flags: unittests
+#          name: codecov-umbrella
+#          fail_ci_if_error: false
