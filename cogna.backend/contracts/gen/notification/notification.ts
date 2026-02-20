@@ -2,12 +2,12 @@
 // versions:
 //   protoc-gen-ts_proto  v2.11.2
 //   protoc               v5.29.6
-// source: notification.proto
+// source: notification/notification.proto
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-import { Empty } from "./google/protobuf/empty";
+import { Empty } from "../google/protobuf/empty";
 
 export const protobufPackage = "notification.v1";
 

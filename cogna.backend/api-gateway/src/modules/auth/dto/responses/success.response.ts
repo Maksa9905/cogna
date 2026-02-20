@@ -1,4 +1,4 @@
-import { SuccessResponse } from '@cogna-edu/contracts/gen/auth';
+import { SuccessResponse } from '@cogna-edu/contracts/gen/auth/auth';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()

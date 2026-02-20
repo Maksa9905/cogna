@@ -30,9 +30,9 @@ export class AuthRepository {
   public async createRefreshToken(
     data: Prisma.RefreshTokensUncheckedCreateInput,
   ) {
-    const { userId, tokenHash, expiredAt } = data;
+    const { id, userId, tokenHash, expiredAt } = data;
     return this.prismaService.refreshTokens.create({
-      data: { userId, tokenHash, expiredAt },
+      data: { id, userId, tokenHash, expiredAt },
     });
   }
 

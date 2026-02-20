@@ -7,7 +7,7 @@ import {
   LoginRequest,
   RegisterRequest,
   SuccessResponse,
-} from '@cogna-edu/contracts/gen/auth';
+} from '@cogna-edu/contracts/gen/auth/auth';
 import { RpcException } from '@nestjs/microservices';
 import { hash, verify } from 'argon2';
 import { AuthRegisterCache } from './auth-register.cache';
@@ -99,10 +99,15 @@ export class AuthService {
     });
 
     //генерируем токены
-    const { accessToken, refreshToken } = await this.generateTokens(user);
-
-    this.logger.log('user created', { email });
-
+    const { accessToken, refreshToken, refreshTTL, refreshId } =
+      await this.generateTokens(user);
+    const hashRefresh = await hash(refreshToken);
+    await this.authRepository.createRefreshToken({
+      id: refreshId,
+      tokenHash: hashRefresh,
+      expiredAt: refreshTTL,
+      userId: user.id,
+    });
     return { accessToken, refreshToken };
   }
 
@@ -128,7 +133,16 @@ export class AuthService {
     this.logger.log('next');
 
     //Генерация новых токенов
-    return this.generateTokens(user);
+    const { accessToken, refreshToken, refreshTTL, refreshId } =
+      await this.generateTokens(user);
+    const hashRefresh = await hash(refreshToken);
+    await this.authRepository.createRefreshToken({
+      id: refreshId,
+      tokenHash: hashRefresh,
+      expiredAt: refreshTTL,
+      userId: user.id,
+    });
+    return { accessToken, refreshToken };
   }
 
   public async logout(dto: JwtPayload) {
@@ -137,7 +151,7 @@ export class AuthService {
     return { ok: true };
   }
 
-  public async refresh(dto: JwtPayload) {
+  public async refresh(dto: JwtPayload): Promise<JwtResponse> {
     const { sub, refreshTokenId } = dto;
     const token = await this.authRepository.findRefreshToken(refreshTokenId);
     if (!token) {
@@ -162,14 +176,38 @@ export class AuthService {
       });
     }
 
-    return this.generateTokens(user);
+    const { accessToken, refreshToken } = await this.generateTokens(user);
+    return { accessToken, refreshToken };
+  }
+
+  public async validateToken(data: JwtPayload): Promise<SuccessResponse> {
+    const { sub: userId, refreshTokenId } = data;
+    console.log('data', data);
+    const isExistRefresh =
+      await this.authRepository.findRefreshToken(refreshTokenId);
+    if (!isExistRefresh)
+      throw new RpcException({
+        code: 404,
+        message: 'refresh token not found',
+      });
+    if (userId !== isExistRefresh.userId) {
+      throw new RpcException({
+        code: 409,
+        message: 'user does not belong refresh token',
+      });
+    }
+    return { ok: true };
   }
 
   private async generateTokens(user: User) {
     const refreshTTL = new Date(Date.now() + ms(this.JWT_REFRESH_EXPIRES_IN));
     const refreshId = randomUUID();
 
-    const payload = { sub: user.id, refreshId };
+    const payload = {
+      sub: user.id,
+      refreshTokenId: refreshId,
+      role: user.role,
+    };
 
     const accessToken = await this.jwtService.signAsync(payload, {
       expiresIn: this.JWT_EXPIRES_IN,
@@ -178,13 +216,6 @@ export class AuthService {
       expiresIn: this.JWT_REFRESH_EXPIRES_IN,
     });
 
-    const refreshHash = await hash(refreshToken);
-    await this.authRepository.createRefreshToken({
-      userId: user.id,
-      tokenHash: refreshHash,
-      expiredAt: refreshTTL,
-    });
-
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, refreshTTL, refreshId };
   }
 }

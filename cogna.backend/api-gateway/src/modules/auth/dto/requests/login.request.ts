@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { LoginRequest } from '@cogna-edu/contracts/gen/auth';
+import { LoginRequest } from '@cogna-edu/contracts/gen/auth/auth';
 
 @InputType()
 export class LoginRequestGql implements LoginRequest {

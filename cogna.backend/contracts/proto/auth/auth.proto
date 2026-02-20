@@ -8,6 +8,7 @@ service AuthService {
   rpc Login(LoginRequest) returns (JwtResponse);
   rpc Logout(JwtPayload) returns(SuccessResponse);
   rpc RefreshTokens(JwtPayload) returns(JwtResponse);
+  rpc ValidateToken(JwtPayload) returns (SuccessResponse);
 }
 
 // Jwt
@@ -19,6 +20,11 @@ message JwtPayload {
 message JwtResponse {
   string accessToken = 1;
   string refreshToken = 2;
+}
+
+enum UserRole {
+  USER = 0;
+  ADMIN = 1;
 }
 
 // Success

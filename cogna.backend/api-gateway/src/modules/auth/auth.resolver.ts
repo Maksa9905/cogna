@@ -4,14 +4,31 @@ import { JwtResponseGql, SuccessResponseGql } from './dto/responses';
 import { ConfirmRegisterRequestGql, RegisterRequestGql } from './dto/requests';
 import { Request, Response } from 'express';
 import { LoginRequestGql } from './dto/requests/login.request';
+import { NotFoundException, UseGuards } from '@nestjs/common';
+import { Roles, ROLES_ENUM } from '../../common/decorators/roles.decorator';
+import { JwtGuard } from '../../common/guards';
 
+@Roles(ROLES_ENUM.USER)
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
+  // @Roles(ROLES_ENUM.USER, ROLES_ENUM.ADMIN)
+  @UseGuards(JwtGuard)
   @Query(() => String)
   public ping() {
     return 'pong';
+  }
+
+  @UseGuards(JwtGuard)
+  @Query(() => JwtResponseGql)
+  public checkTokens(@Context('req') req: Request): JwtResponseGql {
+    const bearer = req.header('authorization');
+    if (!bearer) throw new NotFoundException();
+    return {
+      accessToken: bearer.split(' ')[1],
+      refreshToken: req.cookies?.refreshToken as string,
+    };
   }
 
   @Mutation(() => SuccessResponseGql)
@@ -41,30 +58,30 @@ export class AuthResolver {
     return response;
   }
 
+  @UseGuards(JwtGuard)
   @Mutation(() => SuccessResponseGql)
   public async logout(
     @Context('req') req: Request,
     @Context('res') res: Response,
   ) {
-    const refreshToken = req.cookies?.refreshToken as string;
-    if (!refreshToken) return { ok: true };
     const response = await this.authService.logout({
-      refreshTokenId: refreshToken,
-      sub: '123',
+      refreshTokenId: req.user.refreshTokenId,
+      sub: req.user.sub,
     });
     res.clearCookie('refreshToken');
     return response;
   }
 
+  @UseGuards(JwtGuard)
   @Mutation(() => JwtResponseGql)
-  public async refresh(
+  public async refreshTokens(
     @Context('req') req: Request,
     @Context('res') res: Response,
   ) {
-    const refreshToken = req.cookies?.refreshToken as string;
-    const response = await this.authService.refresh({
-      refreshTokenId: refreshToken,
-      sub: '123',
+    const { sub, refreshTokenId } = req.user;
+    const response = await this.authService.refreshTokens({
+      refreshTokenId: refreshTokenId,
+      sub,
     });
     res.cookie('refreshToken', response.refreshToken);
     return response;

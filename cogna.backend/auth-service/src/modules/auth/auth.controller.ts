@@ -1,10 +1,11 @@
 import { AuthService } from './auth.service';
 import { GrpcMethod, GrpcService } from '@nestjs/microservices';
 import {
-  ConfirmRegisterRequest, JwtPayload,
+  ConfirmRegisterRequest,
+  JwtPayload,
   LoginRequest,
   RegisterRequest,
-} from '@cogna-edu/contracts/gen/auth';
+} from '@cogna-edu/contracts/gen/auth/auth';
 
 @GrpcService()
 export class AuthController {
@@ -30,5 +31,13 @@ export class AuthController {
     return await this.authService.logout(data);
   }
 
+  @GrpcMethod('AuthService', 'RefreshTokens')
+  async refresh(data: JwtPayload) {
+    return await this.authService.refresh(data);
+  }
 
+  @GrpcMethod('AuthService', 'ValidateToken')
+  async validateToken(data: JwtPayload) {
+    return await this.authService.validateToken(data);
+  }
 }

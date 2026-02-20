@@ -6,7 +6,7 @@ import {
   ConfirmRegisterRequest,
   LoginRequest,
   JwtPayload,
-} from '@cogna-edu/contracts/gen/auth';
+} from '@cogna-edu/contracts/gen/auth/auth';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -33,7 +33,11 @@ export class AuthService {
     return await firstValueFrom(this.authClient.logout(dto));
   }
 
-  public async refresh(dto: JwtPayload) {
+  public async refreshTokens(dto: JwtPayload) {
     return await firstValueFrom(this.authClient.refreshTokens(dto));
+  }
+
+  public async validateToken(dto: JwtPayload) {
+    return await firstValueFrom(this.authClient.validateToken(dto));
   }
 }

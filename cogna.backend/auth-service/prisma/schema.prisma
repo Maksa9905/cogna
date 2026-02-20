@@ -16,6 +16,7 @@ datasource db {
 model User {
   id            String          @id @default(uuid())
   email         String          @unique
+  role          ROLES           @default(USER)
   passwordHash  String          @map("password_hash")
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime        @updatedAt() @map("updated_at")
@@ -34,4 +35,9 @@ model RefreshTokens {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("refresh_tokens")
+}
+
+enum ROLES {
+  ADMIN
+  USER
 }
