@@ -1,0 +1,21 @@
+{
+  "name": "@cogna-edu/corn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "types":  "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^11.1.14"
+  }
+}

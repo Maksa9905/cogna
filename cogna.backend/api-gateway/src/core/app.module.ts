@@ -19,13 +19,24 @@ import { JwtStrategy } from '../common/strategies';
       autoSchemaFile: true,
       sortSchema: true,
       playground: false,
+      includeStacktraceInErrorResponses: false,
+      formatError: (error) => {
+        return {
+          message: error.message,
+          details: (error.extensions?.message ||
+            'Internal server error') as string,
+          status: error.extensions?.status || '500',
+        };
+      },
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
-      context: ({ req, res }: { req: Request; res: Response }) => ({ req, res }),
+      context: ({ req, res }: { req: Request; res: Response }) => ({
+        req,
+        res,
+      }),
     }),
     AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

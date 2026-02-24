@@ -18,6 +18,8 @@ import { ConfigService } from '@nestjs/config';
 import * as ms from 'ms';
 import { StringValue } from 'ms';
 import { randomUUID } from 'node:crypto';
+import { status } from '@grpc/grpc-js';
+import { RpcStatus } from '@cogna-edu/corn';
 
 @Injectable()
 export class AuthService {
@@ -48,7 +50,7 @@ export class AuthService {
     if (isExist) {
       this.logger.error('user already registered', { email });
       throw new RpcException({
-        code: 409,
+        code: RpcStatus.ALREADY_EXISTS,
         message: 'user already registered',
       });
     }
