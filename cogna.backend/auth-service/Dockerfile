@@ -13,4 +13,4 @@ ENV DATABASE_URL="postgresql://cogna:cogna_dev_password@postgres:5432/auth_db"
 RUN npx prisma generate
 RUN npm run build
 
-CMD ["node", "dist/src/main.js"]
+CMD npx prisma migrate deploy && node dist/src/main.js
