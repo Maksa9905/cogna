@@ -1,0 +1,17 @@
+{
+  "email": {
+    "required": "Email is required",
+    "invalid": "Invalid email format"
+  },
+  "password": {
+    "required": "Password is required",
+    "minLength": "Password must be at least 8 characters"
+  },
+  "confirmPassword": {
+    "required": "Please confirm your password",
+    "mismatch": "Passwords do not match"
+  },
+  "terms": {
+    "required": "You must agree to the terms"
+  }
+}

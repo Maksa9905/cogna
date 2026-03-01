@@ -1,10 +1,15 @@
+import type { SupportedLocale } from "@/shared/i18n";
+
+export const localizedRoutes = (locale: SupportedLocale) => ({
+	home: `/${locale}`,
+	auth: `/${locale}/auth`,
+	login: `/${locale}/auth/login`,
+	signup: `/${locale}/auth/signup`,
+});
+
 export const routes = {
-	protected: "/",
+	home: "/",
 	auth: "/auth",
-	register: "/auth/register",
 	login: "/auth/login",
-	courses: "/courses",
-	courseById: (courseId: string) => `/courses/${courseId}`,
-	ticketById: (courseId: string, ticketId: string) =>
-		`/courses/${courseId}/tickets/${ticketId}`,
-} as const;
+	signup: "/auth/signup",
+};
