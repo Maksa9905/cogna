@@ -5,7 +5,13 @@ export const SUPPORTED_LOCALES = ["ru", "en", "de"] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 export const DEFAULT_LOCALE: SupportedLocale = "ru";
 
-export let i18n: I18n<Record<string, unknown>, Record<string, unknown>, Record<string, unknown>, SupportedLocale, false>;
+export let i18n: I18n<
+	Record<string, unknown>,
+	Record<string, unknown>,
+	Record<string, unknown>,
+	SupportedLocale,
+	false
+>;
 
 export function setupI18n(app: App, locale: SupportedLocale = DEFAULT_LOCALE) {
 	i18n = createI18n({
@@ -51,7 +57,7 @@ export async function loadLocaleMessages(locale: SupportedLocale, namespace: str
 
 		loadedLocales.add(key);
 	} catch (error) {
-    // biome-ignore lint: handling error
+		// biome-ignore lint: handling error
 		console.error(`Failed to load locale messages: ${locale}/${namespace}`, error);
 	}
 }
