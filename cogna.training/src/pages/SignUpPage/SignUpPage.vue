@@ -32,10 +32,8 @@ const {
 	isPending: isRegisterPending,
 	isSuccess: isRegisterSuccess,
 } = useRegisterMutation();
-const {
-	mutateAsync: confirmCode,
-	isPending: isConfirmPending,
-} = useConfirmRegisterMutation();
+const { mutateAsync: confirmCode, isPending: isConfirmPending } =
+	useConfirmRegisterMutation();
 
 const registeredEmail = ref("");
 

@@ -36,8 +36,7 @@ function hslToHex(h: number, s: number, l: number): string {
  * @returns цвет в формате #rrggbb
  */
 export function getColorFromName(firstName: string, lastName: string): string {
-	const str =
-		`${(firstName ?? "").trim()} ${(lastName ?? "").trim()}`.trim() || "?";
+	const str = `${(firstName ?? "").trim()} ${(lastName ?? "").trim()}`.trim() || "?";
 	const hash = hashString(str);
 	const h = hash % 360;
 	const s = 52;

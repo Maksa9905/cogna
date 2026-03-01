@@ -26,18 +26,11 @@ export const useRegisterMutation = () => {
 };
 
 export const useConfirmRegisterMutation = () => {
-	return useMutation<
-		ConfirmRegisterMutationResponse,
-		Error,
-		ConfirmRegisterMutationPayload
-	>({
+	return useMutation<ConfirmRegisterMutationResponse, Error, ConfirmRegisterMutationPayload>({
 		mutationFn: (payload) =>
-			publicRequest<ConfirmRegisterMutationResponse>(
-				confirmCodeMutationDocument,
-				{
-					data: { otp: payload.otp, email: payload.email },
-				},
-			),
+			publicRequest<ConfirmRegisterMutationResponse>(confirmCodeMutationDocument, {
+				data: { otp: payload.otp, email: payload.email },
+			}),
 	});
 };
 
@@ -52,7 +45,6 @@ export const useLoginMutation = () => {
 
 export const useLogoutMutation = () => {
 	return useMutation<LogoutMutationResponse, Error, void>({
-		mutationFn: () =>
-			authRequest<LogoutMutationResponse>(logoutMutationDocument),
+		mutationFn: () => authRequest<LogoutMutationResponse>(logoutMutationDocument),
 	});
 };

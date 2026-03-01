@@ -47,11 +47,7 @@ function tryRefresh(): Promise<boolean> {
 function isUnauthorizedError(error: unknown): boolean {
 	if (!(error instanceof Error)) return false;
 	const msg = error.message;
-	return (
-		msg.includes("Unauthorized") ||
-		msg.includes("401") ||
-		msg.includes("UNAUTHENTICATED")
-	);
+	return msg.includes("Unauthorized") || msg.includes("401") || msg.includes("UNAUTHENTICATED");
 }
 
 function createClient(token?: string | null): GraphQLClient {
@@ -71,20 +67,14 @@ export async function authRequest<T>(
 	variables?: Record<string, unknown>,
 ): Promise<T> {
 	try {
-		return await createClient(tokenStorage.getAccessToken()).request<T>(
-			document,
-			variables,
-		);
+		return await createClient(tokenStorage.getAccessToken()).request<T>(document, variables);
 	} catch (error) {
 		if (!isUnauthorizedError(error)) throw error;
 
 		const refreshed = await tryRefresh();
 		if (!refreshed) throw error;
 
-		return await createClient(tokenStorage.getAccessToken()).request<T>(
-			document,
-			variables,
-		);
+		return await createClient(tokenStorage.getAccessToken()).request<T>(document, variables);
 	}
 }
 

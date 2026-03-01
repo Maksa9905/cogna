@@ -2,7 +2,7 @@
 import { GoogleIcon, GitHubIcon } from "@/shared/icons";
 
 defineOptions({
-  name: "AuthIntergrations",
+	name: "AuthIntergrations",
 });
 </script>
 

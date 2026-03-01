@@ -9,9 +9,7 @@ export function useAuthErrorHandler() {
 		const message = error instanceof Error ? error.message : String(error);
 		const errorKey = getAuthErrorKey(message);
 
-		const translationKey = errorKey
-			? `auth.error.${errorKey}`
-			: "auth.error.unknown";
+		const translationKey = errorKey ? `auth.error.${errorKey}` : "auth.error.unknown";
 
 		toast.add({
 			title: t("auth.error.title"),

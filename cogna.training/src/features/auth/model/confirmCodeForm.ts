@@ -9,8 +9,8 @@ type UseConfirmCodeFormOptions = {
 };
 
 export const validateCode = (value: string) => {
-	if (!value) return 'Код подтверждения - обязательное поле';
-	if (value.length < 6) return 'Код должен содержать минимум 6 символов';
+	if (!value) return "Код подтверждения - обязательное поле";
+	if (value.length < 6) return "Код должен содержать минимум 6 символов";
 	return undefined;
 };
 
@@ -20,12 +20,14 @@ export const useConfirmCodeForm = ({ onSubmit }: UseConfirmCodeFormOptions) => {
 			code: "",
 		} as ConfirmCodeFormValues,
 		onSubmit: async (props) => {
-			console.debug('submit');
 			onSubmit(props.value);
 		},
 	});
 
-	return { form, validators: {
-		code: validateCode,
-	}};
+	return {
+		form,
+		validators: {
+			code: validateCode,
+		},
+	};
 };

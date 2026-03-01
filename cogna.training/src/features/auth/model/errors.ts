@@ -9,8 +9,7 @@ export const AUTH_ERROR_MESSAGES = {
 	USER_DOES_NOT_BELONG_REFRESH_TOKEN: "user does not belong refresh token",
 } as const;
 
-export type AuthErrorMessage =
-	(typeof AUTH_ERROR_MESSAGES)[keyof typeof AUTH_ERROR_MESSAGES];
+export type AuthErrorMessage = (typeof AUTH_ERROR_MESSAGES)[keyof typeof AUTH_ERROR_MESSAGES];
 
 export function getAuthErrorKey(message: string): string | null {
 	const errorMap: Record<string, string> = {

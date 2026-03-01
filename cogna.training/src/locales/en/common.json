@@ -1,6 +1,6 @@
 {
-  "or": "or",
-  "email": "Email",
-  "password": "Password",
-  "optional": "Optional"
+	"or": "or",
+	"email": "Email",
+	"password": "Password",
+	"optional": "Optional"
 }

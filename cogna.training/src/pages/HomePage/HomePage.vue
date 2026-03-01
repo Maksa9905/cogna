@@ -9,12 +9,12 @@ const { clearSession } = useSession();
 const { mutateAsync: logout, isPending } = useLogoutMutation();
 
 const handleLogout = async () => {
-  try {
-    await logout();
-  } finally {
-    clearSession();
-    await router.push(routes.login);
-  }
+	try {
+		await logout();
+	} finally {
+		clearSession();
+		await router.push(routes.login);
+	}
 };
 </script>
 

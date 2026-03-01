@@ -10,29 +10,29 @@ type UseSignupFormOptions = {
 export const useSignupForm = ({ onSubmit }: UseSignupFormOptions) => {
 	const { t } = useI18n();
 
-	const validateEmail = (value: ObjectValue<never, SignUpFormValues, 'email'>) => {
-		if (!value) return t('validation.email.required');
-		if (!value.match(EMAIL_REGEX)) return t('validation.email.invalid');
+	const validateEmail = (value: ObjectValue<never, SignUpFormValues, "email">) => {
+		if (!value) return t("validation.email.required");
+		if (!value.match(EMAIL_REGEX)) return t("validation.email.invalid");
 		return undefined;
 	};
 
-	const validatePassword = (value: ObjectValue<never, SignUpFormValues, 'password'>) => {
-		if (!value) return t('validation.password.required');
-		if (!value.match(PASSWORD_REGEX)) return t('validation.password.minLength');
+	const validatePassword = (value: ObjectValue<never, SignUpFormValues, "password">) => {
+		if (!value) return t("validation.password.required");
+		if (!value.match(PASSWORD_REGEX)) return t("validation.password.minLength");
 		return undefined;
 	};
 
 	const validateRepeatedPassword = (
-		password: ObjectValue<never, SignUpFormValues, 'password'>, 
-		repeatedPassword: ObjectValue<never, SignUpFormValues, 'repeatedPassword'>
+		password: ObjectValue<never, SignUpFormValues, "password">,
+		repeatedPassword: ObjectValue<never, SignUpFormValues, "repeatedPassword">,
 	) => {
-		if (!repeatedPassword) return t('validation.confirmPassword.required');
-		if (password !== repeatedPassword) return t('validation.confirmPassword.mismatch');
+		if (!repeatedPassword) return t("validation.confirmPassword.required");
+		if (password !== repeatedPassword) return t("validation.confirmPassword.mismatch");
 		return undefined;
 	};
 
-	const validateIsAgree = (value: ObjectValue<never, SignUpFormValues, 'isAgree'>) => {
-		if (!value) return t('validation.terms.required');
+	const validateIsAgree = (value: ObjectValue<never, SignUpFormValues, "isAgree">) => {
+		if (!value) return t("validation.terms.required");
 		return undefined;
 	};
 
@@ -45,15 +45,17 @@ export const useSignupForm = ({ onSubmit }: UseSignupFormOptions) => {
 			faculty: "",
 		} as SignUpFormValues,
 		onSubmit: async (props) => {
-			console.debug('submit');
 			onSubmit(props.value);
 		},
 	});
 
-	return { form, validators: {
-		email: validateEmail,
-		password: validatePassword,
-		repeatedPassword: validateRepeatedPassword,
-		isAgree: validateIsAgree,
-	}};
+	return {
+		form,
+		validators: {
+			email: validateEmail,
+			password: validatePassword,
+			repeatedPassword: validateRepeatedPassword,
+			isAgree: validateIsAgree,
+		},
+	};
 };

@@ -3,17 +3,18 @@ import { PasswordInput } from "@/shared/ui";
 import type { SignUpFormValues } from "../../model/types";
 import { useSignupForm } from "../../model/signupForm";
 import { useI18n } from "vue-i18n";
+import { LetterIcon, LockIcon } from "@/shared/icons";
 
 const { t } = useI18n();
 
 const { isLoading = false } = defineProps<{ isLoading?: boolean }>();
 
 const emit = defineEmits<{
-  submit: [payload: SignUpFormValues];
+	submit: [payload: SignUpFormValues];
 }>();
 
 const { form, validators } = useSignupForm({
-  onSubmit: (payload) => emit("submit", payload),
+	onSubmit: (payload) => emit("submit", payload),
 });
 
 const { handleSubmit } = form;
@@ -24,7 +25,7 @@ const { handleSubmit } = form;
     <form.Field name="email" :validators="{ onSubmit: ({ value }) => validators.email(value) }">
       <template v-slot="{ field }">
         <UFormField :error="field.state.meta.errors[0]" :label="t('common.email')">
-          <UInput :model-value="field.state.value" @update:model-value="field.handleChange" size="xl" class="w-full"
+          <UInput :icon="LetterIcon" :model-value="field.state.value" @update:model-value="field.handleChange" size="xl" class="w-full"
             placeholder="example@gmail.com" />
         </UFormField>
       </template>
@@ -33,7 +34,7 @@ const { handleSubmit } = form;
     <form.Field name="password" :validators="{ onSubmit: ({ value }) => validators.password(value) }">
       <template v-slot="{ field }">
         <UFormField :error="field.state.meta.errors[0]" :label="t('common.password')">
-          <PasswordInput :model-value="field.state.value"
+          <PasswordInput :icon="LockIcon" :model-value="field.state.value"
             @update:model-value="(value) => field.handleChange(value ?? '')" size="xl" class="w-full"
             :placeholder="t('auth.signup.passwordPlaceholder')" />
         </UFormField>
@@ -47,7 +48,7 @@ const { handleSubmit } = form;
     }">
       <template v-slot="{ field }">
         <UFormField :error="field.state.meta.errors[0]" :label="t('auth.signup.confirmPassword')">
-          <PasswordInput :model-value="field.state.value"
+          <PasswordInput :icon="LockIcon" :model-value="field.state.value"
             @update:model-value="(value) => field.handleChange(value ?? '')" size="xl" class="w-full"
             :placeholder="t('auth.signup.confirmPasswordPlaceholder')" />
         </UFormField>

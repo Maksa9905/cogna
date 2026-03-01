@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { useConfirmCodeForm, type ConfirmCodeFormValues } from "../../model/confirmCodeForm";
+import {
+	useConfirmCodeForm,
+	type ConfirmCodeFormValues,
+} from "../../model/confirmCodeForm";
 
 const { t } = useI18n();
 

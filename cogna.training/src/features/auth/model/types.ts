@@ -2,7 +2,7 @@ export interface SignUpFormValues {
 	email?: string;
 	password?: string;
 	repeatedPassword?: string;
-	isAgree: boolean | 'indeterminate';
+	isAgree: boolean | "indeterminate";
 	faculty?: string;
 }
 

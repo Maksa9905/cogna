@@ -13,15 +13,16 @@ const locale = computed(() => route.params.locale as SupportedLocale);
 const routes = computed(() => localizedRoutes(locale.value));
 
 const type = computed(() =>
-	router.currentRoute.value.path === routes.value.login ? "login" : "signup",
+  router.currentRoute.value.path === routes.value.login ? "login" : "signup",
 );
 </script>
 
 <template>
   <div class="container" :data-selected="type">
-    <button @click="() => router.push(routes.login)" :aria-selected="type === 'login'" class="button">{{ t('auth.login.tab') }}</button>
-    <button @click="() => router.push(routes.signup)" :aria-selected="type === 'signup'"
-      class="button">{{ t('auth.signup.tab') }}</button>
+    <button @click="() => router.push(routes.login)" :aria-selected="type === 'login'" type="button" class="button">{{
+      t('auth.login.tab') }}</button>
+    <button @click="() => router.push(routes.signup)" :aria-selected="type === 'signup'" type="button" class="button">{{
+      t('auth.signup.tab') }}</button>
   </div>
 </template>
 

@@ -26,7 +26,10 @@ const localizedRouteConfig: RouteRecordRaw[] = [
 			{
 				path: "auth",
 				component: AuthLayout,
-				meta: { requiresGuest: true, namespaces: ["auth", "validation", "common"] },
+				meta: {
+					requiresGuest: true,
+					namespaces: ["auth", "validation", "common"],
+				},
 				children: [
 					{ path: "login", component: LoginPage },
 					{ path: "signup", component: SignUpPage },

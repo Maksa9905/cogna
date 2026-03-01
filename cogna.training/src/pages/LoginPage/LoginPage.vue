@@ -2,13 +2,13 @@
 import { useLoginMutation } from "@/entities/user";
 import { useSession } from "@/entities/session";
 import {
-  AuthTitle,
-  AuthDescription,
-  AuthIntergrations,
-  AuthSeparator,
-  LoginForm,
-  useAuthErrorHandler,
-  type LoginFormValues,
+	AuthTitle,
+	AuthDescription,
+	AuthIntergrations,
+	AuthSeparator,
+	LoginForm,
+	useAuthErrorHandler,
+	type LoginFormValues,
 } from "@/features/auth";
 import { localizedRoutes } from "@/shared/router/routes";
 import { useRouter, useRoute } from "vue-router";
@@ -23,21 +23,21 @@ const { mutateAsync: login, isPending } = useLoginMutation();
 const { handleError } = useAuthErrorHandler();
 
 const handleSubmit = async (payload: LoginFormValues) => {
-  try {
-    const { email, password } = payload
+	try {
+		const { email, password } = payload;
 
-    if (!password || !email) return;
+		if (!password || !email) return;
 
-    const result = await login({ email, password });
+		const result = await login({ email, password });
 
-    saveTokens(result.login.accessToken, result.login.refreshToken);
+		saveTokens(result.login.accessToken, result.login.refreshToken);
 
-    const locale = route.params.locale as SupportedLocale;
+		const locale = route.params.locale as SupportedLocale;
 
-    await router.push(localizedRoutes(locale).home);
-  } catch (error) {
-    handleError(error);
-  }
+		await router.push(localizedRoutes(locale).home);
+	} catch (error) {
+		handleError(error);
+	}
 };
 </script>
 

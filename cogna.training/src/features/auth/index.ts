@@ -10,10 +10,10 @@ export { default as LoginForm } from "./ui/LoginForm";
 export { default as SignUpForm } from "./ui/SignUpForm";
 export { default as ConfirmCodeForm } from "./ui/ConfirmCodeForm";
 
-export {
-	type SignUpFormValues,
-	type LoginFormValues,
-	type ConfirmCodeFormValues,
+export type {
+	SignUpFormValues,
+	LoginFormValues,
+	ConfirmCodeFormValues,
 } from "./model/types";
 
 export { useAuthErrorHandler } from "./model/useAuthErrorHandler";

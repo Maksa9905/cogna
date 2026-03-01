@@ -4,13 +4,13 @@ import { useLocalizedRouter, type SupportedLocale } from "@/shared/i18n";
 const { currentLocale, switchLocale, availableLocales } = useLocalizedRouter();
 
 const localeLabels: Record<SupportedLocale, string> = {
-  ru: "Русский",
-  en: "English",
-  de: "Deutsch",
+	ru: "Русский",
+	en: "English",
+	de: "Deutsch",
 };
 
 const handleLocaleChange = (locale: SupportedLocale) => {
-  switchLocale(locale);
+	switchLocale(locale);
 };
 </script>
 

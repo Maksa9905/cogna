@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { variant = "filled" } = defineProps<{
-	variant?: "transparent" | "filled";
+  variant?: "transparent" | "filled";
 }>();
 </script>
 
@@ -41,6 +41,5 @@ const { variant = "filled" } = defineProps<{
   right: 0;
   bottom: 0;
   z-index: 0;
-  position: absolute;
 }
 </style>

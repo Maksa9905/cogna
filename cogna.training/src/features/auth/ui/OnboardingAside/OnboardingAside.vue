@@ -17,7 +17,7 @@ const { t } = useI18n();
       </Badge>
       <h1 class="title">
         {{ t('auth.onboarding.title') }} <br> <span class="title-highlight">{{ t('auth.onboarding.titleHighlight')
-        }}</span>
+          }}</span>
       </h1>
       <p class="description">
         {{ t('auth.onboarding.description') }}
@@ -113,7 +113,6 @@ aside {
 .title {
   font-size: 40px;
   font-weight: 800;
-  line-height: 48px;
   color: var(--color-gray-1);
   line-height: 100%;
 }
