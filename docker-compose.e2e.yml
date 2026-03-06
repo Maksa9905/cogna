@@ -3,20 +3,8 @@
 #
 # Отличия от dev:
 # - VITE_API_URL=http://localhost/api — фронт ходит в API по localhost (доступ из браузера в CI)
-# - Отключены pgadmin, kafka-ui — экономия ресурсов в CI
 
 services:
   frontend:
     environment:
       - VITE_API_URL=http://localhost/api
-
-  nginx:
-    depends_on:
-      - frontend
-
-  pgadmin:
-    profiles:
-      - full
-  kafka-ui:
-    profiles:
-      - full
