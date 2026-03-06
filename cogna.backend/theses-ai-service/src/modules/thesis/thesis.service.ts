@@ -2,13 +2,11 @@ import { Injectable } from '@nestjs/common';
 import {
   GenerateThesesRequest,
   GenerateThesesResponse,
-  ThesisStreamChunk,
 } from '@cogna-edu/contracts/gen/thesis/thesis';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import Groq from 'groq-sdk';
 import { ConfigService } from '@nestjs/config';
-import { RpcException } from '@nestjs/microservices';
-import { Observable, of } from 'rxjs';
+
 
 @Injectable()
 export class ThesisService {
@@ -24,68 +22,52 @@ export class ThesisService {
     });
   }
 
-  public generateThesis(
+  public async generateThesis(
     dto: GenerateThesesRequest,
-  ): Observable<ThesisStreamChunk> {
-    return new Observable((subscriber) => {
-      void (async () => {
-        try {
-          const stream = await this.groq.chat.completions.create({
-            model: 'openai/gpt-oss-20b',
-            messages: [
-              {
-                role: 'system',
-                content: `...`,
-              },
-              {
-                role: 'user',
-                content: `Вопрос: ${dto.question}\n\nОтвет: ${dto.answer}`,
-              },
-            ],
-            max_completion_tokens: 2048,
-            temperature: 1,
-            n: 1,
-            response_format: {
-              type: 'json_schema',
-              json_schema: {
-                name: 'thesis_schema',
-                strict: true,
-                schema: {
+  ): Promise<GenerateThesesResponse> {
+    const response = await this.groq.chat.completions.create({
+      model: 'openai/gpt-oss-20b',
+      messages: [
+        {
+          role: 'system',
+          content: `Тебе надо написать тезисы по экзамиционному билету и эталонному твету на него,Отвечай на том же языке, максимум 3-5 тезисов, пиши емко и только суть, максимум слов в тезисе 15`,
+        },
+        {
+          role: 'user',
+          content: `Вопрос: ${dto.question}\n\nОтвет: ${dto.answer}`,
+        },
+      ],
+      max_completion_tokens: 2048,
+      temperature: 1,
+      n: 1,
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'thesis_schema',
+          strict: true,
+          schema: {
+            type: 'object',
+            properties: {
+              theses: {
+                type: 'array',
+                items: {
                   type: 'object',
                   properties: {
-                    theses: {
-                      type: 'array',
-                      items: {
-                        type: 'object',
-                        properties: {
-                          value: { type: 'string' },
-                          importance: { type: 'string' },
-                        },
-                        required: ['value', 'importance'],
-                        additionalProperties: false,
-                      },
-                    },
+                    value: { type: 'string' },
+                    importance: { type: 'string' },
                   },
-                  required: ['theses'],
+                  required: ['value', 'importance'],
                   additionalProperties: false,
                 },
               },
             },
-            stream: true,
-          });
-          for await (const chunk of stream) {
-            const text = chunk.choices[0]?.delta?.content ?? '';
-            if (text) {
-              subscriber.next({ content: text, done: false });
-            }
-          }
-          subscriber.next({ content: '', done: true });
-        } catch (err) {
-          subscriber.error(err);
-        } finally {
-          subscriber.complete();
-        }
-      })();
+            required: ['theses'],
+            additionalProperties: false,
+          },
+        },
+      },
     });
+    const content = response.choices[0].message.content ?? '';
+    return JSON.parse(content) as GenerateThesesResponse;
   }
 }

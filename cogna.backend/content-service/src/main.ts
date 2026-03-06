@@ -23,7 +23,7 @@ async function bootstrap() {
       loader: {
         includeDirs: [rootProtoDir],
       },
-      url: config.getOrThrow<string>('CONTENT_GRPC_URL', '0.0.0.0:50051'),
+      url: config.getOrThrow<string>('CONTENT_GRPC_URL', '0.0.0.0:50052'),
     },
   });
 

@@ -20,11 +20,6 @@ export interface GenerateThesesRequest {
   answer: string;
 }
 
-export interface ThesisStreamChunk {
-  content: string;
-  done: string;
-}
-
 export interface GenerateThesesResponse {
   theses: Thesis[];
 }
@@ -32,11 +27,13 @@ export interface GenerateThesesResponse {
 export const THESIS_V1_PACKAGE_NAME = "thesis.v1";
 
 export interface ThesisServiceClient {
-  createThesis(request: GenerateThesesRequest): Observable<ThesisStreamChunk>;
+  createThesis(request: GenerateThesesRequest): Observable<GenerateThesesResponse>;
 }
 
 export interface ThesisServiceController {
-  createThesis(request: GenerateThesesRequest): Observable<ThesisStreamChunk>;
+  createThesis(
+    request: GenerateThesesRequest,
+  ): Promise<GenerateThesesResponse> | Observable<GenerateThesesResponse> | GenerateThesesResponse;
 }
 
 export function ThesisServiceControllerMethods() {

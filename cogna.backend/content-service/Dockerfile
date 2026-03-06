@@ -6,6 +6,7 @@ WORKDIR /contracts
 COPY ./contracts .
 RUN npm install
 RUN npm run generate
+RUN npx tsc -p .
 
 WORKDIR /app
 COPY ./content-service/package*.json .

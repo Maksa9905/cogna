@@ -55,6 +55,8 @@ services:
       dockerfile: ./api-gateway/Dockerfile
     environment:
       - AUTH_GRPC_URL=auth-service:50051
+      - CONTENT_GRPC_URL=content-service:50051
+      - THESES_GRPC_URL=theses-ai-service:50051
       - JWT_SECRET=top-secret
       - JWT_EXPIRES_IN=7d
       - JWT_REFRESH_EXPIRES_IN=30d
@@ -88,6 +90,42 @@ services:
         condition: service_started
       kafka:
         condition: service_started
+      postgres:
+        condition: service_started
+        
+  content-service:
+    container_name: cogna-content-service
+    build:
+      context: ./cogna.backend
+      dockerfile: ./content-service/Dockerfile
+    ports:
+      - 50052:50051
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BROKERS=kafka:9092
+      - DATABASE_URL=postgresql://cogna:cogna_dev_password@postgres:5432/content_db
+      - CONTENT_GRPC_URL=0.0.0.0:50051
+      - THESES_GRPC_URL=theses-ai-service:50051
+    networks:
+      - cogna-network
+  
+  theses-ai-service:
+    container_name: cogna-theses-ai-service
+    build:
+      context: ./cogna.backend
+      dockerfile: ./theses-ai-service/Dockerfile
+    ports:
+      - 50053:50051
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BROKERS=kafka:9092
+      - CONTENT_GRPC_URL=content-service:50051
+      - THESES_GRPC_URL=0.0.0.0:50051
+      - PROXY_URL=http://C7KRaR:7FcoTh@168.80.82.43:8000
+      - GROQ_API_KEY=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
+    networks:
+      - cogna-network
+    
   
   notification-service:
     container_name: cogna-notification-service
