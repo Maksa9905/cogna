@@ -22,11 +22,6 @@ message JwtResponse {
   string refreshToken = 2;
 }
 
-enum UserRole {
-  USER = 0;
-  ADMIN = 1;
-}
-
 // Success
 message SuccessResponse {
   bool ok = 1;

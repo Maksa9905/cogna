@@ -1,0 +1,26 @@
+syntax = 'proto3';
+
+package thesis.v1;
+
+service ThesisService {
+  rpc CreateThesis(GenerateThesesRequest) returns (stream ThesisStreamChunk);
+}
+
+message Thesis{
+  string value = 1;
+  string importance = 2;
+}
+
+message GenerateThesesRequest {
+  string question = 1;
+  string answer = 2;
+}
+
+message ThesisStreamChunk {
+  string content = 1;
+  string done = 2;
+}
+
+message GenerateThesesResponse {
+  repeated Thesis theses = 1;
+}

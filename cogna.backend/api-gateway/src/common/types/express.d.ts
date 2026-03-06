@@ -1,5 +1,5 @@
 import 'express';
-import { UserRole } from '@cogna-edu/contracts/gen/auth/auth';
+import { UserRole } from '@cogna-edu/corn/dist/enum';
 
 declare module 'express' {
   interface Request {

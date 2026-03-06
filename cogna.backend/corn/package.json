@@ -1,9 +1,9 @@
 {
   "name": "@cogna-edu/corn",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "./dist/index.js",
-  "types":  "./dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "src"
@@ -16,6 +16,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@nestjs/common": "^11.1.14"
+    "@nestjs/common": "^11.1.14",
+    "@types/node": "^25.3.5"
   }
 }

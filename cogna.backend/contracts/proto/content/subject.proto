@@ -1,0 +1,63 @@
+syntax = 'proto3';
+
+package subject.v1;
+
+import "content/common.proto";
+import "google/protobuf/timestamp.proto";
+
+service SubjectService {
+  rpc CreateSubject(CreateSubjectRequest) returns (SubjectResponse);
+  rpc FindAllSubjects(FindAllSubjectRequest) returns (FindAllSubjectsResponse);
+  rpc FindOneSubject(FindOneSubjectRequest) returns (SubjectResponse);
+  rpc UpdateSubject(UpdateSubjectRequest) returns (SubjectResponse);
+  rpc DeleteSubject(DeleteSubjectRequest) returns (common.content.v1.SuccessResponse);
+}
+
+// Основная сущность предмета
+message Subject {
+  string id = 1;
+  string user_id = 2;
+  string title = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+// 1. Создание
+message CreateSubjectRequest {
+  string user_id = 1;
+  string title = 2;
+}
+
+// 2. Общий ответ для одного предмета
+message SubjectResponse {
+  Subject subject = 1;
+}
+
+// 3. Получение списка
+message FindAllSubjectsResponse {
+  repeated Subject subjects = 1; // Вот так мы возвращаем массив
+}
+
+// 4. Обновление
+message UpdateSubjectRequest {
+  string id = 1;        // Что обновляем
+  string user_id = 2;
+  string title = 3;     // Новое название
+}
+
+// 5. Удаление
+message DeleteSubjectRequest {
+  string id = 1;
+  string user_id = 2;
+}
+
+// 6. Поиск одного
+message FindOneSubjectRequest {
+  string id = 1;
+  string user_id = 2;
+}
+
+// 7. Поиск всех
+message FindAllSubjectRequest {
+  string user_id = 1;
+}

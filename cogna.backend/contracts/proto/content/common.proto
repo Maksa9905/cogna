@@ -1,0 +1,11 @@
+syntax = 'proto3';
+
+package common.content.v1;
+
+message UserIdRequest {
+  string user_id = 1;
+}
+
+message SuccessResponse {
+  bool ok = 1;
+}

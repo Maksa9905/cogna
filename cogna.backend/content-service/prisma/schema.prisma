@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Subject {
+  id String @id @default(uuid())
+
+  userId String @map("user_id")
+  title  String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+  Ticket    Ticket[]
+
+  @@index([userId])
+  @@map("subjects")
+}
+
+model Ticket {
+  id String @id @default(uuid())
+
+  subjectId String   @map("subject_id")
+  question  String
+  answer    String
+  theses    Thesis[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId])
+  @@map("tickets")
+}
+
+model Thesis {
+  id String @id @default(uuid())
+
+  ticketId String @map("ticket_id")
+
+  value      String
+  importance String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+  @@map("theses")
+}

@@ -1,4 +1,8 @@
 import { applyDecorators, UseGuards } from '@nestjs/common';
-import { JwtGuard } from '../guards';
+import { JwtGuard, RolesGuard } from '../guards';
+import { Roles } from './roles.decorator';
+import { UserRole } from '@cogna-edu/corn/dist/enum';
 
-export const Protected = () => applyDecorators(UseGuards(JwtGuard));
+
+export const Protected = (...roles: UserRole[]) =>
+  applyDecorators(UseGuards(JwtGuard, RolesGuard), Roles(...roles));

@@ -13,7 +13,7 @@ async function bootstrap() {
     options: {
       package: 'auth.v1',
       protoPath: ['node_modules/@cogna-edu/contracts/proto/auth/auth.proto'],
-      url: '0.0.0.0:50051',
+      url: config.getOrThrow<string>('AUTH_GRPC_URL', '0.0.0.0:50051'),
     },
   });
 

@@ -43,15 +43,12 @@ export class GeneralExceptionFilter implements ExceptionFilter {
       });
     }
 
-    return (
-      new GraphQLError('unhandled exception'),
-      {
-        extensions: {
-          status: 500,
-          message: 'Internal exception error',
-        },
-      }
-    );
+    return new GraphQLError('unhandled exception', {
+      extensions: {
+        status: 500,
+        message: 'Internal exception error',
+      },
+    });
   }
 
   isRpcException(e: RpcExceptionI): boolean {

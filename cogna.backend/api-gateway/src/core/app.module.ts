@@ -8,6 +8,8 @@ import { AuthModule } from '../modules/auth/auth.module';
 import { Request, Response } from 'express';
 import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from '../common/strategies';
+import { ContentModule } from '../modules/content/content.module';
+import { ThesisModule } from '../modules/thesis/thesis.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { JwtStrategy } from '../common/strategies';
       }),
     }),
     AuthModule,
+    ContentModule,
+    ThesisModule,
   ],
   controllers: [AppController],
   providers: [AppService],
