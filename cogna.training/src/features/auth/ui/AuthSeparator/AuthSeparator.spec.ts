@@ -5,7 +5,7 @@ import AuthSeparator from "./AuthSeparator.vue";
 describe("AuthSeparator", () => {
 	it("рендерит текст или", () => {
 		render(AuthSeparator);
-		expect(screen.getByText("или!")).toBeInTheDocument();
+		expect(screen.getByText("или")).toBeInTheDocument();
 	});
 
 	it("рендерит два hr", () => {
