@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FeaturesList > совпадает со snapshot 1`] = `"<ul data-v-03ba8fd7="" class="features-list"><li data-v-a7857d27="" class="feature-item"><span data-v-e2f44b48="" data-v-3c132480="" class="transparent badge-container feature-list-badge feature-item-icon">📘</span><p data-v-e41df2f1="" class="feature-item-title">Умные билеты</p><p data-v-0bd4f4db="" class="feature-item-description">Создавай структурированные конспекты</p></li></ul>"`;

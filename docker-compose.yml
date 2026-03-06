@@ -13,6 +13,7 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init-auth-db.sql:/docker-entrypoint-initdb.d/init-auth-db.sql:ro
     networks:
       - cogna-network
     healthcheck:
@@ -20,6 +21,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  postgres-init:
+    image: postgres:16-alpine
+    environment:
+      PGPASSWORD: cogna_dev_password
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - cogna-network
+    volumes:
+      - ./postgres/ensure-auth-db.sh:/ensure-auth-db.sh:ro
+    entrypoint: ["/bin/sh", "/ensure-auth-db.sh"]
+    restart: "no"
 
   api-gateway:
     container_name: cogna-api-gateway
@@ -55,8 +70,8 @@ services:
     networks:
       - cogna-network
     depends_on:
-      postgres:
-        condition: service_healthy
+      postgres-init:
+        condition: service_completed_successfully
       redis:
         condition: service_started
       kafka:

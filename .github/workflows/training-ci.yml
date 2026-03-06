@@ -48,16 +48,16 @@ jobs:
       - name: Проверка типов
         run: pnpm typecheck
 
-      # - name: Запуск тестов
-      #   run: pnpm test:run
+      - name: Запуск тестов
+        run: pnpm test:run
 
-      # - name: Создание отчета о покрытии
-      #   run: pnpm test:coverage
+      - name: Создание отчета о покрытии
+        run: pnpm test:coverage
 
-      # - name: Загрузка отчета о покрытии
-      #   uses: codecov/codecov-action@v3
-      #   with:
-      #     files: ./cogna.training/coverage/coverage-final.json
-      #     flags: unittests
-      #     name: codecov-umbrella
-      #     fail_ci_if_error: false
+      - name: Загрузка отчета о покрытии
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./cogna.training/coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false

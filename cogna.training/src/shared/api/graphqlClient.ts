@@ -1,7 +1,10 @@
 import { GraphQLClient } from "graphql-request";
 import { tokenStorage } from "./tokenStorage";
 
-const API_URL = "http://dev.cogna.localhost/api/graphql";
+const API_BASE =
+	(typeof import.meta !== "undefined" && import.meta.env?.VITE_API_URL) ||
+	"http://dev.cogna.localhost/api";
+const API_URL = `${API_BASE.replace(/\/$/, "")}/graphql`;
 
 const REFRESH_MUTATION = `
   mutation RefreshTokens {

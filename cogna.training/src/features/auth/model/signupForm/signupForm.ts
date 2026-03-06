@@ -1,6 +1,6 @@
 import { useForm, type ObjectValue } from "@tanstack/vue-form";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "@/shared/lib/regex";
-import type { SignUpFormValues } from "./types";
+import type { SignUpFormValues } from "../types";
 import { useI18n } from "vue-i18n";
 
 type UseSignupFormOptions = {

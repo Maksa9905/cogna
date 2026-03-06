@@ -1,21 +1,19 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import {
-	useConfirmCodeForm,
-	type ConfirmCodeFormValues,
-} from "../../model/confirmCodeForm";
+import { useConfirmCodeForm } from "../../model/confirmCodeForm";
+import type { ConfirmCodeFormValues } from "../../model/types";
 
 const { t } = useI18n();
 
 const { email, isLoading } = defineProps<{
-	email?: string;
-	isLoading?: boolean;
+  email?: string;
+  isLoading?: boolean;
 }>();
 
 const emit = defineEmits<{ confirm: [payload: ConfirmCodeFormValues] }>();
 
 const { form, validators } = useConfirmCodeForm({
-	onSubmit: (payload) => emit("confirm", payload),
+  onSubmit: (payload) => emit("confirm", payload),
 });
 
 const { handleSubmit } = form;
@@ -23,22 +21,14 @@ const { handleSubmit } = form;
 
 <template>
   <form v-if="email" @submit.prevent="handleSubmit" class="confirm-code-form">
-    <form.Field 
-      name="code"
-      :validators="{
-        onChange: ({ value }) => validators.code(value),
-        onBlur: ({ value }) => validators.code(value),
-      }"
-    >
+    <form.Field name="code" :validators="{
+      onChange: ({ value }) => validators.code(value),
+      onBlur: ({ value }) => validators.code(value),
+    }">
       <template v-slot="{ field }">
         <UFormField :error="field.state.meta.errors?.[0]" :label="t('auth.confirm.codeLabel')">
-          <UInput 
-            :model-value="field.state.value"
-            @update:model-value="field.handleChange"
-            size="xl"
-            class="w-full"
-            :placeholder="t('auth.confirm.codePlaceholder')" 
-          />
+          <UInput :model-value="field.state.value" @update:model-value="field.handleChange" size="xl" class="w-full"
+            :placeholder="t('auth.confirm.codePlaceholder')" />
         </UFormField>
       </template>
     </form.Field>

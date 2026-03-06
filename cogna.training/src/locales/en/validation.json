@@ -13,5 +13,9 @@
 	},
 	"terms": {
 		"required": "You must agree to the terms"
+	},
+	"code": {
+		"required": "Confirmation code is required",
+		"minLength": "Code must be at least 6 characters"
 	}
 }

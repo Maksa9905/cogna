@@ -10,11 +10,11 @@ const { t } = useI18n();
 const { isLoading = false } = defineProps<{ isLoading?: boolean }>();
 
 const emit = defineEmits<{
-	submit: [payload: SignUpFormValues];
+  submit: [payload: SignUpFormValues];
 }>();
 
 const { form, validators } = useSignupForm({
-	onSubmit: (payload) => emit("submit", payload),
+  onSubmit: (payload) => emit("submit", payload),
 });
 
 const { handleSubmit } = form;
@@ -25,8 +25,8 @@ const { handleSubmit } = form;
     <form.Field name="email" :validators="{ onSubmit: ({ value }) => validators.email(value) }">
       <template v-slot="{ field }">
         <UFormField :error="field.state.meta.errors[0]" :label="t('common.email')">
-          <UInput :icon="LetterIcon" :model-value="field.state.value" @update:model-value="field.handleChange" size="xl" class="w-full"
-            placeholder="example@gmail.com" />
+          <UInput :icon="LetterIcon" :model-value="field.state.value" @update:model-value="field.handleChange" size="xl"
+            class="w-full" placeholder="example@gmail.com" />
         </UFormField>
       </template>
     </form.Field>
@@ -71,7 +71,8 @@ const { handleSubmit } = form;
         <div class="terms-of-use">
           <UCheckbox :model-value="field.state.value" @update:model-value="field.handleChange" />
           <label>
-            {{ t('auth.signup.termsAgree') }} <a href="#">{{ t('auth.signup.termsOfUse') }}</a> {{ t('auth.signup.and') }} <a href="#">{{ t('auth.signup.privacyPolicy') }}</a>
+            {{ t('auth.signup.termsAgree') }} <a href="#">{{ t('auth.signup.termsOfUse') }}</a> {{ t('auth.signup.and')
+            }} <a href="#">{{ t('auth.signup.privacyPolicy') }}</a>
           </label>
         </div>
         <p v-if="field.state.meta.errors[0]" class="error-text">
@@ -80,7 +81,8 @@ const { handleSubmit } = form;
       </template>
     </form.Field>
 
-    <UButton :is-loading="isLoading" size="xl" class="justify-center" type="submit">{{ t('auth.signup.submit') }}</UButton>
+    <UButton :is-loading="isLoading" size="xl" class="justify-center" type="submit">{{ t('auth.signup.submit') }}
+    </UButton>
   </form>
 </template>
 

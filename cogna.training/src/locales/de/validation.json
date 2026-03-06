@@ -13,5 +13,9 @@
 	},
 	"terms": {
 		"required": "Sie müssen den Bedingungen zustimmen"
+	},
+	"code": {
+		"required": "Bestätigungscode ist erforderlich",
+		"minLength": "Code muss mindestens 6 Zeichen haben"
 	}
 }
