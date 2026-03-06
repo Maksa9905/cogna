@@ -1,0 +1,91 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "cogna.e2e/**"
+      - "cogna.training/**"
+      - "cogna.backend/**"
+      - "nginx/**"
+      - "docker-compose*.yml"
+      - "postgres/**"
+      - ".github/workflows/e2e-ci.yml"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "cogna.e2e/**"
+      - "cogna.training/**"
+      - "cogna.backend/**"
+      - "nginx/**"
+      - "docker-compose*.yml"
+      - "postgres/**"
+      - ".github/workflows/e2e-ci.yml"
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Запуск контейнеров
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.e2e.yml up -d
+
+      - name: Ожидание готовности сервисов
+        run: |
+          echo "Ожидание поднятия стенда..."
+          for i in $(seq 1 60); do
+            if curl -sf -o /dev/null http://localhost 2>/dev/null || \
+               curl -sf -o /dev/null http://localhost/ru/auth/login 2>/dev/null; then
+              echo "Сервисы готовы (попытка $i)"
+              break
+            fi
+            if [ $i -eq 60 ]; then
+              echo "Таймаут ожидания сервисов"
+              docker compose -f docker-compose.yml -f docker-compose.e2e.yml logs
+              exit 1
+            fi
+            echo "Попытка $i/60..."
+            sleep 5
+          done
+
+      - name: Установка pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Установка Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "pnpm"
+          cache-dependency-path: "cogna.e2e/pnpm-lock.yaml"
+
+      - name: Установка зависимостей E2E
+        working-directory: cogna.e2e
+        run: pnpm install --frozen-lockfile
+
+      - name: Установка браузеров Playwright
+        working-directory: cogna.e2e
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Запуск E2E-тестов
+        working-directory: cogna.e2e
+        run: pnpm test --project=chromium
+        env:
+          CI: true
+
+      - name: Загрузка отчёта при падении
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: cogna.e2e/playwright-report/
+          retention-days: 7
+
+    env:
+      CI: true

@@ -1,0 +1,10 @@
+# Override для E2E-тестов в CI.
+# Использование: docker compose -f docker-compose.yml -f docker-compose.e2e.yml up -d
+#
+# Отличия от dev:
+# - VITE_API_URL=http://localhost/api — фронт ходит в API по localhost (доступ из браузера в CI)
+
+services:
+  frontend:
+    environment:
+      - VITE_API_URL=http://localhost/api

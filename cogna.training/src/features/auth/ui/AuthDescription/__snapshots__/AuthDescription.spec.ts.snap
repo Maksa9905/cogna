@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AuthDescription > совпадает со snapshot 1`] = `"<p data-v-ba42e658="" class="description">Первые шаги к пятёрке на сессии</p>"`;

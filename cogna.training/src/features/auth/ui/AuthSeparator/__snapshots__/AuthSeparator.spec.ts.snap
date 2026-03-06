@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AuthSeparator > совпадает со snapshot 1`] = `"<div data-v-e4ae2d8e="" class="separator"><hr data-v-e4ae2d8e=""> или <hr data-v-e4ae2d8e=""></div>"`;

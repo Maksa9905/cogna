@@ -1,35 +1,25 @@
-import react from "@vitejs/plugin-react";
-import path from "path";
-import { defineConfig } from "vitest/config";
+import { defineConfig, mergeConfig } from "vitest/config";
+import viteConfig from "./vite.config";
 
-export default defineConfig({
-	plugins: [react()],
-	resolve: {
-		alias: {
-			"@/": path.resolve(__dirname, "./src"),
-			"@/entities": path.resolve(__dirname, "./src/entities"),
-			"@/features": path.resolve(__dirname, "./src/features"),
-			"@/pages": path.resolve(__dirname, "./src/pages"),
-			"@/shared": path.resolve(__dirname, "./src/shared"),
-			"@/widgets": path.resolve(__dirname, "./src/widgets"),
-			"@/app": path.resolve(__dirname, "./src/app"),
+export default mergeConfig(
+	viteConfig,
+	defineConfig({
+		test: {
+			globals: true,
+			environment: "happy-dom",
+			setupFiles: ["./src/test/setup.ts"],
+			include: ["src/**/*.{test,spec}.{ts,tsx,vue}"],
+			coverage: {
+				provider: "v8",
+				reporter: ["text", "json", "html"],
+				exclude: [
+					"node_modules/",
+					"src/test/",
+					"**/*.d.ts",
+					"**/*.config.*",
+					"**/types.ts",
+				],
+			},
 		},
-	},
-	test: {
-		globals: true,
-		environment: "happy-dom",
-		setupFiles: "./vitest/setup.ts",
-		coverage: {
-			provider: "v8",
-			reporter: ["text", "json", "html"],
-			exclude: [
-				"node_modules/",
-				"vitest/",
-				"dist/",
-				"**/*.d.ts",
-				"**/*.config.*",
-				"**/mockData",
-			],
-		},
-	},
-});
+	}),
+);

@@ -1,9 +1,21 @@
-import react from "@vitejs/plugin-react";
-import path from "path";
 import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import path from "path";
+import ui from "@nuxt/ui/vite";
+import tailwindcss from "@tailwindcss/vite";
 
+// https://vite.dev/config/
 export default defineConfig({
-	plugins: [react()],
+	plugins: [
+		vue(),
+		tailwindcss(),
+		ui({
+			theme: {
+				colors: ["primary", "error"],
+			},
+			ui: { colors: { primary: "purple" } },
+		}),
+	],
 	resolve: {
 		alias: {
 			"@/": path.resolve(__dirname, "./src"),
@@ -13,14 +25,11 @@ export default defineConfig({
 			"@/shared": path.resolve(__dirname, "./src/shared"),
 			"@/widgets": path.resolve(__dirname, "./src/widgets"),
 			"@/app": path.resolve(__dirname, "./src/app"),
+			"@/test": path.resolve(__dirname, "./src/test"),
 		},
 	},
 	server: {
 		host: "0.0.0.0",
 		port: 5173,
-		strictPort: true,
-		watch: {
-			usePolling: true,
-		},
 	},
 });

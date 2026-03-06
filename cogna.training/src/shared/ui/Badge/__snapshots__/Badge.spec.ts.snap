@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Badge > совпадает со snapshot для filled 1`] = `"<span data-v-e2f44b48="" class="filled badge-container">Badge</span>"`;
+
+exports[`Badge > совпадает со snapshot для transparent 1`] = `"<span data-v-e2f44b48="" class="transparent badge-container">Badge</span>"`;
