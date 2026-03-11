@@ -9,60 +9,61 @@
 
 ## Быстрый старт
 
-### Разработка с Docker
+<span style="font-size: 16px; border-radius: 4px; padding: 4px; font-weight: 600; background: white; color: black">При первом запуске проекта</span>
 
-Самый простой способ запустить проект локально - использовать Docker Compose:
+1) Зайти в [настройки секретов в GitHub](https://github.com/Maksa9905/cogna/settings/secrets/actions)
 
-```bash
-docker-compose up --build
-```
+2) Найти секреты `SSL_CERT` и `SSL_CERT_KEY`
 
-После запуска доступны:
-- **Frontend**: http://localhost/ или http://dev.cogna.localhost/
-- **Backend API**: http://localhost/api/
-- **pgAdmin**: http://localhost/pgadmin/ (логин: `admin@cogna.ru`, пароль: `admin`)
+3) Создать файлы `/nginx/certs/cert.pem` и `/nginx/certs/key.pem`
 
-### Разработка без Docker
+4) Скопировать содержимое:
+  
+    `SSL_CERT` → `/nginx/certs/cert.pem`
 
-#### Frontend (cogna.training)
-```bash
-cd cogna.training
-pnpm install
-pnpm run dev
-```
+    `SSL_CERT_KEY` → `/nginx/certs/key.pem`
 
-#### Backend (cogna.backend)
-```bash
-cd cogna.backend
-pnpm install
-pnpm run start:dev
-```
+5) Добавляем запись в `/etc/hosts`
+    
+    5.1. Открываем `/etc/hosts` в редакторе nano редактор  
+    ```
+    sudo nano /etc/hosts
+    ```
 
-## Структура проекта
+    5.2. Система потребует ввести пароль от аккаунта администратора
 
-- `cogna.training/` - Frontend (React + Vite)
-- `cogna.backend/` - Backend (NestJS)
-- `nginx/` - Конфигурация Nginx
-- `docker-compose.yml` - Docker Compose для локальной разработки
+    5.3. В конце файла добавляем строчку
+
+    ```
+    127.0.0.1       www.cogna.ru
+    ```
+
+6) Запускаем docker-контейнеры
+
+    ```bash
+    docker compose up --build -d
+    ```
+
+
+<span style="font-size: 16px; border-radius: 4px; padding: 4px; font-weight: 600; background: purple; color: white">При последующих запусках проекта</span>
+
+1) Запускаем docker-контейнеры
+
+    ```bash
+    docker compose up --build -d
+    ```
+
+После запуска (используй домен из сертификата — www.cogna.ru или cogna.ru):
+- **Frontend**: https://www.cogna.ru/
+- **GraphQL**: https://www.cogna.ru/graphql
+- **pgAdmin**: https://www.cogna.ru/pgadmin/ (admin@cogna.ru / admin)
 
 ## База данных
 
-### Подключение к PostgreSQL через pgAdmin
+**pgAdmin**: https://www.cogna.ru/pgadmin/
+- Host: `postgres`, Port: `5432`, DB: `cogna`, User: `cogna`, Password: `cogna_dev_password`
 
-1. Откройте http://localhost/pgadmin/
-2. Логин: `admin@cogna.ru`, пароль: `admin`
-3. Добавьте новый сервер:
-   - **General > Name**: Cogna DB
-   - **Connection > Host**: `postgres`
-   - **Connection > Port**: `5432`
-   - **Connection > Database**: `cogna`
-   - **Connection > Username**: `cogna`
-   - **Connection > Password**: `cogna_dev_password`
-
-### Прямое подключение к PostgreSQL
-
-Также можно подключиться напрямую через порт 5432:
+**Прямое подключение**:
 ```bash
-psql -h localhost -p 5432 -U cogna -d cogna
-# Пароль: cogna_dev_password
+psql -h localhost -p 5433 -U cogna -d cogna
 ```

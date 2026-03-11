@@ -4,3 +4,9 @@ cogna.e2e/playwright-report
 cogna.e2e/test-results
 /package-lock.json
 .pnpm-store
+
+nginx/certs/*.pem
+nginx/certs/*.key
+nginx/certs/*.crt
+!nginx/certs/.gitkeep
+!nginx/certs/README.md

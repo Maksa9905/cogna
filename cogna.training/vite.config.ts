@@ -29,6 +29,7 @@ export default defineConfig({
 		},
 	},
 	server: {
+		allowedHosts: ['www.cogna.ru'],
 		host: "0.0.0.0",
 		port: 5173,
 	},

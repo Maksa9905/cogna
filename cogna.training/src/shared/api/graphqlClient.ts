@@ -3,7 +3,7 @@ import { tokenStorage } from "./tokenStorage";
 
 const API_BASE =
 	(typeof import.meta !== "undefined" && import.meta.env?.VITE_API_URL) ||
-	"http://dev.cogna.localhost/api";
+	"https://www.cogna.ru";
 const API_URL = `${API_BASE.replace(/\/$/, "")}/graphql`;
 
 const REFRESH_MUTATION = `

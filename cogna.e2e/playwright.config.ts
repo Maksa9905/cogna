@@ -15,7 +15,8 @@ export default defineConfig({
     ? [["html", { open: "never", outputFolder: "playwright-report" }], ["github"]]
     : [["html", { open: "on-failure", outputFolder: "playwright-report" }]],
   use: {
-    baseURL: "http://localhost",
+    baseURL: "https://localhost",
+    ignoreHTTPSErrors: true,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "on-first-retry",

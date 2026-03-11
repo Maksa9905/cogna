@@ -1,10 +1,10 @@
-# Override для E2E-тестов в CI.
+# Override для E2E-тестов.
 # Использование: docker compose -f docker-compose.yml -f docker-compose.e2e.yml up -d
 #
-# Отличия от dev:
-# - VITE_API_URL=http://localhost/api — фронт ходит в API по localhost (доступ из браузера в CI)
+# Отличия: VITE_API_URL=https://localhost (GraphQL на /graphql)
+# Сертификаты: локально и в CI — openssl (см. nginx/certs/README.md)
 
 services:
   frontend:
     environment:
-      - VITE_API_URL=http://localhost/api
+      - VITE_API_URL=https://localhost

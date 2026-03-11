@@ -13,7 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    UApp: typeof import('./node_modules/.pnpm/@nuxt+ui@4.5.0_@tiptap+extensions@3.20.0_@tiptap+core@3.20.0_@tiptap+pm@3.20.0__@tiptap_0f31dea343bd4eceae57a2fa7222f09f/node_modules/@nuxt/ui/dist/runtime/components/App.vue')['default']
+    UApp: typeof import('./node_modules/.pnpm/@nuxt+ui@4.5.0_@tiptap+extensions@3.20.0_@tiptap+core@3.20.0_@tiptap+pm@3.20.0__@tiptap_8abb92f2cdb0b8748926889e5a3ef9f9/node_modules/@nuxt/ui/dist/runtime/components/App.vue')['default']
     UAvatar: typeof import('./node_modules/.pnpm/@nuxt+ui@4.5.0_@tiptap+extensions@3.20.0_@tiptap+core@3.20.0_@tiptap+pm@3.20.0__@tiptap_8abb92f2cdb0b8748926889e5a3ef9f9/node_modules/@nuxt/ui/dist/runtime/components/Avatar.vue')['default']
     UAvatarGroup: typeof import('./node_modules/.pnpm/@nuxt+ui@4.5.0_@tiptap+extensions@3.20.0_@tiptap+core@3.20.0_@tiptap+pm@3.20.0__@tiptap_8abb92f2cdb0b8748926889e5a3ef9f9/node_modules/@nuxt/ui/dist/runtime/components/AvatarGroup.vue')['default']
     UButton: typeof import('./node_modules/.pnpm/@nuxt+ui@4.5.0_@tiptap+extensions@3.20.0_@tiptap+core@3.20.0_@tiptap+pm@3.20.0__@tiptap_8abb92f2cdb0b8748926889e5a3ef9f9/node_modules/@nuxt/ui/dist/runtime/components/Button.vue')['default']

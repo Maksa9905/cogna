@@ -31,6 +31,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Генерация самоподписанных сертификатов
+        run: ./nginx/certs/generate-e2e-certificates.sh
+
       - name: Запуск контейнеров
         run: |
           docker compose -f docker-compose.yml -f docker-compose.e2e.yml up -d
@@ -39,8 +42,8 @@ jobs:
         run: |
           echo "Ожидание поднятия стенда..."
           for i in $(seq 1 60); do
-            if curl -sf -o /dev/null http://localhost 2>/dev/null || \
-               curl -sf -o /dev/null http://localhost/ru/auth/login 2>/dev/null; then
+            if curl -skf -o /dev/null https://localhost 2>/dev/null || \
+               curl -skf -o /dev/null https://localhost/ru/auth/login 2>/dev/null; then
               echo "Сервисы готовы (попытка $i)"
               break
             fi
@@ -52,6 +55,9 @@ jobs:
             echo "Попытка $i/60..."
             sleep 5
           done
+
+      - name: Проверка HTTPS
+        run: curl -skf -o /dev/null https://localhost/ru/auth/login && echo "HTTPS OK"
 
       - name: Установка pnpm
         uses: pnpm/action-setup@v4
