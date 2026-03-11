@@ -9,13 +9,17 @@ const ItemTitle = Item.Title;
 const ItemDescription = Item.Description;
 
 function renderItem(icon: string, title: string, description: string) {
-	return h(Item, {}, {
-		default: () => [
-			h(ItemIcon, {}, () => icon),
-			h(ItemTitle, {}, () => title),
-			h(ItemDescription, {}, () => description),
-		],
-	});
+	return h(
+		Item,
+		{},
+		{
+			default: () => [
+				h(ItemIcon, {}, () => icon),
+				h(ItemTitle, {}, () => title),
+				h(ItemDescription, {}, () => description),
+			],
+		},
+	);
 }
 
 describe("FeaturesList", () => {

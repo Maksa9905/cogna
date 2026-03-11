@@ -20,6 +20,9 @@ importers:
       '@tanstack/vue-query':
         specifier: ^5.92.9
         version: 5.92.9(vue@3.5.29(typescript@5.9.3))
+      circle-progress.vue:
+        specifier: ^3.4.1
+        version: 3.4.1
       graphql-request:
         specifier: ^7.4.0
         version: 7.4.0(graphql@16.13.0)
@@ -1392,6 +1395,9 @@ packages:
   chokidar@5.0.0:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
     engines: {node: '>= 20.19.0'}
+
+  circle-progress.vue@3.4.1:
+    resolution: {integrity: sha512-JO3YrBFYx/EE29LHtM4u1j3YaIOyOfNIYh2pUfdZ0nf+wMFAH+HYcG3YH8HfBLnBzypnIOk+37NihPXKX7MoWQ==}
 
   citty@0.1.6:
     resolution: {integrity: sha512-tskPPKEs8D2KPafUypv2gxwJP8h/OaJmC82QQGGDQcHvXX43xF2VDACcJVmZ0EuSxkpO9Kc4MlrA3q0+FG58AQ==}
@@ -4245,6 +4251,8 @@ snapshots:
   chokidar@5.0.0:
     dependencies:
       readdirp: 5.0.0
+
+  circle-progress.vue@3.4.1: {}
 
   citty@0.1.6:
     dependencies:

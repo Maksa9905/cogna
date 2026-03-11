@@ -5,7 +5,7 @@ import { useLoginForm } from "./loginForm";
 
 const LoginFormTestWrapper = {
 	setup() {
-		const {  validators } = useLoginForm({ onSubmit: () => {} });
+		const { validators } = useLoginForm({ onSubmit: () => {} });
 
 		return () =>
 			h("div", {}, [
@@ -50,10 +50,10 @@ describe("useLoginForm", () => {
 				const result = useLoginForm({ onSubmit: () => {} });
 				return () =>
 					h("div", { "data-testid": "structure" }, [
-					h("span", { "data-has-form": !!result.form }),
-					h("span", { "data-has-validators": !!result.validators }),
-					h("span", { "data-email-type": typeof result.validators.email }),
-					h("span", { "data-password-type": typeof result.validators.password }),
+						h("span", { "data-has-form": !!result.form }),
+						h("span", { "data-has-validators": !!result.validators }),
+						h("span", { "data-email-type": typeof result.validators.email }),
+						h("span", { "data-password-type": typeof result.validators.password }),
 					]);
 			},
 		};
@@ -63,9 +63,7 @@ describe("useLoginForm", () => {
 		expect(el.querySelector("[data-has-validators]")?.getAttribute("data-has-validators")).toBe(
 			"true",
 		);
-		expect(el.querySelector("[data-email-type]")?.getAttribute("data-email-type")).toBe(
-			"function",
-		);
+		expect(el.querySelector("[data-email-type]")?.getAttribute("data-email-type")).toBe("function");
 		expect(el.querySelector("[data-password-type]")?.getAttribute("data-password-type")).toBe(
 			"function",
 		);

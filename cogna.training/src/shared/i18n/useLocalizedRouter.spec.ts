@@ -5,8 +5,7 @@ import { useLocalizedRouter } from "./useLocalizedRouter";
 
 const TestWrapper = {
 	setup() {
-		const { currentLocale, switchLocale, availableLocales, routes } =
-			useLocalizedRouter();
+		const { currentLocale, switchLocale, availableLocales, routes } = useLocalizedRouter();
 		return () =>
 			h("div", [
 				h("span", { "data-testid": "locale" }, currentLocale.value),

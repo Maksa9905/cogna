@@ -31,7 +31,7 @@ describe("Badge", () => {
 		});
 
 		expect(container.querySelector(".filled")).toBeInTheDocument();
-	})
+	});
 
 	it("совпадает со snapshot для filled", () => {
 		const { container } = render(Badge, {

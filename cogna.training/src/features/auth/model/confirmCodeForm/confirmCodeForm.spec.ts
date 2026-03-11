@@ -59,9 +59,9 @@ describe("useConfirmCodeForm", () => {
 				const result = useConfirmCodeForm({ onSubmit: () => {} });
 				return () =>
 					h("div", { "data-testid": "structure" }, [
-					h("span", { "data-has-form": !!result.form }),
-					h("span", { "data-has-validators": !!result.validators }),
-					h("span", { "data-code-type": typeof result.validators.code }),
+						h("span", { "data-has-form": !!result.form }),
+						h("span", { "data-has-validators": !!result.validators }),
+						h("span", { "data-code-type": typeof result.validators.code }),
 					]);
 			},
 		};

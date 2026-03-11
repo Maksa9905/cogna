@@ -1,7 +1,12 @@
 import { useI18n } from "vue-i18n";
 import { getAuthErrorKey } from "../errors";
 
-type ToastAdd = (options: { title: string; description: string; color: string; icon: string }) => void;
+type ToastAdd = (options: {
+	title: string;
+	description: string;
+	color: string;
+	icon: string;
+}) => void;
 
 export function useAuthErrorHandler(options?: { toast?: { add: ToastAdd } }) {
 	const toast = options?.toast ?? useToast();

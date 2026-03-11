@@ -1,1 +1,1 @@
-export { useAuthErrorHandler } from './useAuthErrorHandler'
+export { useAuthErrorHandler } from "./useAuthErrorHandler";

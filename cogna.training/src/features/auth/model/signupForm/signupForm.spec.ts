@@ -102,12 +102,12 @@ describe("useSignupForm", () => {
 				const result = useSignupForm({ onSubmit: () => {} });
 				return () =>
 					h("div", { "data-testid": "structure" }, [
-					h("span", { "data-has-form": !!result.form }),
-					h("span", { "data-has-validators": !!result.validators }),
-					h("span", { "data-email-type": typeof result.validators.email }),
-					h("span", { "data-password-type": typeof result.validators.password }),
-					h("span", { "data-repeated-type": typeof result.validators.repeatedPassword }),
-					h("span", { "data-isagree-type": typeof result.validators.isAgree }),
+						h("span", { "data-has-form": !!result.form }),
+						h("span", { "data-has-validators": !!result.validators }),
+						h("span", { "data-email-type": typeof result.validators.email }),
+						h("span", { "data-password-type": typeof result.validators.password }),
+						h("span", { "data-repeated-type": typeof result.validators.repeatedPassword }),
+						h("span", { "data-isagree-type": typeof result.validators.isAgree }),
 					]);
 			},
 		};
@@ -117,9 +117,7 @@ describe("useSignupForm", () => {
 		expect(el.querySelector("[data-has-validators]")?.getAttribute("data-has-validators")).toBe(
 			"true",
 		);
-		expect(el.querySelector("[data-email-type]")?.getAttribute("data-email-type")).toBe(
-			"function",
-		);
+		expect(el.querySelector("[data-email-type]")?.getAttribute("data-email-type")).toBe("function");
 		expect(el.querySelector("[data-password-type]")?.getAttribute("data-password-type")).toBe(
 			"function",
 		);

@@ -1,1 +1,1 @@
-export { useConfirmCodeForm } from './confirmCodeForm'
+export { useConfirmCodeForm } from "./confirmCodeForm";

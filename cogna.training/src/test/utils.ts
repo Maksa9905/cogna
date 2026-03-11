@@ -3,10 +3,10 @@ import { createI18n } from "vue-i18n";
 import { createRouter, createMemoryHistory } from "vue-router";
 import ui from "@nuxt/ui/vue-plugin";
 
-const localeModules = import.meta.glob<Record<string, unknown>>(
-	"../locales/*/*.json",
-	{ eager: true, import: "default" },
-);
+const localeModules = import.meta.glob<Record<string, unknown>>("../locales/*/*.json", {
+	eager: true,
+	import: "default",
+});
 
 const messages: Record<string, Record<string, unknown>> = {};
 
@@ -20,11 +20,21 @@ for (const [path, module] of Object.entries(localeModules)) {
 	}
 }
 
+function ruPluralRule(choice: number, choicesLength: number) {
+	if (choice === 0) return 0;
+	const teen = choice > 10 && choice < 20;
+	const endsWithOne = choice % 10 === 1;
+	if (!teen && endsWithOne) return 1;
+	if (!teen && choice % 10 >= 2 && choice % 10 <= 4) return 2;
+	return choicesLength < 4 ? 2 : 3;
+}
+
 const i18n = createI18n({
 	legacy: false,
 	locale: "ru",
 	fallbackLocale: "ru",
 	messages: messages as Record<string, Record<string, string>>,
+	pluralizationRules: { ru: ruPluralRule },
 });
 
 export const router = createRouter({
@@ -43,10 +53,7 @@ export const router = createRouter({
 	],
 });
 
-export function render<C>(
-	component: C,
-	options?: RenderOptions<C>,
-) {
+export function render<C>(component: C, options?: RenderOptions<C>) {
 	return tlRender(component, {
 		...options,
 		global: {

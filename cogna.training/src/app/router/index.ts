@@ -20,7 +20,7 @@ const localizedRouteConfig: RouteRecordRaw[] = [
 		children: [
 			{
 				path: "",
-				meta: { requiresAuth: true },
+				meta: { requiresAuth: true, namespaces: ["common", "subjects"] },
 				component: () => import("@/pages/HomePage/HomePage.vue"),
 			},
 			{

@@ -11,22 +11,38 @@ const TestWrapper = {
 		const { handleError } = useAuthErrorHandler({ toast: mockToast });
 		return () =>
 			h("div", {}, [
-				h("button", {
-					"data-testid": "error-user-registered",
-					onClick: () => handleError(new Error("user already registered")),
-				}, "Trigger user registered"),
-				h("button", {
-					"data-testid": "error-invalid-otp",
-					onClick: () => handleError(new Error("invalid otp")),
-				}, "Trigger invalid otp"),
-				h("button", {
-					"data-testid": "error-unknown",
-					onClick: () => handleError(new Error("some unknown error")),
-				}, "Trigger unknown"),
-				h("button", {
-					"data-testid": "error-string",
-					onClick: () => handleError("string error"),
-				}, "Trigger string"),
+				h(
+					"button",
+					{
+						"data-testid": "error-user-registered",
+						onClick: () => handleError(new Error("user already registered")),
+					},
+					"Trigger user registered",
+				),
+				h(
+					"button",
+					{
+						"data-testid": "error-invalid-otp",
+						onClick: () => handleError(new Error("invalid otp")),
+					},
+					"Trigger invalid otp",
+				),
+				h(
+					"button",
+					{
+						"data-testid": "error-unknown",
+						onClick: () => handleError(new Error("some unknown error")),
+					},
+					"Trigger unknown",
+				),
+				h(
+					"button",
+					{
+						"data-testid": "error-string",
+						onClick: () => handleError("string error"),
+					},
+					"Trigger string",
+				),
 			]);
 	},
 };
@@ -93,15 +109,18 @@ describe("useAuthErrorHandler", () => {
 				const result = useAuthErrorHandler({ toast: mockToast });
 				return () =>
 					h("div", { "data-testid": "structure" }, [
-					h("span", {
-						"data-has-handler": typeof result.handleError === "function" ? "true" : "false",
-					}),
+						h("span", {
+							"data-has-handler": typeof result.handleError === "function" ? "true" : "false",
+						}),
 					]);
 			},
 		};
 		render(StructureTest);
-		expect(screen.getByTestId("structure").querySelector("[data-has-handler]")?.getAttribute("data-has-handler")).toBe(
-			"true",
-		);
+		expect(
+			screen
+				.getByTestId("structure")
+				.querySelector("[data-has-handler]")
+				?.getAttribute("data-has-handler"),
+		).toBe("true");
 	});
 });

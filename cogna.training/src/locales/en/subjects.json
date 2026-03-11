@@ -1,0 +1,13 @@
+{
+	"learnedOutOfTotal": "{learned} / {total} tickets",
+	"averageScore": "Average score: {score}%",
+	"remainingDays": "{days} day until exam | {days} days until exam",
+	"lastRepetition": {
+		"recently": "Recently",
+		"minutes": "{n} minute | {n} minutes",
+		"hours": "{n} hour | {n} hours",
+		"yesterday": "Yesterday",
+		"days": "{n} day | {n} days",
+		"months": "{n} month | {n} months"
+	}
+}

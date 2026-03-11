@@ -21,5 +21,6 @@ declare module 'vue' {
     UDropdownMenu: typeof import('./node_modules/.pnpm/@nuxt+ui@4.5.0_@tiptap+extensions@3.20.0_@tiptap+core@3.20.0_@tiptap+pm@3.20.0__@tiptap_8abb92f2cdb0b8748926889e5a3ef9f9/node_modules/@nuxt/ui/dist/runtime/components/DropdownMenu.vue')['default']
     UFormField: typeof import('./node_modules/.pnpm/@nuxt+ui@4.5.0_@tiptap+extensions@3.20.0_@tiptap+core@3.20.0_@tiptap+pm@3.20.0__@tiptap_8abb92f2cdb0b8748926889e5a3ef9f9/node_modules/@nuxt/ui/dist/runtime/components/FormField.vue')['default']
     UInput: typeof import('./node_modules/.pnpm/@nuxt+ui@4.5.0_@tiptap+extensions@3.20.0_@tiptap+core@3.20.0_@tiptap+pm@3.20.0__@tiptap_8abb92f2cdb0b8748926889e5a3ef9f9/node_modules/@nuxt/ui/dist/runtime/components/Input.vue')['default']
+    UProgress: typeof import('./node_modules/.pnpm/@nuxt+ui@4.5.0_@tiptap+extensions@3.20.0_@tiptap+core@3.20.0_@tiptap+pm@3.20.0__@tiptap_8abb92f2cdb0b8748926889e5a3ef9f9/node_modules/@nuxt/ui/dist/runtime/components/Progress.vue')['default']
   }
 }

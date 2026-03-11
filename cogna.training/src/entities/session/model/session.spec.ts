@@ -10,14 +10,22 @@ const TestWrapper = {
 		return () =>
 			h("div", {}, [
 				h("span", { "data-testid": "authenticated" }, String(isAuthenticated.value)),
-				h("button", {
-					"data-testid": "save-tokens",
-					onClick: () => saveTokens("access-123", "refresh-456"),
-				}, "Save tokens"),
-				h("button", {
-					"data-testid": "clear-session",
-					onClick: () => clearSession(),
-				}, "Clear session"),
+				h(
+					"button",
+					{
+						"data-testid": "save-tokens",
+						onClick: () => saveTokens("access-123", "refresh-456"),
+					},
+					"Save tokens",
+				),
+				h(
+					"button",
+					{
+						"data-testid": "clear-session",
+						onClick: () => clearSession(),
+					},
+					"Clear session",
+				),
 			]);
 	},
 };
@@ -63,9 +71,13 @@ describe("useSession", () => {
 				const result = useSession();
 				return () =>
 					h("div", { "data-testid": "structure" }, [
-					h("span", { "data-has-auth": "isAuthenticated" in result ? "true" : "false" }),
-					h("span", { "data-has-save": typeof result.saveTokens === "function" ? "true" : "false" }),
-					h("span", { "data-has-clear": typeof result.clearSession === "function" ? "true" : "false" }),
+						h("span", { "data-has-auth": "isAuthenticated" in result ? "true" : "false" }),
+						h("span", {
+							"data-has-save": typeof result.saveTokens === "function" ? "true" : "false",
+						}),
+						h("span", {
+							"data-has-clear": typeof result.clearSession === "function" ? "true" : "false",
+						}),
 					]);
 			},
 		};

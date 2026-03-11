@@ -9,3 +9,5 @@ export { default as EyeIcon } from "./EyeIcon.vue";
 export { default as ProfileIcon } from "./ProfileIcon.vue";
 export { default as BookIcon } from "./BookIcon.vue";
 export { default as LoadingIcon } from "./LoadingIcon.vue";
+export { default as LoaderIcon } from "./LoaderIcon.vue";
+export { default as ClockIcon } from "./ClockIcon.vue";
