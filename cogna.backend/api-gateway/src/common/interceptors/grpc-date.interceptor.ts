@@ -13,6 +13,13 @@ import { map, Observable } from 'rxjs';
 @Injectable()
 export class GrpcDateInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    if (context.getType().toString() === 'graphql') {
+      const gqlContext = context.getArgByIndex(3); // Инфо об операции
+      if (gqlContext?.parentType?.name === 'Subscription') {
+        return next.handle(); // Просто пропускаем подписку без изменений
+      }
+    }
+
     return next.handle().pipe(map((data) => this.recursive(data)));
   }
 

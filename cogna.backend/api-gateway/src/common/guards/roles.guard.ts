@@ -26,8 +26,8 @@ export class RolesGuard implements CanActivate {
     const req = GqlArgumentsHost.create(context).getContext<GqlContext>().req;
     console.log(req.user.role);
     console.log(roles);
-    // if (!roles.includes(req.user.role))
-    //   throw new ForbiddenException('Недостаточно прав');
+    if (!roles.includes(req.user.role))
+      throw new ForbiddenException('Недостаточно прав');
     return true;
   }
 }

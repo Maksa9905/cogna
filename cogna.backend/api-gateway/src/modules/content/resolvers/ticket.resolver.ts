@@ -1,4 +1,11 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Context,
+  Mutation,
+  Query,
+  Resolver,
+  Subscription,
+} from '@nestjs/graphql';
 import {
   CreateTicketRequestGql,
   DeleteTicketRequestGql,
@@ -14,8 +21,17 @@ import { TicketService } from '../services/ticket.service';
 import { Request } from 'express';
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn';
+import { PubSub } from 'graphql-subscriptions';
+import { interval, map, take } from 'rxjs';
 
-@Protected(UserRole.USER)
+export type PubSubEvents = {
+  TEST_STREAM_1: { testStream: string };
+  [key: string]: any; // Для динамических каналов тикетов
+};
+
+const pubSub = new PubSub();
+
+// @Protected(UserRole.USER)
 @Resolver()
 export class TicketResolver {
   constructor(private readonly ticketService: TicketService) {}
@@ -73,5 +89,35 @@ export class TicketResolver {
     @Args('data') dto: GenerateThesesRequestGql,
   ) {
     return await this.ticketService.generateTheses(dto);
+  }
+
+  @Subscription(() => String, {})
+  public testStream() {
+    const data = [
+      'Этот',
+      'сервис',
+      'будет',
+      'быстро',
+      'стримить',
+      'тезисы',
+      'прямо',
+      'в',
+      'ваш',
+      'интерфейс',
+    ];
+    const stream = interval(1000).pipe(
+      take(data.length),
+      map((index) => data[index]),
+    );
+
+    stream.subscribe({
+      next: (data) => {
+        console.log(data);
+        void pubSub.publish('channel', { testStream: data });
+      },
+      complete: () => console.log('Поток завершен'),
+    });
+
+    return pubSub.asyncIterableIterator('channel');
   }
 }

@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -10,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from '../common/strategies';
 import { ContentModule } from '../modules/content/content.module';
 import { ThesisModule } from '../modules/thesis/thesis.module';
+import { Module } from '@nestjs/common';
 
 @Module({
   imports: [
@@ -19,6 +19,7 @@ import { ThesisModule } from '../modules/thesis/thesis.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      csrfPrevention: false,
       sortSchema: true,
       playground: false,
       includeStacktraceInErrorResponses: false,
@@ -30,11 +31,20 @@ import { ThesisModule } from '../modules/thesis/thesis.module';
           status: error.extensions?.status || '500',
         };
       },
+      subscriptions: {
+        'graphql-ws': {
+          path: '/graphql',
+        },
+      },
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
-      context: ({ req, res }: { req: Request; res: Response }) => ({
-        req,
-        res,
-      }),
+      context: ({ req, res, extra }) => {
+        // Если есть extra, значит это WebSocket. Берем запрос из него.
+        if (extra) {
+          return { req: extra.request, res };
+        }
+        // Иначе это обычный HTTP
+        return { req, res };
+      },
     }),
     AuthModule,
     ContentModule,
