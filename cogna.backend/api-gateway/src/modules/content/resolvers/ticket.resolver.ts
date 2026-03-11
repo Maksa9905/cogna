@@ -23,6 +23,7 @@ import { Protected } from '../../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn';
 import { PubSub } from 'graphql-subscriptions';
 import { interval, map, take } from 'rxjs';
+import { TicketServiceController } from '@cogna-edu/contracts/dist/content/ticket';
 
 export type PubSubEvents = {
   TEST_STREAM_1: { testStream: string };
@@ -33,7 +34,7 @@ const pubSub = new PubSub();
 
 // @Protected(UserRole.USER)
 @Resolver()
-export class TicketResolver {
+export class TicketResolver{
   constructor(private readonly ticketService: TicketService) {}
 
   //todo подумать о том что пользователь сразу сам сможет написать тезисы и тогда их надо сохранить вмесет с новым обькектом

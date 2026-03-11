@@ -10,6 +10,7 @@ import {
 import {
   CreateSubjectRequestGql,
   DeleteSubjectRequestGql,
+  FindAllSubjectsRequestGql,
   FindAllSubjectsResponseGql,
   FindOneSubjectRequestGql,
   SubjectGql,
@@ -58,8 +59,14 @@ export class SubjectResolver {
   }
 
   @Query(() => FindAllSubjectsResponseGql)
-  public async subjectFindAll(@Context('req') req: Request) {
-    return await this.subjectService.findAllSubjects({ userId: req.user.sub });
+  public async subjectFindAll(
+    @Context('req') req: Request,
+    @Args('data') dto: FindAllSubjectsRequestGql,
+  ) {
+    return await this.subjectService.findAllSubjects({
+      ...dto,
+      userId: req.user.sub,
+    });
   }
 
   @Mutation(() => SubjectResponseGql)

@@ -15,4 +15,6 @@ export class TicketResponseGql implements TicketResponse {
 export class FindAllTicketsResponseGql implements FindAllTicketsResponse {
   @Field(() => [TicketGql])
   tickets: TicketGql[];
+  @Field()
+  totalCount: number;
 }

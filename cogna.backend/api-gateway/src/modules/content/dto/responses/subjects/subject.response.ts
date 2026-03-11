@@ -15,4 +15,7 @@ export class SubjectResponseGql implements SubjectResponse {
 export class FindAllSubjectsResponseGql implements FindAllSubjectsResponse {
   @Field(() => [SubjectGql])
   subjects: SubjectGql[];
+
+  @Field()
+  totalCount: number;
 }
