@@ -56,10 +56,13 @@ message TicketResponse {
 
 message FindAllTicketsRequest {
   string subject_id = 1; // Чтобы найти все билеты конкретного предмета
+  optional int32 limit = 2;
+  optional int32 offset = 3;
 }
 
 message FindAllTicketsResponse {
   repeated Ticket tickets = 1;
+  int32 totalCount = 2;
 }
 
 message FindOneTicketRequest {

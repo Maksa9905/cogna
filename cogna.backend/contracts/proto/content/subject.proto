@@ -36,6 +36,7 @@ message SubjectResponse {
 // 3. Получение списка
 message FindAllSubjectsResponse {
   repeated Subject subjects = 1; // Вот так мы возвращаем массив
+  int32 total_count = 2;
 }
 
 // 4. Обновление
@@ -60,4 +61,6 @@ message FindOneSubjectRequest {
 // 7. Поиск всех
 message FindAllSubjectRequest {
   string user_id = 1;
+  optional int32 limit = 2;
+  optional int32 offset = 3;
 }

@@ -47,12 +47,20 @@ export class SubjectService {
   public async findAllSubjects(
     dto: FindAllSubjectRequest,
   ): Promise<FindAllSubjectsResponse> {
-    const { userId } = dto;
-    const subjects = await this.prismaService.subject.findMany({
-      where: { userId },
-    });
+    const { userId, limit, offset } = dto;
+    const [subjects, totalCount] = await Promise.all([
+      this.prismaService.subject.findMany({
+        where: { userId },
+        take: limit,
+        skip: offset,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prismaService.subject.count({
+        where: { userId },
+      }),
+    ]);
 
-    return { subjects: subjects };
+    return { subjects: subjects, totalCount: totalCount };
   }
 
   public async updateSubject(

@@ -37,9 +37,12 @@ export interface TicketResponse {
 export interface FindAllTicketsRequest {
     /** Чтобы найти все билеты конкретного предмета */
     subjectId: string;
+    limit?: number | undefined;
+    offset?: number | undefined;
 }
 export interface FindAllTicketsResponse {
     tickets: Ticket[];
+    totalCount: number;
 }
 export interface FindOneTicketRequest {
     id: string;

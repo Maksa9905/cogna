@@ -68,12 +68,21 @@ export class TicketService {
   public async findAllTickets(
     dto: FindAllTicketsRequest,
   ): Promise<FindAllTicketsResponse> {
-    const { subjectId } = dto;
-    const tickets = await this.prismaService.ticket.findMany({
-      where: { subjectId },
-      include: { theses: true },
-    });
-    return { tickets: tickets ?? undefined };
+    console.log(dto);
+    const { subjectId, limit, offset } = dto;
+    const [tickets, total_count] = await Promise.all([
+      this.prismaService.ticket.findMany({
+        where: { subjectId },
+        take: limit,
+        skip: offset,
+        include: { theses: true },
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prismaService.ticket.count({
+        where: { subjectId },
+      }),
+    ]);
+    return { tickets: tickets, totalCount: total_count };
   }
 
   public async updateTicket(dto: UpdateTicketRequest): Promise<TicketResponse> {

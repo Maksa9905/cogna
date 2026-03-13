@@ -22,6 +22,7 @@ export interface SubjectResponse {
 export interface FindAllSubjectsResponse {
     /** Вот так мы возвращаем массив */
     subjects: Subject[];
+    totalCount: number;
 }
 /** 4. Обновление */
 export interface UpdateSubjectRequest {
@@ -44,6 +45,8 @@ export interface FindOneSubjectRequest {
 /** 7. Поиск всех */
 export interface FindAllSubjectRequest {
     userId: string;
+    limit?: number | undefined;
+    offset?: number | undefined;
 }
 export declare const SUBJECT_V1_PACKAGE_NAME = "subject.v1";
 export interface SubjectServiceClient {
