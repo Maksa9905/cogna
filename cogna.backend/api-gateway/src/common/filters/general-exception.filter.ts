@@ -43,6 +43,7 @@ export class GeneralExceptionFilter implements ExceptionFilter {
       });
     }
 
+    console.error(exception)
     return new GraphQLError('unhandled exception', {
       extensions: {
         status: 500,

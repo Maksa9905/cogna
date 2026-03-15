@@ -10,6 +10,8 @@ import { JwtStrategy } from '../common/strategies';
 import { ContentModule } from '../modules/content/content.module';
 import { ThesisModule } from '../modules/thesis/thesis.module';
 import { Module } from '@nestjs/common';
+import { GraphQLUpload } from 'graphql-upload-ts';
+import {TranscriptionModule} from "../modules/transcription/transcription.module";
 
 @Module({
   imports: [
@@ -19,7 +21,9 @@ import { Module } from '@nestjs/common';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
-      csrfPrevention: false,
+      csrfPrevention: {
+        requestHeaders: ['apollo-require-preflight']
+      },
       sortSchema: true,
       playground: false,
       includeStacktraceInErrorResponses: false,
@@ -49,6 +53,7 @@ import { Module } from '@nestjs/common';
     AuthModule,
     ContentModule,
     ThesisModule,
+      TranscriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
