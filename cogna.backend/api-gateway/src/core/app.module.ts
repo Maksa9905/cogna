@@ -11,7 +11,7 @@ import { ContentModule } from '../modules/content/content.module';
 import { ThesisModule } from '../modules/thesis/thesis.module';
 import { Module } from '@nestjs/common';
 import { GraphQLUpload } from 'graphql-upload-ts';
-import {TranscriptionModule} from "../modules/transcription/transcription.module";
+import { TranscriptionModule } from '../modules/transcription/transcription.module';
 
 @Module({
   imports: [
@@ -22,8 +22,9 @@ import {TranscriptionModule} from "../modules/transcription/transcription.module
       driver: ApolloDriver,
       autoSchemaFile: true,
       csrfPrevention: {
-        requestHeaders: ['apollo-require-preflight']
+        requestHeaders: ['apollo-require-preflight'],
       },
+      // csrfPrevention: false,
       sortSchema: true,
       playground: false,
       includeStacktraceInErrorResponses: false,
@@ -53,7 +54,7 @@ import {TranscriptionModule} from "../modules/transcription/transcription.module
     AuthModule,
     ContentModule,
     ThesisModule,
-      TranscriptionModule,
+    TranscriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

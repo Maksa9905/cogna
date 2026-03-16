@@ -1,5 +1,5 @@
 {
-  "name": "transcription-ai-service",
+  "name": "assessment-ai-service",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -20,9 +20,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@cogna-edu/contracts": "file:../contracts",
     "@grpc/grpc-js": "^1.14.3",
     "@grpc/proto-loader": "^0.8.0",
-    "@liaoliaots/nestjs-redis": "^10.0.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.0.1",
@@ -31,14 +31,12 @@
     "@nestjs/platform-express": "^11.0.1",
     "groq-sdk": "^0.37.0",
     "https-proxy-agent": "^7.0.6",
-    "ioredis": "^5.10.0",
     "kafkajs": "^2.2.4",
+    "openai": "^6.29.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1",
-    "wavefile": "^11.0.0"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@cogna-edu/contracts": "file:../contracts",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
     "@nestjs/cli": "^11.0.0",

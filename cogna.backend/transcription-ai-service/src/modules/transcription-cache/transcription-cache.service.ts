@@ -25,15 +25,16 @@ export class TranscriptionCacheService {
       .exec();
   }
 
-  // public async getChunksByAttempt(attemptId: string) {
-  //   const key = `transcription:attempt:${attemptId}`;
-  //   const data = await this.redis.hgetall(key);
-  //   const formattedData: TranscriptionMap = Object.entries(data)
-  //     .map(([index, text]) => ({
-  //       index: Number(index),
-  //       text,
-  //     }))
-  //     .sort((a, b) => a.index - b.index);
-  //   return formattedData;
-  // }
+  public async getChunksByAttempt(attemptId: string) {
+    const key = `transcription:attempt:${attemptId}`;
+    return this.redis.hgetall(key);
+  }
+
+  public async getFullTranscription(attemptId: string) {
+    const data = await this.getChunksByAttempt(attemptId);
+    return Object.keys(data)
+      .sort((a, b) => Number(a) - Number(b))
+      .map((index) => data[index])
+      .join(' ');
+  }
 }

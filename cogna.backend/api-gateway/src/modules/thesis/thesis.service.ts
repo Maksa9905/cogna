@@ -15,6 +15,7 @@ export class ThesisService {
   }
 
   public async generateTheses(dto: GenerateThesesRequest) {
+    console.log('send generate thesis');
     return await firstValueFrom(this.thesisClient.createThesis(dto));
   }
 }

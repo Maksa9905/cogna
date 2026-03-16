@@ -3,6 +3,8 @@ export declare const protobufPackage = "transcription.v1";
 export interface TranscriptionRequest {
     audioContent: Uint8Array;
     attemptId: string;
+    ticketId: string;
+    userId: string;
     chunkIndex: number;
     isLast: boolean;
 }

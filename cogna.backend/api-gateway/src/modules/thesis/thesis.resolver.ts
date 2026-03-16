@@ -9,6 +9,7 @@ export class ThesisResolver {
 
   @Mutation(() => GenerateThesisResponseGql)
   public async generateTheses(@Args('data') dto: GenerateThesisRequestGql) {
+    console.log('start');
     return this.thesisService.generateTheses(dto);
   }
 }

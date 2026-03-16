@@ -32,7 +32,7 @@ export type PubSubEvents = {
 
 const pubSub = new PubSub();
 
-// @Protected(UserRole.USER)
+@Protected(UserRole.USER)
 @Resolver()
 export class TicketResolver{
   constructor(private readonly ticketService: TicketService) {}
