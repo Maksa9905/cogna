@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Попытка ответа на конкретный билет
+model TicketAttempt {
+  id String @id @default(uuid())
+
+  ticketId  String @map("ticket_id")
+  userId    String @map("user_id")
+  subjectId String @map("subject_id")
+
+  score   Float // оценка в числовом формате для расчетов, от 1 до 10
+  // rawScore String // исходная оценка (может быть "A", "85%", "хорошо")
+  summary String? // краткий анализ ответа
+  theses  Json?   @map("theses_assessment") // хранится структура {thsis: string, assessment: string}
+
+  // Дополнительные полезные поля
+  // timeSpent Int? @map("time_spent") // время в секундах
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@index([ticketId])
+  @@index([userId])
+  @@index([subjectId])
+  @@index([createdAt])
+  @@map("ticket_attempts")
+}
+
+// Прогресс по конкретному билету
+model TicketProgress {
+  id String @id @default(uuid())
+
+  ticketId  String @map("ticket_id") // Unique потому что один билет - одна запись прогресса
+  userId    String @map("user_id")
+  subjectId String @map("subject_id")
+
+  totalCount   Int   @default(0) @map("total_attempts") // общее количество попыток
+  bestScore    Float @map("best_score") // лучший результат
+  lastScore    Float @map("last_score") // последний результат
+  averageScore Float @map("average_score") // средний результат
+
+  // lastAttemptAt DateTime? @map("last_attempt_at")
+
+  // status     TicketStatus    @default(NOT_STARTED)
+  // confidence ConfidenceLevel @default(MEDIUM)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@unique([userId, ticketId])
+  @@index([userId])
+  @@index([subjectId])
+  // @@index([status])
+  @@map("ticket_progress")
+}
+
+// Попытка прохождения целого предмета (экзамен/тест)
+// model SubjectAttempt {
+//   id String @id @default(uuid())
+//
+//   subjectId String @map("subject_id")
+//   userId    String @map("user_id")
+//
+//   // Статистика по попытке
+//   totalTickets    Int   @map("total_tickets") // всего билетов в попытке
+//   answeredTickets Int   @default(0) @map("answered_tickets") // отвеченных
+//   correctTickets  Int   @default(0) @map("correct_tickets") // правильных
+//   totalScore      Float @map("total_score") // сумма баллов
+//   averageScore    Float @map("average_score") // средний балл
+//
+//   // Временные метки
+//   // startTime DateTime  @map("start_time")
+//   // endTime   DateTime? @map("end_time")
+//   // timeSpent Int?      @map("time_spent") // общее время в секундах
+//
+//   // Результат
+//   passed Boolean? // сдал/не сдал
+//   // grade  String? // оценка (если есть)
+//
+//   // status AttemptStatus @default(IN_PROGRESS)
+//   // type   AttemptType   @default(PRACTICE)
+//
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt() @map("updated_at")
+//
+//   @@index([subjectId])
+//   @@index([userId])
+//   // @@index([status])
+//   // @@index([startTime])
+//   @@map("subject_attempts")
+// }
+
+// Прогресс по предмету
+model SubjectProgress {
+  id String @id @default(uuid())
+
+  subjectId String @map("subject_id") // Unique потому что один предмет - одна запись прогресса
+  userId    String @map("user_id")
+
+  // Статистика по билетам
+  studiedTickets      Int       @default(0) @map("studied_tickets") // выученные билеты (оценка >= 5)
+  averageTicketsScore Float     @default(0) @map("average_tickets_score") // AVG(averageScore) по TicketProgress
+  // Временные метки
+  lastRepetitionDate  DateTime? @map("last_repetition_date") // дата последнего повторения
+  // Общее время
+  // totalTimeSpent Int @default(0) @map("total_time_spent") // в секундах
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@unique([userId, subjectId])
+  @@index([userId])
+  @@map("subject_progress")
+}
+
+// Enums
+// enum TicketStatus {
+//   NOT_STARTED
+//   IN_PROGRESS
+//   STUDIED
+//   MASTERED
+// }
+
+// enum ConfidenceLevel {
+//   VERY_LOW
+//   LOW
+//   MEDIUM
+//   HIGH
+//   VERY_HIGH
+// }
+
+// enum AttemptStatus {
+//   IN_PROGRESS
+//   COMPLETED
+//   PAUSED
+//   ABANDONED
+// }
+
+// enum AttemptType {
+//   PRACTICE
+//   EXAM
+//   TEST
+//   REVIEW
+//   TIMED
+// }

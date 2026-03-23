@@ -1,0 +1,17 @@
+import { Injectable } from '@nestjs/common';
+import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket';
+import { TicketAttemptRepository } from './ticket-attempt.repository';
+
+@Injectable()
+export class TicketAttemptService {
+  constructor(
+    private readonly ticketAttemptRepository: TicketAttemptRepository,
+  ) {}
+
+  public async handleTicketAttempt(dto: TicketAttemptRequest) {
+    const ticketAttempt =
+      await this.ticketAttemptRepository.createTicketAttemptWithProgress(dto);
+    console.log(ticketAttempt);
+    return dto;
+  }
+}

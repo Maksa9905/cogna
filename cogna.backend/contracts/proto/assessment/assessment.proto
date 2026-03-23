@@ -1,15 +1,18 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
 
 package assessment.v1;
 
 service AssessmentService {
-  rpc ProcessTranscription(ProcessTranscriptionRequest) returns (google.protobuf.Empty);
+  rpc ProcessTranscription(ProcessRequest) returns (ProcessResponse);
 }
 
-message ProcessTranscriptionRequest {
+message ProcessRequest {
   string answer = 1;
   string user_id = 2;
   string ticket_id = 3;
+}
+
+message ProcessResponse {
+  bool success = 1;
 }

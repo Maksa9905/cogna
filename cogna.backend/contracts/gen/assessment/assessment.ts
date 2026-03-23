@@ -7,24 +7,29 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-import { Empty } from "../google/protobuf/empty";
 
 export const protobufPackage = "assessment.v1";
 
-export interface ProcessTranscriptionRequest {
+export interface ProcessRequest {
   answer: string;
   userId: string;
   ticketId: string;
 }
 
+export interface ProcessResponse {
+  success: boolean;
+}
+
 export const ASSESSMENT_V1_PACKAGE_NAME = "assessment.v1";
 
 export interface AssessmentServiceClient {
-  processTranscription(request: ProcessTranscriptionRequest): Observable<Empty>;
+  processTranscription(request: ProcessRequest): Observable<ProcessResponse>;
 }
 
 export interface AssessmentServiceController {
-  processTranscription(request: ProcessTranscriptionRequest): void | Promise<void>;
+  processTranscription(
+    request: ProcessRequest,
+  ): Promise<ProcessResponse> | Observable<ProcessResponse> | ProcessResponse;
 }
 
 export function AssessmentServiceControllerMethods() {

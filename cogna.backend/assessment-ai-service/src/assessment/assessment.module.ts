@@ -4,6 +4,7 @@ import { AssessmentController } from './assessment.controller';
 import { ClientsModule, GrpcOptions, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GroqChatCompletionService } from '../groq-chat-completion/groq-chat-completion.service';
+import { getStudyKafkaClientConfig } from './clients/kafka/study.kafka.client';
 
 @Module({
   imports: [ClientsModule.registerAsync([
@@ -18,11 +19,18 @@ import { GroqChatCompletionService } from '../groq-chat-completion/groq-chat-com
           url: config.getOrThrow<string>('CONTENT_GRPC_URL', 'localhost:50052'),
           protoPath: ['node_modules/@cogna-edu/contracts/proto/content/ticket.proto'],
           loader: {
-            includeDirs: ['node_modules/@cogna-edu/contracts/proto']
+            includeDirs: ['node_modules/@cogna-edu/contracts/proto'],
+            defaults: true
           }
         },
       }),
     },
+    {
+      name: 'STUDY_KAFKA_CLIENT',
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getStudyKafkaClientConfig
+    }
   ])],
   controllers: [AssessmentController],
   providers: [AssessmentService, GroqChatCompletionService],
