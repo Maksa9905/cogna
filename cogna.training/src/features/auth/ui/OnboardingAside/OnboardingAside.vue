@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Badge, Logotype } from "@/shared/ui";
-import { AiIcon, BrainIcon, TrendingIcon, BookIcon } from "@/shared/icons";
+import { AiIcon, BrainIcon, TrendingIcon, BookIcon, LogotypeIcon } from "@/shared/icons";
 import FeaturesList from "../FeaturesList";
 import { useI18n } from "vue-i18n";
 
@@ -9,7 +9,7 @@ const { t } = useI18n();
 
 <template>
   <aside>
-    <Logotype badge-class='aside-badge' />
+    <LogotypeIcon class='logotype-icon' />
     <div class='aside-content'>
       <Badge class="aside-badge ai-badge" variant="transparent">
         <AiIcon class="ai-icon" />
@@ -93,6 +93,11 @@ aside {
   gap: 32px;
   justify-content: center;
   flex: 1;
+}
+
+.logotype-icon {
+  width: fit-content;
+  height: 50px;
 }
 
 .ai-badge {

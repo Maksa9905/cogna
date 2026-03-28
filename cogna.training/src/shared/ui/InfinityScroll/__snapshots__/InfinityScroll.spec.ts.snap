@@ -1,3 +1,3 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`InfinityScroll > совпадает со snapshot при полной сборке Wrapper + List + Mark 1`] = `"<div data-v-dbb04b74="" class="infinity-scroll"><div data-v-0cda57c6="" class="infinity-scroll-list"></div><div data-v-ac011959="" class="infinity-scroll-mark">Loading...</div></div>"`;
+exports[`InfinityScroll > совпадает со snapshot при полной сборке Wrapper + List + Mark 1`] = `"<div data-v-dbb04b74="" class="infinity-scroll"><div data-v-dbb04b74="" class="infinity-scroll__main"><div data-v-0cda57c6="" class="infinity-scroll-list"></div><div data-v-ac011959="" class="infinity-scroll-mark">Loading...</div></div><!--v-if--></div>"`;

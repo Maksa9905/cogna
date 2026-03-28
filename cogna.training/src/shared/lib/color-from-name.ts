@@ -28,18 +28,20 @@ function hslToHex(h: number, s: number, l: number): string {
 }
 
 /**
- * Возвращает устойчивый, слегка затемнённый цвет по имени и фамилии.
+ * Возвращает устойчивый градиент по имени.
  * Подходит для фона аватара: на нём хорошо смотрится белый текст.
  *
- * @param firstName — имя
- * @param lastName — фамилия
- * @returns цвет в формате #rrggbb
+ * @param name — имя (например, "Иван Петров")
+ * @returns CSS linear-gradient, например linear-gradient(135deg, #1a2b3c, #4d5e6f)
  */
-export function getColorFromName(firstName: string, lastName: string): string {
-	const str = `${(firstName ?? "").trim()} ${(lastName ?? "").trim()}`.trim() || "?";
-	const hash = hashString(str);
+export function getColorFromName(name: string): string {
+	const normalized = (name ?? "").trim();
+	const hash = hashString(normalized);
 	const h = hash % 360;
 	const s = 52;
-	const l = 36; // затемнённый тон для контраста с белым текстом
-	return hslToHex(h, s, l);
+	const lDark = 28; // тёмный оттенок
+	const lLight = 44; // светлый оттенок того же тона
+	const color1 = hslToHex(h, s, lDark);
+	const color2 = hslToHex(h, s, lLight);
+	return `linear-gradient(135deg, ${color1}, ${color2})`;
 }

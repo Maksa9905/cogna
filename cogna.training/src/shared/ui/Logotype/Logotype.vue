@@ -1,39 +1,52 @@
 <script setup lang="ts">
-import Badge from "../Badge";
+import { BrainLogotype } from "@/shared/icons";
 
 interface Props {
 	badgeClass?: string;
 	containerClass?: string;
+	variant: 'icon' | 'textWithIcon'
 }
 
-defineProps<Props>();
+const { variant = 'icon' } = defineProps<Props>();
 </script>
 
 <template>
-  <span class='logotype' :class="containerClass">
-    <Badge variant='transparent' class="character" :class="badgeClass">C</Badge>
-    <span class="logotype-text">Cogna</span>
+	<a href="/"> <span v-if="variant === 'icon'" class='logotype' :class="containerClass">
+		<BrainLogotype class="brain-logotype" />
   </span>
+
+  <span v-else class='logotype' :class="containerClass">
+		<span class="logotype-text">C</span>
+		<BrainLogotype class="brain-logotype" />
+		<span class="logotype-text">gna</span>
+  </span>
+	</a>
 </template>
 
 <style scoped>
-.character {
-  font-weight: 800;
-  font-size: 20px;
-  width: 36px;
-  height: 36px;
-}
-
 .logotype {
+	position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 0.1em;
+	height: 1em;
+	font-size: 24px;
+	font-weight: 600;
+}
+
+.o-character {
+	opacity: 0;
+	position: absolute;
+}
+
+.brain-logotype {
+	height: 1em;
+	width: fit-content;
 }
 
 .logotype-text {
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 24px;
   color: var(--color-gray-1);
 }
 </style>

@@ -1,0 +1,1 @@
+export { useBreadCrumbs } from "./model/useBreadCrumbs";

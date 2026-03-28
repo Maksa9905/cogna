@@ -30,6 +30,7 @@ import { RouterView } from "vue-router";
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
+  background-color: var(--ui-bg)
 }
 
 .auth-container-content {
@@ -44,7 +45,7 @@ import { RouterView } from "vue-router";
   .auth-container {
     display: flex;
     flex-direction: column;
-    margin: 20px;
+    padding: 20px;
     width: 100%;
   }
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
-import { CircularProgress } from '@/shared/ui';
-import { ClockIcon, LoaderIcon } from "@/shared/icons";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { ClockIcon, LoaderIcon } from "@/shared/icons";
+import { CircularProgress } from '@/shared/ui';
 import { SubjectsListItemUtils } from "./SubjectsListItem.utils";
 
 const { t } = useI18n();
@@ -11,17 +11,14 @@ defineOptions({
   name: "SubjectsListItem",
 });
 
-const emit = defineEmits<{
-  (e: "click"): void;
-}>();
+const emit = defineEmits<(e: "click") => void>();
 
 const handleClick = () => {
   emit("click");
 };
 
-const { accentColor = "var(--color-primary)", ...props } = defineProps<{
+const { ...props } = defineProps<{
   title: string;
-  accentColor?: string;
   progress: number;
   learnedTickets: number;
   totalTickets: number;
@@ -47,14 +44,14 @@ const remainingDays = computed(() =>
 </script>
 
 <template>
-  <li tabindex="0" class="subject-list-item" :style="{ '--accent-color': accentColor }" @click="handleClick">
-    <CircularProgress class="circular-progress" :value="progress" :max="10" :size="80" :strokeWidth="7">
-      <span class="circular-progress__label">{{ Math.round((progress / 10) * 100) }}%</span>
+  <li tabindex="0" class="subject-list-item" @click="handleClick">
+    <CircularProgress class="circular-progress" :value="progress" :max="100" :size="58" :strokeWidth="4">
+      <span class="circular-progress__label">{{ progress }}%</span>
     </CircularProgress>
     <h3 class="subject-list-item-title">{{ title }}</h3>
     <p class="tickets-count">{{ t('subjects.learnedOutOfTotal', { learned: learnedTickets, total: totalTickets }) }}</p>
     <p class="average-score">{{ t('subjects.averageScore', { score: averageScore }) }}</p>
-    <UProgress class="progress-bar" :model-value="progress" :max="10" />
+    <UProgress class="progress-bar" size="sm" :model-value="progress" :max="100" />
     <p class="latest-lesson-date">
       <ClockIcon class="icon" />
       {{ lastRepetitionText }}
@@ -67,44 +64,47 @@ const remainingDays = computed(() =>
 <style scoped>
 .subject-list-item {
   width: 100%;
-  height: 120px;
-  padding: 20px;
-  border-radius: 16px;
+  height: 90px;
+  padding: 16px;
+  border-radius: 8px;
   background-color: var(--ui-bg);
   position: relative;
 
   display: grid;
   grid-template-columns: auto auto 1fr auto;
   grid-template-rows: auto 1fr 1fr;
-  column-gap: 16px;
+  column-gap: 12px;
+  row-gap: 4px;
   outline: 1px solid var(--ui-bg-accented);
   transition: outline 100ms ease-in-out;
 }
 
 .subject-list-item:focus-visible {
-  outline: 1px solid var(--accent-color);
+  outline: 1px solid var(--color-primary);
 }
 
 .subject-list-item:hover {
-  outline: 1px solid var(--accent-color);
+  outline: 1px solid var(--color-primary);
   cursor: pointer;
 }
 
 .circular-progress {
   grid-row: 1 / 4;
   grid-column: 1;
+  --accent-color: var(--color-primary);
 }
 
 .circular-progress__label {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-color-default);
 }
 
 .subject-list-item-title {
   grid-row: 1;
-  grid-column: 2;
+  grid-column: 2 / 4;
   font-size: 16px;
+  line-height: 1;
   font-weight: 600;
   color: var(--text-color-default);
 }
@@ -112,14 +112,16 @@ const remainingDays = computed(() =>
 .tickets-count {
   grid-row: 2;
   grid-column: 2;
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 1;
   color: var(--text-color-muted);
 }
 
 .average-score {
   grid-row: 2;
   grid-column: 3;
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 1;
   color: var(--text-color-muted);
 }
 
@@ -128,7 +130,7 @@ const remainingDays = computed(() =>
   grid-column: 2 / 4;
   align-self: center;
 
-  --ui-primary: var(--accent-color);
+  --ui-primary: var(--color-primary);
 }
 
 .latest-lesson-date {
@@ -137,25 +139,29 @@ const remainingDays = computed(() =>
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-color-muted);
 }
 
 .remaining-days {
   grid-row: 2;
   grid-column: 4;
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-color-muted);
 }
 
 .loader-icon {
   position: absolute;
-  right: 16px;
-  bottom: 16px;
+  right: 8px;
+  bottom: 8px;
   color: var(--text-color-dimmed);
 }
 
-@media screen and (max-width: 576px) {
+@container page-container (max-width: 576px) {
+  .subject-list-item {
+    padding: 12px;
+    height: 76px;
+  }
 
   .circular-progress,
   .latest-lesson-date,
@@ -165,7 +171,7 @@ const remainingDays = computed(() =>
 
   .subject-list-item {
     grid-template-columns: auto 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
   }
 
   .subject-list-item-title {
@@ -182,6 +188,13 @@ const remainingDays = computed(() =>
 
   .progress-bar {
     grid-column: 1 / 4;
+  }
+}
+
+@container page-container (max-width: 576px) {
+  .loader-icon {
+    top: 8px;
+    right: 8px;
   }
 }
 </style>

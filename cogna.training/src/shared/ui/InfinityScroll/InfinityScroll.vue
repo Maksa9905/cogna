@@ -30,7 +30,9 @@ const hasMore = ref(true);
 
 async function triggerLoadMore() {
 	if (loading.value || !hasMore.value) return;
+
 	loading.value = true;
+
 	try {
 		const result = await props.loadMore({
 			offset: items.value.length,

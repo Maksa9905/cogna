@@ -11,3 +11,7 @@ export { default as BookIcon } from "./BookIcon.vue";
 export { default as LoadingIcon } from "./LoadingIcon.vue";
 export { default as LoaderIcon } from "./LoaderIcon.vue";
 export { default as ClockIcon } from "./ClockIcon.vue";
+export { default as ExitIcon } from "./ExitIcon.vue";
+export { default as BrainLogotype } from "./BrainLogotype.vue";
+export { default as SidebarIcon } from "./SidebarIcon.vue";
+export { default as LogotypeIcon } from "./LogotypeIcon.vue";

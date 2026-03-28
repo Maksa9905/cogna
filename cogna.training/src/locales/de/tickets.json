@@ -1,0 +1,20 @@
+{
+	"editorHint": "«/» — Befehle und Blöcke, «@» — Erwähnungen. Links am Block: verschieben und Menü.",
+	"searchPlaceholder": "Ticket suchen",
+	"sorting": {
+		"order": "In Listenreihenfolge",
+		"newest": "Neueste zuerst",
+		"oldest": "Älteste zuerst",
+		"lowest_percentage": "Niedrigste Punktzahl zuerst",
+		"highest_percentage": "Höchste Punktzahl zuerst",
+		"lowest_repetitions": "Wenigste Wiederholungen zuerst",
+		"highest_repetitions": "Meiste Wiederholungen zuerst"
+	},
+	"learningState": {
+		"all": "Alle",
+		"new": "Neu",
+		"should_learn": "Zu lernen",
+		"learned": "Gelernt",
+		"forgotten": "Vergessen"
+	}
+}

@@ -72,7 +72,7 @@ const { handleSubmit } = form;
           <UCheckbox :model-value="field.state.value" @update:model-value="field.handleChange" />
           <label>
             {{ t('auth.signup.termsAgree') }} <a href="#">{{ t('auth.signup.termsOfUse') }}</a> {{ t('auth.signup.and')
-            }} <a href="#">{{ t('auth.signup.privacyPolicy') }}</a>
+            }} <ULink href="#">{{ t('auth.signup.privacyPolicy') }}</ULink>
           </label>
         </div>
         <p v-if="field.state.meta.errors[0]" class="error-text">
@@ -99,11 +99,13 @@ const { handleSubmit } = form;
   display: flex;
   flex-direction: row;
   gap: 16px;
+  font-size: 14px;
+  font-weight: 500;
   align-items: center;
 }
 
 .error-text {
-  color: var(--color-red-500);
+  color: var(--color-error);
   font-size: 14px;
   margin-top: 4px;
 }
