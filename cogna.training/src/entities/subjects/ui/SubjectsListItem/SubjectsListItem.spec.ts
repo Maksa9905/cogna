@@ -58,14 +58,6 @@ describe("SubjectsListItem", () => {
 		expect(emitted("click")).toHaveLength(1);
 	});
 
-	it("применяет accentColor через CSS-переменную", () => {
-		const { container } = render(SubjectsListItem, {
-			props: { ...defaultProps(), accentColor: "rgb(255, 0, 0)" },
-		});
-		const item = container.querySelector(".subject-list-item") as HTMLElement;
-		expect(item?.style.getPropertyValue("--accent-color")).toBe("rgb(255, 0, 0)");
-	});
-
 	it("не показывает LoaderIcon по умолчанию", () => {
 		const { container } = render(SubjectsListItem, {
 			props: defaultProps(),

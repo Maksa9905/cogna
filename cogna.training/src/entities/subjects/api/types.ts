@@ -2,12 +2,17 @@ export interface Subject {
 	id: string;
 	userId: string;
 	title: string;
+	totalTickets: number;
+	learnedTickets: number;
+	averageScore: number;
+	examinationDate: string;
+	latestLessonDate: string;
 	createdAt: string;
 	updatedAt: string;
 }
 
 export interface SubjectResponse {
-	subject: Subject | null;
+	subject: Subject;
 }
 
 export interface FindAllSubjectsResponse {

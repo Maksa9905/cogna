@@ -37,9 +37,11 @@ export class SubjectsListItemUtils {
 
 		if (diffMinutes < 30) return { value: null, type: TimeSinceLastRepetitionType.Recently };
 		if (diffMinutes < 60) return { value: diffMinutes, type: TimeSinceLastRepetitionType.Minutes };
-		if (daysDiff === 0 && diffHours >= 1) return { value: diffHours, type: TimeSinceLastRepetitionType.Hours };
+		if (daysDiff === 0 && diffHours >= 1)
+			return { value: diffHours, type: TimeSinceLastRepetitionType.Hours };
 		if (daysDiff === 1) return { value: null, type: TimeSinceLastRepetitionType.Yesterday };
-		if (daysDiff >= 2 && daysDiff <= 30) return { value: daysDiff, type: TimeSinceLastRepetitionType.Days };
+		if (daysDiff >= 2 && daysDiff <= 30)
+			return { value: daysDiff, type: TimeSinceLastRepetitionType.Days };
 
 		const months = Math.floor(daysDiff / 30);
 		return { value: months, type: TimeSinceLastRepetitionType.Months };

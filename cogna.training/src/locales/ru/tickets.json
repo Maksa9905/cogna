@@ -1,0 +1,20 @@
+{
+	"editorHint": "«/» — команды и блоки, «@» — упоминание. Слева от блока — перенос и меню.",
+	"searchPlaceholder": "Поиск билета",
+	"sorting": {
+		"order": "По порядку",
+		"newest": "Сначала новые",
+		"oldest": "Сначала старые",
+		"lowest_percentage": "Сначала с меньшим процентом",
+		"highest_percentage": "Сначала с большим процентом",
+		"lowest_repetitions": "Меньше повторений",
+		"highest_repetitions": "Больше повторений"
+	},
+	"learningState": {
+		"all": "Все",
+		"new": "Новые",
+		"should_learn": "Нужно выучить",
+		"learned": "Выучены",
+		"forgotten": "Забыты"
+	}
+}

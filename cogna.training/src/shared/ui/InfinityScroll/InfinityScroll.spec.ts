@@ -60,7 +60,10 @@ describe("InfinityScroll", () => {
 
 		it("в контексте Wrapper рендерит слот для каждого item", () => {
 			const loadMore = vi.fn().mockResolvedValue({
-				items: [{ id: "1", name: "A" }, { id: "2", name: "B" }],
+				items: [
+					{ id: "1", name: "A" },
+					{ id: "2", name: "B" },
+				],
 				hasMore: false,
 			});
 			render(Wrapper, {
@@ -68,7 +71,8 @@ describe("InfinityScroll", () => {
 				slots: {
 					default: () =>
 						h(List, null, {
-							default: ({ item }: { item: { name: string } }) => h("div", { class: "item" }, item.name),
+							default: ({ item }: { item: { name: string } }) =>
+								h("div", { class: "item" }, item.name),
 						}),
 				},
 			});
@@ -100,7 +104,10 @@ describe("InfinityScroll", () => {
 			const loadMore = vi
 				.fn()
 				.mockResolvedValueOnce({
-					items: [{ id: "1", title: "First" }, { id: "2", title: "Second" }],
+					items: [
+						{ id: "1", title: "First" },
+						{ id: "2", title: "Second" },
+					],
 					hasMore: true,
 				})
 				.mockResolvedValueOnce({ items: [], hasMore: false });
@@ -176,10 +183,7 @@ describe("InfinityScroll", () => {
 			render(Wrapper, {
 				props: { loadMore },
 				slots: {
-					default: () => [
-						h(List),
-						h(Mark),
-					],
+					default: () => [h(List), h(Mark)],
 				},
 			});
 

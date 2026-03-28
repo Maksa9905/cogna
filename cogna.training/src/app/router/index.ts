@@ -1,7 +1,5 @@
-import AuthLayout from "@/pages/AuthLayout";
-import LoginPage from "@/pages/LoginPage";
-import SignUpPage from "@/pages/SignUpPage";
 import { tokenStorage, onAuthFailure } from "@/shared/api";
+import { RouterUtils } from "@/shared/router";
 import { localizedRoutes } from "@/shared/router/routes";
 import {
 	setI18nLanguage,
@@ -13,6 +11,7 @@ import {
 } from "@/shared/i18n";
 
 import { createWebHistory, createRouter, type RouteRecordRaw } from "vue-router";
+import BaseLayout from "@/pages/BaseLayout";
 
 const localizedRouteConfig: RouteRecordRaw[] = [
 	{
@@ -20,19 +19,39 @@ const localizedRouteConfig: RouteRecordRaw[] = [
 		children: [
 			{
 				path: "",
-				meta: { requiresAuth: true, namespaces: ["common", "subjects"] },
-				component: () => import("@/pages/HomePage/HomePage.vue"),
+				component: BaseLayout,
+				children: [
+					{
+						path: "",
+						component: () => RouterUtils.loadPage("home"),
+						meta: { requiresAuth: true, namespaces: ["common", "subjects", "tickets", "user", "menu"] },
+					},
+					{
+						path: "subjects/:subjectId",
+						component: () => RouterUtils.loadPage("subject"),
+						meta: { requiresAuth: true, namespaces: ["common", "subjects", "tickets", "user", "menu"] },
+					},
+					{
+						path: "subjects/:subjectId/tickets/:ticketId",
+						component: () => RouterUtils.loadPage("ticket"),
+						meta: { requiresAuth: true, namespaces: ["common", "subjects", "tickets", "user", "menu"] },
+					}
+				],
 			},
 			{
 				path: "auth",
-				component: AuthLayout,
-				meta: {
-					requiresGuest: true,
-					namespaces: ["auth", "validation", "common"],
-				},
+				component: () => RouterUtils.loadPage("authLayout"),
 				children: [
-					{ path: "login", component: LoginPage },
-					{ path: "signup", component: SignUpPage },
+					{
+						path: "login",
+						meta: { namespaces: ["auth", "validation", "common"] },
+						component: () => RouterUtils.loadPage("login"),
+					},
+					{
+						path: "signup",
+						meta: { namespaces: ["auth", "validation", "common"] },
+						component: () => RouterUtils.loadPage("signup"),
+					},
 				],
 			},
 		],

@@ -1,0 +1,20 @@
+{
+	"editorHint": "«/» — block commands, «@» — mentions. Use the handle on the left to move a block or open its menu.",
+	"searchPlaceholder": "Search ticket",
+	"sorting": {
+		"order": "By list order",
+		"newest": "Newest first",
+		"oldest": "Oldest first",
+		"lowest_percentage": "Lowest score first",
+		"highest_percentage": "Highest score first",
+		"lowest_repetitions": "Fewest repetitions first",
+		"highest_repetitions": "Most repetitions first"
+	},
+	"learningState": {
+		"all": "All",
+		"new": "New",
+		"should_learn": "To learn",
+		"learned": "Learned",
+		"forgotten": "Forgotten"
+	}
+}

@@ -40,7 +40,9 @@ describe("SubjectsListItemUtils", () => {
 		it("возвращает Minutes с числом минут, если прошло от 30 до 60 минут", () => {
 			const now = new Date();
 			const fortyFiveMinAgo = new Date(now.getTime() - 45 * 60 * 1000);
-			const result = SubjectsListItemUtils.getTimeSinceLastRepetition(fortyFiveMinAgo.toISOString());
+			const result = SubjectsListItemUtils.getTimeSinceLastRepetition(
+				fortyFiveMinAgo.toISOString(),
+			);
 			expect(result.type).toBe(TimeSinceLastRepetitionType.Minutes);
 			expect(result).toHaveProperty("value", 45);
 		});

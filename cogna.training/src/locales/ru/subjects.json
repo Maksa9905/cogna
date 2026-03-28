@@ -1,6 +1,7 @@
 {
 	"learnedOutOfTotal": "{learned} / {total} билетов",
 	"averageScore": "Средний балл: {score}%",
+	"progress": "Общий прогресс: {percent}% ({learned}/{total})",
 	"remainingDays": "0 дней до экзамена | {days} день до экзамена | {days} дня до экзамена | {days} дней до экзамена",
 	"lastRepetition": {
 		"recently": "Только что",
@@ -9,5 +10,6 @@
 		"yesterday": "Вчера",
 		"days": "дней | {n} день | {n} дня | {n} дней",
 		"months": "месяцев | {n} месяц | {n} месяца | {n} месяцев"
-	}
+	},
+	"newSubject": "Новый предмет"
 }

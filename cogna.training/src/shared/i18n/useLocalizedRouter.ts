@@ -8,6 +8,8 @@ export function useLocalizedRouter() {
 	const route = useRoute();
 	const router = useRouter();
 
+	const path = computed(() => route.path);
+
 	const currentLocale = computed(
 		() => (route.params.locale as SupportedLocale) || getCurrentLocale(),
 	);
@@ -24,6 +26,7 @@ export function useLocalizedRouter() {
 	return {
 		currentLocale,
 		routes,
+		path,
 		switchLocale,
 		availableLocales: SUPPORTED_LOCALES,
 	};

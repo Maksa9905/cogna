@@ -2,5 +2,6 @@
 	"or": "или",
 	"email": "Email",
 	"password": "Пароль",
-	"optional": "Необязательное"
+	"optional": "Необязательное",
+	"loading": "Загрузка..."
 }

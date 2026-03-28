@@ -1,6 +1,7 @@
 {
 	"learnedOutOfTotal": "{learned} / {total} tickets",
 	"averageScore": "Average score: {score}%",
+	"progress": "Overall progress: {percent}% ({learned}/{total})",
 	"remainingDays": "{days} day until exam | {days} days until exam",
 	"lastRepetition": {
 		"recently": "Recently",
@@ -9,5 +10,6 @@
 		"yesterday": "Yesterday",
 		"days": "{n} day | {n} days",
 		"months": "{n} month | {n} months"
-	}
+	},
+	"newSubject": "New subject"
 }

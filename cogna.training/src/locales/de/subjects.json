@@ -1,6 +1,7 @@
 {
 	"learnedOutOfTotal": "{learned} / {total} Tickets",
 	"averageScore": "Durchschnittspunktzahl: {score}%",
+	"progress": "Gesamtfortschritt: {percent}% ({learned}/{total})",
 	"remainingDays": "{days} Tag bis zur Prüfung | {days} Tage bis zur Prüfung",
 	"lastRepetition": {
 		"recently": "Kürzlich",
@@ -9,5 +10,6 @@
 		"yesterday": "Gestern",
 		"days": "{n} Tag | {n} Tage",
 		"months": "{n} Monat | {n} Monate"
-	}
+	},
+	"newSubject": "Neues Fach"
 }
