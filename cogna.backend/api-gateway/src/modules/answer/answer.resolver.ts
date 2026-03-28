@@ -1,23 +1,26 @@
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { TranscriptionService } from './transcription.service';
-import { AppendAnswerChunkRequestGql } from './dto/requests/append-answer-chunk.request';
+import { AnswerService } from './answer.service';
+import {
+  SubmitVoiceAnswerRequestGql,
+  SubmitTextAnswerRequestGql,
+} from './dto/requests';
+import { SubmitAnswerResponseGql } from './dto/responses';
 import { ReplaySubject } from 'rxjs';
 import { TranscriptionRequest } from '@cogna-edu/contracts/dist/transcription/transcription';
 import { Request } from 'express';
 import { Protected } from '../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn';
 
-
 @Protected(UserRole.USER)
 @Resolver()
-export class TranscriptionResolver {
-  constructor(private readonly transcriptionService: TranscriptionService) {}
+export class AnswerResolver {
+  constructor(private readonly answerService: AnswerService) {}
 
   @Mutation(() => Boolean)
-  public async appendAnswerChunk(
+  public async submitVoiceAnswer(
     @Context('req') req: Request,
-    @Args('data') dto: AppendAnswerChunkRequestGql,
-  ) {
+    @Args('data') dto: SubmitVoiceAnswerRequestGql,
+  ): Promise<boolean> {
     const { audioContent, attemptId, chunkIndex, isLast, ticketId } = dto;
     const file = await audioContent;
     const { createReadStream } = file;
@@ -25,14 +28,13 @@ export class TranscriptionResolver {
     const userId = req.user.sub;
 
     const stream = new ReplaySubject<TranscriptionRequest>();
-    console.log('!:',audioContent);
-    console.log('ticket id', ticketId);
-    this.transcriptionService.createTranscriptionChunk(stream).subscribe({
+    this.answerService.transcribeVoiceChunk(stream).subscribe({
       next: (res) => {
-        console.log('текст получен', res);
+        console.log('Транскрипция получена:', res);
       },
       error: (err) => console.error('Ошибка транскрибации:', err),
     });
+
     readStream.on('data', (chunk: Buffer) => {
       stream.next({
         audioContent: chunk,
@@ -43,11 +45,24 @@ export class TranscriptionResolver {
         isLast,
       });
     });
+
     return new Promise((resolve) => {
       readStream.on('end', () => {
-        stream.complete(); // Закрываем gRPC стрим
+        stream.complete();
         resolve(true);
       });
+    });
+  }
+
+  @Mutation(() => SubmitAnswerResponseGql)
+  public async submitTextAnswer(
+    @Context('req') req: Request,
+    @Args('data') dto: SubmitTextAnswerRequestGql,
+  ): Promise<SubmitAnswerResponseGql> {
+    return this.answerService.submitTextAnswer({
+      answer: dto.answer,
+      ticketId: dto.ticketId,
+      userId: req.user.sub,
     });
   }
 }

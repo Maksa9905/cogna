@@ -4,13 +4,10 @@ import { JwtResponseGql, SuccessResponseGql } from './dto/responses';
 import { ConfirmRegisterRequestGql, RegisterRequestGql } from './dto/requests';
 import { Request, Response } from 'express';
 import { LoginRequestGql } from './dto/requests/login.request';
-import {
-  NotFoundException,
-  UseGuards,
-} from '@nestjs/common';
-import { JwtGuard } from '../../common/guards';
-import { Protected } from '../../common/decorators/protected.decorator';
-import { UserRole } from '@cogna-edu/corn/dist/enum';
+import { NotFoundException, UseGuards } from '@nestjs/common';
+import { JwtGuard } from '../../../common/guards';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { UserRole } from '@cogna-edu/corn/dist/enum/user-role.enum';
 //
 // @Roles(ROLES_ENUM.USER)
 @Resolver()

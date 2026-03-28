@@ -3,7 +3,7 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { AuthModule } from '../modules/auth/auth.module';
+import { AuthModule } from '../modules/auth/auth/auth.module';
 import { Request, Response } from 'express';
 import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from '../common/strategies';
@@ -11,7 +11,8 @@ import { ContentModule } from '../modules/content/content.module';
 import { ThesisModule } from '../modules/thesis/thesis.module';
 import { Module } from '@nestjs/common';
 import { GraphQLUpload } from 'graphql-upload-ts';
-import { TranscriptionModule } from '../modules/transcription/transcription.module';
+import { AnswerModule } from '../modules/answer/answer.module';
+import { UserModule } from '../modules/auth/user/user.module';
 
 @Module({
   imports: [
@@ -52,9 +53,10 @@ import { TranscriptionModule } from '../modules/transcription/transcription.modu
       },
     }),
     AuthModule,
+    UserModule,
     ContentModule,
     ThesisModule,
-    TranscriptionModule,
+    AnswerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

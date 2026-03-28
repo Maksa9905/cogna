@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtStrategy } from '../../common/strategies';
+import { JwtStrategy } from '../../../common/strategies';
 
 @Module({
   imports: [

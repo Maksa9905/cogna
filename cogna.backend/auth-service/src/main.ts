@@ -11,8 +11,11 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
-      package: 'auth.v1',
-      protoPath: ['node_modules/@cogna-edu/contracts/proto/auth/auth.proto'],
+      package: ['auth.v1', 'user.v1'],
+      protoPath: [
+        'node_modules/@cogna-edu/contracts/proto/auth/auth.proto',
+        'node_modules/@cogna-edu/contracts/proto/auth/user.proto',
+      ],
       url: config.getOrThrow<string>('AUTH_GRPC_URL', '0.0.0.0:50051'),
     },
   });

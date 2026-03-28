@@ -5,7 +5,24 @@
 //   protoc               v7.34.0
 // source: auth/user.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._PACKAGE_NAME = exports.protobufPackage = void 0;
+exports.USER_SERVICE_NAME = exports.USER_V1_PACKAGE_NAME = exports.protobufPackage = void 0;
+exports.UserServiceControllerMethods = UserServiceControllerMethods;
 /* eslint-disable */
-exports.protobufPackage = "";
-exports._PACKAGE_NAME = "";
+const microservices_1 = require("@nestjs/microservices");
+exports.protobufPackage = "user.v1";
+exports.USER_V1_PACKAGE_NAME = "user.v1";
+function UserServiceControllerMethods() {
+    return function (constructor) {
+        const grpcMethods = ["getUserInfo"];
+        for (const method of grpcMethods) {
+            const descriptor = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+            (0, microservices_1.GrpcMethod)("UserService", method)(constructor.prototype[method], method, descriptor);
+        }
+        const grpcStreamMethods = [];
+        for (const method of grpcStreamMethods) {
+            const descriptor = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+            (0, microservices_1.GrpcStreamMethod)("UserService", method)(constructor.prototype[method], method, descriptor);
+        }
+    };
+}
+exports.USER_SERVICE_NAME = "UserService";

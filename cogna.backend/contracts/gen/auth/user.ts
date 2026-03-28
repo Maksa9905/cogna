@@ -5,7 +5,43 @@
 // source: auth/user.proto
 
 /* eslint-disable */
+import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
+import { Observable } from "rxjs";
 
-export const protobufPackage = "";
+export const protobufPackage = "user.v1";
 
-export const _PACKAGE_NAME = "";
+export interface UserInfoRequest {
+  userId: string;
+}
+
+export interface UserInfoResponse {
+  userId: string;
+  email: string;
+}
+
+export const USER_V1_PACKAGE_NAME = "user.v1";
+
+export interface UserServiceClient {
+  getUserInfo(request: UserInfoRequest): Observable<UserInfoResponse>;
+}
+
+export interface UserServiceController {
+  getUserInfo(request: UserInfoRequest): Promise<UserInfoResponse> | Observable<UserInfoResponse> | UserInfoResponse;
+}
+
+export function UserServiceControllerMethods() {
+  return function (constructor: Function) {
+    const grpcMethods: string[] = ["getUserInfo"];
+    for (const method of grpcMethods) {
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcMethod("UserService", method)(constructor.prototype[method], method, descriptor);
+    }
+    const grpcStreamMethods: string[] = [];
+    for (const method of grpcStreamMethods) {
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcStreamMethod("UserService", method)(constructor.prototype[method], method, descriptor);
+    }
+  };
+}
+
+export const USER_SERVICE_NAME = "UserService";
