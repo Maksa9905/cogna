@@ -14,6 +14,7 @@ export class ThesisController implements ThesisServiceController {
   constructor(private readonly thesisService: ThesisService) {}
 
   public createThesis(request: GenerateThesesRequest) {
+    console.log('!!!');
     return this.thesisService.generateThesis(request);
   }
 }

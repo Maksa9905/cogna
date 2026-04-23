@@ -12,7 +12,7 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       package: 'thesis.v1',
-      url: config.getOrThrow<string>('THESES_GRPC_URL', 'localhost:50053'),
+      url: config.getOrThrow<string>('THESES_GRPC_URL', '0.0.0.0:50053'),
       protoPath: [
         'node_modules/@cogna-edu/contracts/proto/thesis/thesis.proto',
       ],
