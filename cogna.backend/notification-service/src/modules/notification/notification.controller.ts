@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { EventPattern } from '@nestjs/microservices';
-import { SendOtpRequest } from '@cogna-edu/contracts/gen/notification';
+import { SendOtpRequest } from '@cogna-edu/contracts/gen/notification/notification';
 
 @Controller()
 export class NotificationController {

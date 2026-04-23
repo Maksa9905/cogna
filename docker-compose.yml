@@ -54,6 +54,7 @@ services:
       context: ./cogna.backend
       dockerfile: ./api-gateway/Dockerfile
     environment:
+      - REDIS_URL=redis://redis:6379
       - AUTH_GRPC_URL=auth-service:50051
       - CONTENT_GRPC_URL=content-service:50051
       - THESES_GRPC_URL=theses-ai-service:50051

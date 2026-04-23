@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MailService } from '../mail-service/mail.service';
-import { SendOtpRequest } from '@cogna-edu/contracts/gen/notification';
+import { SendOtpRequest } from '@cogna-edu/contracts/gen/notification/notification';
 
 @Injectable()
 export class NotificationService {

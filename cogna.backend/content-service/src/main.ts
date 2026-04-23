@@ -18,7 +18,7 @@ async function bootstrap() {
       protoPath: [
         'content/common.proto',
         'content/subject.proto',
-        'content/ticket-attempt.proto',
+        'content/ticket.proto',
       ],
       loader: {
         includeDirs: [rootProtoDir],
