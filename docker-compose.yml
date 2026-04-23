@@ -111,6 +111,21 @@ services:
       - THESES_GRPC_URL=theses-ai-service:50051
     networks:
       - cogna-network
+    
+  study-service:
+    container_name: cogna-study-service
+    build:
+      context: ./cogna.backend
+      dockerfile: ./study-service/Dockerfile
+    ports:
+      - 50056:50051
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BROKERS=kafka:9092
+      - DATABASE_URL=postgresql://cogna:cogna_dev_password@postgres:5432/study_db
+      - STUDY_GRPC_URL=0.0.0.0:50051
+    networks:
+      - cogna-network
   
   theses-ai-service:
     container_name: cogna-theses-ai-service
@@ -122,9 +137,26 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
       - KAFKA_BROKERS=kafka:9092
+      - STUDY_GRPC_URL=study-service:50051
+      - PROXY_URL=http://WvtxPQ:qkMNQ8@45.91.209.139:13671
+      - GROQ_API_KEY=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
       - CONTENT_GRPC_URL=content-service:50051
       - THESES_GRPC_URL=0.0.0.0:50051
-      - PROXY_URL=http://vLwsdQ:uN3KVj@196.18.11.251:8000
+    networks:
+      - cogna-network
+  
+  assessment-ai-service:
+    container_name: cogna-assessment-ai-service
+    build:
+      context: ./cogna.backend
+      dockerfile: ./assessment-ai-service/Dockerfile
+    ports:
+      - 50057:4005
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BROKERS=kafka:9092
+      - STUDY_GRPC_URL=study-service:50051
+      - PROXY_URL=http://WvtxPQ:qkMNQ8@45.91.209.139:13671
       - GROQ_API_KEY=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
     networks:
       - cogna-network

@@ -13,6 +13,9 @@ import { Module } from '@nestjs/common';
 import { GraphQLUpload } from 'graphql-upload-ts';
 import { AnswerModule } from '../modules/answer/answer.module';
 import { UserModule } from '../modules/auth/user/user.module';
+import { InfraModule } from '../common/infra/infra/infra.module';
+import { startWith } from 'rxjs';
+import { StudyModule } from '../modules/study/study.module';
 
 @Module({
   imports: [
@@ -40,6 +43,18 @@ import { UserModule } from '../modules/auth/user/user.module';
       subscriptions: {
         'graphql-ws': {
           path: '/graphql',
+          onConnect: (context: any) => {
+            const connectionParams = context.connectionParams ?? {};
+            const authorizationFromClient =
+              (typeof connectionParams.Authorization === 'string' && connectionParams.Authorization) ||
+              (typeof connectionParams.authorization === 'string' && connectionParams.authorization) ||
+              '';
+            if (authorizationFromClient && context.extra?.request?.headers) {
+              context.extra.request.headers.authorization = authorizationFromClient.startsWith('Bearer ')
+                ? authorizationFromClient
+                : `Bearer ${authorizationFromClient}`;
+            }
+          },
         },
       },
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
@@ -57,6 +72,8 @@ import { UserModule } from '../modules/auth/user/user.module';
     ContentModule,
     ThesisModule,
     AnswerModule,
+    StudyModule,
+    InfraModule,
   ],
   controllers: [AppController],
   providers: [AppService],

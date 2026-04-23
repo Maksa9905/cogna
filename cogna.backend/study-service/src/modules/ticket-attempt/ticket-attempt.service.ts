@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket';
+import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket-attempt';
 import { TicketAttemptRepository } from './ticket-attempt.repository';
 
 @Injectable()

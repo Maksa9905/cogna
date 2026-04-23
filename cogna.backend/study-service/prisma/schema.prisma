@@ -16,7 +16,6 @@ model TicketAttempt {
   subjectId String @map("subject_id")
 
   score   Float // оценка в числовом формате для расчетов, от 1 до 10
-  // rawScore String // исходная оценка (может быть "A", "85%", "хорошо")
   summary String? // краткий анализ ответа
   theses  Json?   @map("theses_assessment") // хранится структура {thsis: string, assessment: string}
 

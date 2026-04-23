@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package study.subject.progress.v1;
+import "google/protobuf/timestamp.proto";
+
+service StudySubjectProgressService {
+  rpc FindOneSubjectProgress(FindOneSubjectProgressRequest) returns (FindOneSubjectProgressResponse);
+  rpc FindAllSubjectsProgress(FindAllSubjectProgressRequest) returns (FindAllSubjectProgressResponse);
+}
+
+message SubjectProgress {
+  string id = 1;
+  string subject_id = 2;
+  string user_id = 3;
+  int32 studied_tickets = 4;
+  float average_tickets_score = 5;
+  google.protobuf.Timestamp last_repetition_data = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+message FindOneSubjectProgressRequest {
+  string subject_id = 1;
+  string user_id = 2;
+}
+
+message FindOneSubjectProgressResponse {
+  SubjectProgress subject_progress = 1;
+}
+
+message FindAllSubjectProgressRequest {
+  string user_id = 1;
+}
+message FindAllSubjectProgressResponse {
+  repeated SubjectProgress subjects_progress = 1;
+}

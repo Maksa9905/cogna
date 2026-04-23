@@ -5,6 +5,7 @@ import { ClientsModule, GrpcOptions, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GroqChatCompletionService } from '../groq-chat-completion/groq-chat-completion.service';
 import { getStudyKafkaClientConfig } from './clients/kafka/study.kafka.client';
+import { getApiGatewayKafkaClient } from './clients/kafka/api-gateway.kafka.client';
 
 @Module({
   imports: [ClientsModule.registerAsync([
@@ -30,6 +31,12 @@ import { getStudyKafkaClientConfig } from './clients/kafka/study.kafka.client';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: getStudyKafkaClientConfig
+    },
+    {
+      name: 'API_GATEWAY_KAFKA_CLIENT',
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getApiGatewayKafkaClient
     }
   ])],
   controllers: [AssessmentController],

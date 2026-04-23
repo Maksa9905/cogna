@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { TicketAttemptService } from './ticket-attempt.service';
 import { EventPattern } from '@nestjs/microservices';
-import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket';
+import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket-attempt';
 
 @Controller('ticket-attempt')
 export class TicketAttemptController {

@@ -1,12 +1,14 @@
 syntax = "proto3";
 
-package study.ticket.v1;
+package study.ticket.attempt.v1;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
-service StudyTicketService {
+service StudyTicketAttemptService {
   rpc TicketAttempt(TicketAttemptRequest) returns (google.protobuf.Empty);
+  rpc FindOneTicketAttempt(findOneTicketAttemptRequest) returns (findOneTicketAttemptResponse);
+  rpc FindAllTicketsAttempts(findAllTicketsAttemptsRequest) returns (findAllTicketsAttemptsResponse);
 }
 
 // Kafka. Assessment-service -> Study-service
@@ -37,16 +39,25 @@ message TicketAttempt {
   google.protobuf.Timestamp updated_at = 9;
 }
 
-message TicketProgress {
-  string id = 1;
+message findOneTicketAttemptRequest {
+  string ticket_attempt_id = 1;
   string ticket_id = 2;
   string user_id = 3;
-  string subject_id = 4;
-  int32 total_count = 5;
-  float best_score = 6;
-  float last_score = 7;
-  float average_score = 8;
-  google.protobuf.Timestamp created_at = 9;
-  google.protobuf.Timestamp updated_at = 10;
 }
+
+message findOneTicketAttemptResponse {
+  TicketAttempt ticket_attempt = 1;
+}
+
+message findAllTicketsAttemptsRequest {
+  string ticket_id = 2;
+  string user_id = 3;
+}
+
+message findAllTicketsAttemptsResponse {
+  repeated TicketAttempt tickets_attempts = 1;
+}
+
+
+
 

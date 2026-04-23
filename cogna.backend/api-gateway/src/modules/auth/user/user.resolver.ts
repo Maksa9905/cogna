@@ -1,8 +1,6 @@
 import { Context, Query, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import {
-  UserInfoResponse,
-} from '@cogna-edu/contracts/gen/auth/user';
+import { UserInfoResponse } from '@cogna-edu/contracts/gen/auth/user';
 import { UserInfoResponseGql } from './dto/responses';
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn/dist/enum/user-role.enum';

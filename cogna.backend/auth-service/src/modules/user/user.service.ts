@@ -15,7 +15,7 @@ export class UserService {
     if (!user)
       throw new RpcException({
         code: 404,
-        message: 'User not found',
+        message: 'User not found!',
       });
     return { userId: user.id, email: user.email };
   }

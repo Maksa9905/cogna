@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../infra/prisma/prisma.service';
-import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket';
+import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket-attempt';
 import { SubjectProgressRepository } from '../subject-progress/subject-progress.repository';
 import { TicketProgressRepository } from './ticket-progress.repository';
 

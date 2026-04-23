@@ -11,7 +11,6 @@ interface GqlContext {
 export class JwtGuard extends AuthGuard('jwt') {
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
-    //@typescript-eslint/no-unsafe-member-access
     return ctx.getContext<GqlContext>().req;
   }
 }

@@ -71,4 +71,16 @@ export class SubjectProgressRepository {
     });
     return result._avg.averageScore ?? 0;
   }
+
+  public async findOne(userId: string, subjectId: string) {
+    return this.prismaService.subjectProgress.findUnique({
+      where: { userId_subjectId: { userId, subjectId } },
+    });
+  }
+
+  public async findAll(userId: string) {
+    return this.prismaService.subjectProgress.findMany({
+      where: { userId: userId },
+    });
+  }
 }

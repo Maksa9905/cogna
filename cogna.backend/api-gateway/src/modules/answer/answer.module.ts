@@ -4,6 +4,7 @@ import { AnswerService } from './answer.service';
 import { GraphQLUpload } from 'graphql-upload-ts';
 import { ClientsModule, GrpcOptions, KafkaOptions, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AnswerController } from './answer.controller';
 
 @Module({
   imports: [
@@ -57,5 +58,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useValue: GraphQLUpload,
     },
   ],
+  controllers: [AnswerController],
 })
 export class AnswerModule {}
