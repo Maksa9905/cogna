@@ -1,4 +1,5 @@
 {
+	"mySubjects": "Meine Fächer",
 	"learnedOutOfTotal": "{learned} / {total} Tickets",
 	"averageScore": "Durchschnittspunktzahl: {score}%",
 	"progress": "Gesamtfortschritt: {percent}% ({learned}/{total})",

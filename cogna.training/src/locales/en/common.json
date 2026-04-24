@@ -3,5 +3,10 @@
 	"email": "Email",
 	"password": "Password",
 	"optional": "Optional",
-	"loading": "Loading..."
+	"loading": "Loading...",
+	"localeName": {
+		"ru": "Russian",
+		"en": "English",
+		"de": "German"
+	}
 }

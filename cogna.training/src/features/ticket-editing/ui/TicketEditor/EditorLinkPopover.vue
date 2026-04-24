@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { Editor } from "@tiptap/vue-3";
 import { computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const props = defineProps<{
 	editor: Editor;
@@ -94,7 +97,7 @@ function handleKeyDown(event: KeyboardEvent) {
 
 <template>
 	<UPopover v-model:open="open" :ui="{ content: 'p-0.5' }">
-		<UTooltip text="Link">
+		<UTooltip :text="t('tickets.editor.link.tooltip')">
 			<UButton
 				icon="i-lucide-link"
 				color="neutral"
@@ -113,7 +116,7 @@ function handleKeyDown(event: KeyboardEvent) {
 				name="url"
 				type="url"
 				variant="none"
-				placeholder="Paste a link..."
+				:placeholder="t('tickets.editor.link.pastePlaceholder')"
 				@keydown="handleKeyDown"
 			>
 				<div class="flex items-center mr-0.5">
@@ -122,7 +125,7 @@ function handleKeyDown(event: KeyboardEvent) {
 						variant="ghost"
 						size="sm"
 						:disabled="!url && !active"
-						title="Apply link"
+						:title="t('tickets.editor.link.apply')"
 						@click="setLink"
 					/>
 
@@ -134,7 +137,7 @@ function handleKeyDown(event: KeyboardEvent) {
 						variant="ghost"
 						size="sm"
 						:disabled="!url && !active"
-						title="Open in new window"
+						:title="t('tickets.editor.link.openInNewWindow')"
 						@click="openLink"
 					/>
 
@@ -144,7 +147,7 @@ function handleKeyDown(event: KeyboardEvent) {
 						variant="ghost"
 						size="sm"
 						:disabled="!url && !active"
-						title="Remove link"
+						:title="t('tickets.editor.link.remove')"
 						@click="removeLink"
 					/>
 				</div>

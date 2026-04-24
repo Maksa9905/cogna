@@ -1,4 +1,5 @@
 {
+	"mySubjects": "Мои предметы",
 	"learnedOutOfTotal": "{learned} / {total} билетов",
 	"averageScore": "Средний балл: {score}%",
 	"progress": "Общий прогресс: {percent}% ({learned}/{total})",

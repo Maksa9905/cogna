@@ -77,7 +77,7 @@ onUnmounted(() => {
 <template>
 	<div v-if="context?.hasMore.value" ref="markRef" class="infinity-scroll-mark">
 		<template v-if="showLoadingLabel">
-			<slot>{{ t("loading") }}</slot>
+			<slot>{{ t("common.loading") }}</slot>
 		</template>
 	</div>
 </template>

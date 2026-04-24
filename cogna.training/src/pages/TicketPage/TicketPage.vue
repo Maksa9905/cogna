@@ -82,7 +82,7 @@ const handleReproduceTicket = async () => {
 			</template>
 		</Skeleton>
 
-		<section class="ticket-page__answer" aria-label="Ответ">
+		<section class="ticket-page__answer" :aria-label="t('tickets.answerAriaLabel')">
 			<Skeleton :is-loading="isLoading">
 				<template #skeleton>
 					<USkeleton # class="w-full h-[340px] bg-default rounded-lg flex items-center justify-center">
@@ -100,7 +100,7 @@ const handleReproduceTicket = async () => {
 
 	<FloatingElement position="bottom-right" :offset='16'>
 		<UButton @click="handleReproduceTicket" size="md" icon="i-lucide-check" class="rounded-4 min-w-10 min-h-10">
-			Я запомнил
+			{{ t('tickets.rememberedButton') }}
 		</UButton>
 	</FloatingElement>
 </template>

@@ -32,17 +32,17 @@ describe("InfinityScroll", () => {
 	});
 
 	describe("InfinityScroll.Mark", () => {
-		it("рендерит текст Loading по умолчанию", () => {
+		it("рендерит текст загрузки по умолчанию", () => {
 			render(Mark);
-			expect(screen.getByText("Loading")).toBeInTheDocument();
+			expect(screen.getByText("Загрузка...")).toBeInTheDocument();
 		});
 
 		it("рендерит слот вместо дефолтного текста", () => {
 			render(Mark, {
-				slots: { default: () => h("span", {}, "Загрузка...") },
+				slots: { default: () => h("span", {}, "Пользовательская подпись") },
 			});
-			expect(screen.getByText("Загрузка...")).toBeInTheDocument();
-			expect(screen.queryByText("Loading")).not.toBeInTheDocument();
+			expect(screen.getByText("Пользовательская подпись")).toBeInTheDocument();
+			expect(screen.queryByText("Загрузка...")).not.toBeInTheDocument();
 		});
 
 		it("имеет класс infinity-scroll-mark", () => {

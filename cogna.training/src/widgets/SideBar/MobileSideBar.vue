@@ -74,7 +74,7 @@ const navItems = computed<MobileNavItem[]>(() => {
 <template>
 	<nav
 		class="mobile-side-bar"
-		aria-label="Основное меню"
+		:aria-label="t('menu.mainNavigation')"
 	>
 		<template v-for="(item, index) in navItems" :key="index">
 			<RouterLink

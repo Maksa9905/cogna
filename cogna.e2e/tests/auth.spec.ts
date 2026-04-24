@@ -34,7 +34,7 @@ test.describe("Registration and authorization", () => {
         timeout: 15_000,
       });
       await expect(
-        page.getByText("Добро пожаловать в Cogna!")
+        page.getByText("My subjects")
       ).toBeVisible();
     });
 
@@ -58,7 +58,8 @@ test.describe("Registration and authorization", () => {
         timeout: 15_000,
       });
 
-      await page.getByRole("button", { name: /Sign out|Log out|Выйти/i }).click();
+      await page.locator('.user-card').locator('svg').click();
+
       await expect(page).toHaveURL(/\/(ru|en|de)\/auth\/login/, {
         timeout: 10_000,
       });
@@ -71,7 +72,7 @@ test.describe("Registration and authorization", () => {
         timeout: 15_000,
       });
       await expect(
-        page.getByText("Добро пожаловать в Cogna!")
+        page.getByText("My subjects")
       ).toBeVisible();
     });
   });

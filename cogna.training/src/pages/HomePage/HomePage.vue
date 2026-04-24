@@ -3,11 +3,13 @@ import { useRouter } from "vue-router";
 import { SubjectsList } from "@/entities/subjects";
 import { useLocalizedRouter } from "@/shared/i18n";
 import { useMediaQuery } from "@/shared/lib";
+import { useI18n } from "vue-i18n";
 
 defineOptions({
 	name: "HomePage",
 });
 
+const { t } = useI18n();
 const isMobile = useMediaQuery("(min-width: 576px)");
 
 const router = useRouter();
@@ -17,8 +19,8 @@ const { routes } = useLocalizedRouter();
 <template>
   <section class="subjects-list-section">
     <header class="section-header">
-      <h2 class="section-title">Мои предметы</h2>
-        <UButton v-if="isMobile" trailing-icon="i-lucide-plus" size="sm" @click="router.push(routes.subject('create'))">Создать предмет</UButton>
+      <h2 class="section-title">{{ t('subjects.mySubjects') }}</h2>
+        <UButton v-if="isMobile" trailing-icon="i-lucide-plus" size="sm" @click="router.push(routes.subject('create'))">{{ t('menu.createSubject') }}</UButton>
         <UButton v-else variant="link" trailing-icon="i-lucide-plus" size="md" @click="router.push(routes.subject('create'))" />
       </header>
       <SubjectsList

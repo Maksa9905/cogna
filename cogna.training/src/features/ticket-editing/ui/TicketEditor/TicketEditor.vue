@@ -33,11 +33,13 @@ const props = withDefaults(
 		isLoading?: boolean;
 	}>(),
 	{
-		placeholder: "Ответ…",
+		placeholder: undefined,
 		editorClass: "",
 		isLoading: false,
 	},
 );
+
+const resolvedPlaceholder = computed(() => props.placeholder ?? t("tickets.editor.answerPlaceholder"));
 
 const customHandlers = {} satisfies EditorCustomHandlers;
 
@@ -48,125 +50,168 @@ const fixedToolbarToggleGroup = [
 	},
 ] satisfies EditorToolbarItem<typeof customHandlers>[];
 
-const fixedToolbarGroupsEdit = [
+const fixedToolbarGroupsEdit = computed((): EditorToolbarItem<typeof customHandlers>[][] => [
 	[
 		{
 			kind: "undo",
 			icon: "i-lucide-undo",
-			tooltip: { text: "Отменить" },
+			tooltip: { text: t("tickets.editor.undo") },
 		},
 		{
 			kind: "redo",
 			icon: "i-lucide-redo",
-			tooltip: { text: "Вернуть" },
+			tooltip: { text: t("tickets.editor.redo") },
 		},
 	],
 	[
 		{
 			icon: "i-lucide-heading",
-			tooltip: { text: "Заголовки" },
+			tooltip: { text: t("tickets.editor.headings") },
 			content: { align: "start" },
 			items: [
-				{ kind: "heading", level: 1, icon: "i-lucide-heading-1", label: "Заголовок 1" },
-				{ kind: "heading", level: 2, icon: "i-lucide-heading-2", label: "Заголовок 2" },
-				{ kind: "heading", level: 3, icon: "i-lucide-heading-3", label: "Заголовок 3" },
-				{ kind: "heading", level: 4, icon: "i-lucide-heading-4", label: "Заголовок 4" },
+				{ kind: "heading", level: 1, icon: "i-lucide-heading-1", label: t("tickets.editor.heading1") },
+				{ kind: "heading", level: 2, icon: "i-lucide-heading-2", label: t("tickets.editor.heading2") },
+				{ kind: "heading", level: 3, icon: "i-lucide-heading-3", label: t("tickets.editor.heading3") },
+				{ kind: "heading", level: 4, icon: "i-lucide-heading-4", label: t("tickets.editor.heading4") },
 			],
 		},
 		{
 			icon: "i-lucide-list",
-			tooltip: { text: "Списки" },
+			tooltip: { text: t("tickets.editor.lists") },
 			content: { align: "start" },
 			items: [
-				{ kind: "bulletList", icon: "i-lucide-list", label: "Маркированный" },
-				{ kind: "orderedList", icon: "i-lucide-list-ordered", label: "Нумерованный" },
+				{ kind: "bulletList", icon: "i-lucide-list", label: t("tickets.editor.bulletList") },
+				{ kind: "orderedList", icon: "i-lucide-list-ordered", label: t("tickets.editor.orderedList") },
 			],
 		},
 		{
 			kind: "blockquote",
 			icon: "i-lucide-text-quote",
-			tooltip: { text: "Цитата" },
+			tooltip: { text: t("tickets.editor.blockquote") },
 		},
 		{
 			kind: "codeBlock",
 			icon: "i-lucide-square-code",
-			tooltip: { text: "Блок кода" },
+			tooltip: { text: t("tickets.editor.codeBlock") },
 		},
 	],
 	[
-		{ kind: "mark", mark: "bold", icon: "i-lucide-bold", tooltip: { text: "Жирный" } },
-		{ kind: "mark", mark: "italic", icon: "i-lucide-italic", tooltip: { text: "Курсив" } },
-		{ kind: "mark", mark: "underline", icon: "i-lucide-underline", tooltip: { text: "Подчёркнутый" } },
-		{ kind: "mark", mark: "strike", icon: "i-lucide-strikethrough", tooltip: { text: "Зачёркнутый" } },
-		{ kind: "mark", mark: "code", icon: "i-lucide-code", tooltip: { text: "Код" } },
+		{ kind: "mark", mark: "bold", icon: "i-lucide-bold", tooltip: { text: t("tickets.editor.bold") } },
+		{ kind: "mark", mark: "italic", icon: "i-lucide-italic", tooltip: { text: t("tickets.editor.italic") } },
+		{
+			kind: "mark",
+			mark: "underline",
+			icon: "i-lucide-underline",
+			tooltip: { text: t("tickets.editor.underline") },
+		},
+		{ kind: "mark", mark: "strike", icon: "i-lucide-strikethrough", tooltip: { text: t("tickets.editor.strike") } },
+		{ kind: "mark", mark: "code", icon: "i-lucide-code", tooltip: { text: t("tickets.editor.code") } },
 	],
 	[{ slot: "link" as const, icon: "i-lucide-link" }],
 	[
 		{
 			icon: "i-lucide-align-justify",
-			tooltip: { text: "Выравнивание" },
+			tooltip: { text: t("tickets.editor.alignment") },
 			content: { align: "end" },
 			items: [
-				{ kind: "textAlign", align: "left", icon: "i-lucide-align-left", label: "Влево" },
-				{ kind: "textAlign", align: "center", icon: "i-lucide-align-center", label: "По центру" },
-				{ kind: "textAlign", align: "right", icon: "i-lucide-align-right", label: "Вправо" },
-				{ kind: "textAlign", align: "justify", icon: "i-lucide-align-justify", label: "По ширине" },
+				{ kind: "textAlign", align: "left", icon: "i-lucide-align-left", label: t("tickets.editor.alignLeft") },
+				{
+					kind: "textAlign",
+					align: "center",
+					icon: "i-lucide-align-center",
+					label: t("tickets.editor.alignCenter"),
+				},
+				{ kind: "textAlign", align: "right", icon: "i-lucide-align-right", label: t("tickets.editor.alignRight") },
+				{
+					kind: "textAlign",
+					align: "justify",
+					icon: "i-lucide-align-justify",
+					label: t("tickets.editor.alignJustify"),
+				},
 			],
 		},
 	],
 	fixedToolbarToggleGroup,
-] satisfies EditorToolbarItem<typeof customHandlers>[][];
+]);
 
 const fixedToolbarItems = computed((): EditorToolbarItem<typeof customHandlers>[][] =>
-	editorEditable.value ? fixedToolbarGroupsEdit : [fixedToolbarToggleGroup],
+	editorEditable.value ? fixedToolbarGroupsEdit.value : [fixedToolbarToggleGroup],
 );
 
-const bubbleToolbarItems = [
-	[
-		{
-			label: "Превратить в",
-			trailingIcon: "i-lucide-chevron-down",
-			activeColor: "neutral",
-			activeVariant: "ghost",
-			tooltip: { text: "Превратить в" },
-			content: { align: "start" },
-			ui: { label: "text-xs" },
-			items: [
-				{ type: "label", label: "Превратить в" },
-				{ kind: "paragraph", label: "Абзац", icon: "i-lucide-type" },
-				{ kind: "heading", level: 1, icon: "i-lucide-heading-1", label: "Заголовок 1" },
-				{ kind: "heading", level: 2, icon: "i-lucide-heading-2", label: "Заголовок 2" },
-				{ kind: "heading", level: 3, icon: "i-lucide-heading-3", label: "Заголовок 3" },
-				{ kind: "heading", level: 4, icon: "i-lucide-heading-4", label: "Заголовок 4" },
-				{ kind: "bulletList", icon: "i-lucide-list", label: "Список" },
-				{ kind: "orderedList", icon: "i-lucide-list-ordered", label: "Нумерация" },
-				{ kind: "blockquote", icon: "i-lucide-text-quote", label: "Цитата" },
-				{ kind: "codeBlock", icon: "i-lucide-square-code", label: "Код" },
-			],
-		},
-	],
-	[
-		{ kind: "mark", mark: "bold", icon: "i-lucide-bold", tooltip: { text: "Жирный" } },
-		{ kind: "mark", mark: "italic", icon: "i-lucide-italic", tooltip: { text: "Курсив" } },
-		{ kind: "mark", mark: "underline", icon: "i-lucide-underline", tooltip: { text: "Подчёркнутый" } },
-		{ kind: "mark", mark: "strike", icon: "i-lucide-strikethrough", tooltip: { text: "Зачёркнутый" } },
-		{ kind: "mark", mark: "code", icon: "i-lucide-code", tooltip: { text: "Код" } },
-	],
-	[{ slot: "link" as const, icon: "i-lucide-link" }],
-	[
-		{
-			icon: "i-lucide-align-justify",
-			tooltip: { text: "Выравнивание" },
-			content: { align: "end" },
-			items: [
-				{ kind: "textAlign", align: "left", icon: "i-lucide-align-left", label: "Влево" },
-				{ kind: "textAlign", align: "center", icon: "i-lucide-align-center", label: "По центру" },
-				{ kind: "textAlign", align: "right", icon: "i-lucide-align-right", label: "Вправо" },
-				{ kind: "textAlign", align: "justify", icon: "i-lucide-align-justify", label: "По ширине" },
-			],
-		},
-	],
-] satisfies EditorToolbarItem<typeof customHandlers>[][];
+const bubbleToolbarItems = computed((): EditorToolbarItem<typeof customHandlers>[][] => {
+	const turnInto = t("tickets.editor.turnInto");
+	return [
+		[
+			{
+				label: turnInto,
+				trailingIcon: "i-lucide-chevron-down",
+				activeColor: "neutral",
+				activeVariant: "ghost",
+				tooltip: { text: turnInto },
+				content: { align: "start" },
+				ui: { label: "text-xs" },
+				items: [
+					{ type: "label", label: turnInto },
+					{ kind: "paragraph", label: t("tickets.editor.paragraph"), icon: "i-lucide-type" },
+					{ kind: "heading", level: 1, icon: "i-lucide-heading-1", label: t("tickets.editor.heading1") },
+					{ kind: "heading", level: 2, icon: "i-lucide-heading-2", label: t("tickets.editor.heading2") },
+					{ kind: "heading", level: 3, icon: "i-lucide-heading-3", label: t("tickets.editor.heading3") },
+					{ kind: "heading", level: 4, icon: "i-lucide-heading-4", label: t("tickets.editor.heading4") },
+					{ kind: "bulletList", icon: "i-lucide-list", label: t("tickets.editor.list") },
+					{ kind: "orderedList", icon: "i-lucide-list-ordered", label: t("tickets.editor.numberedList") },
+					{ kind: "blockquote", icon: "i-lucide-text-quote", label: t("tickets.editor.blockquote") },
+					{ kind: "codeBlock", icon: "i-lucide-square-code", label: t("tickets.editor.code") },
+				],
+			},
+		],
+		[
+			{ kind: "mark", mark: "bold", icon: "i-lucide-bold", tooltip: { text: t("tickets.editor.bold") } },
+			{ kind: "mark", mark: "italic", icon: "i-lucide-italic", tooltip: { text: t("tickets.editor.italic") } },
+			{
+				kind: "mark",
+				mark: "underline",
+				icon: "i-lucide-underline",
+				tooltip: { text: t("tickets.editor.underline") },
+			},
+			{
+				kind: "mark",
+				mark: "strike",
+				icon: "i-lucide-strikethrough",
+				tooltip: { text: t("tickets.editor.strike") },
+			},
+			{ kind: "mark", mark: "code", icon: "i-lucide-code", tooltip: { text: t("tickets.editor.code") } },
+		],
+		[{ slot: "link" as const, icon: "i-lucide-link" }],
+		[
+			{
+				icon: "i-lucide-align-justify",
+				tooltip: { text: t("tickets.editor.alignment") },
+				content: { align: "end" },
+				items: [
+					{ kind: "textAlign", align: "left", icon: "i-lucide-align-left", label: t("tickets.editor.alignLeft") },
+					{
+						kind: "textAlign",
+						align: "center",
+						icon: "i-lucide-align-center",
+						label: t("tickets.editor.alignCenter"),
+					},
+					{
+						kind: "textAlign",
+						align: "right",
+						icon: "i-lucide-align-right",
+						label: t("tickets.editor.alignRight"),
+					},
+					{
+						kind: "textAlign",
+						align: "justify",
+						icon: "i-lucide-align-justify",
+						label: t("tickets.editor.alignJustify"),
+					},
+				],
+			},
+		],
+	];
+});
 
 const imageToolbarItems = (editor: Editor): EditorToolbarItem[][] => {
 	const node = editor.state.doc.nodeAt(editor.state.selection.from);
@@ -177,13 +222,13 @@ const imageToolbarItems = (editor: Editor): EditorToolbarItem[][] => {
 				icon: "i-lucide-download",
 				to: node?.attrs?.src,
 				download: true,
-				tooltip: { text: "Скачать" },
+				tooltip: { text: t("tickets.editor.download") },
 			},
 		],
 		[
 			{
 				icon: "i-lucide-trash",
-				tooltip: { text: "Удалить" },
+				tooltip: { text: t("tickets.editor.delete") },
 				onClick: () => {
 					const { state } = editor;
 					const { selection } = state;
@@ -212,24 +257,24 @@ const handleItems = (editor: Editor): DropdownMenuItem[][] => {
 				label: upperFirst(selectedNode.value.node.type),
 			},
 			{
-				label: "Превратить в",
+				label: t("tickets.editor.turnInto"),
 				icon: "i-lucide-repeat-2",
 				children: [
-					{ kind: "paragraph", label: "Абзац", icon: "i-lucide-type" },
-					{ kind: "heading", level: 1, label: "Заголовок 1", icon: "i-lucide-heading-1" },
-					{ kind: "heading", level: 2, label: "Заголовок 2", icon: "i-lucide-heading-2" },
-					{ kind: "heading", level: 3, label: "Заголовок 3", icon: "i-lucide-heading-3" },
-					{ kind: "heading", level: 4, label: "Заголовок 4", icon: "i-lucide-heading-4" },
-					{ kind: "bulletList", label: "Список", icon: "i-lucide-list" },
-					{ kind: "orderedList", label: "Нумерация", icon: "i-lucide-list-ordered" },
-					{ kind: "blockquote", label: "Цитата", icon: "i-lucide-text-quote" },
-					{ kind: "codeBlock", label: "Код", icon: "i-lucide-square-code" },
+					{ kind: "paragraph", label: t("tickets.editor.paragraph"), icon: "i-lucide-type" },
+					{ kind: "heading", level: 1, label: t("tickets.editor.heading1"), icon: "i-lucide-heading-1" },
+					{ kind: "heading", level: 2, label: t("tickets.editor.heading2"), icon: "i-lucide-heading-2" },
+					{ kind: "heading", level: 3, label: t("tickets.editor.heading3"), icon: "i-lucide-heading-3" },
+					{ kind: "heading", level: 4, label: t("tickets.editor.heading4"), icon: "i-lucide-heading-4" },
+					{ kind: "bulletList", label: t("tickets.editor.list"), icon: "i-lucide-list" },
+					{ kind: "orderedList", label: t("tickets.editor.numberedList"), icon: "i-lucide-list-ordered" },
+					{ kind: "blockquote", label: t("tickets.editor.blockquote"), icon: "i-lucide-text-quote" },
+					{ kind: "codeBlock", label: t("tickets.editor.code"), icon: "i-lucide-square-code" },
 				],
 			},
 			{
 				kind: "clearFormatting",
 				pos: selectedNode.value?.pos,
-				label: "Сбросить оформление",
+				label: t("tickets.editor.clearFormatting"),
 				icon: "i-lucide-rotate-ccw",
 			},
 		],
@@ -237,11 +282,11 @@ const handleItems = (editor: Editor): DropdownMenuItem[][] => {
 			{
 				kind: "duplicate",
 				pos: selectedNode.value?.pos,
-				label: "Дублировать",
+				label: t("tickets.editor.duplicate"),
 				icon: "i-lucide-copy",
 			},
 			{
-				label: "Копировать текст",
+				label: t("tickets.editor.copyText"),
 				icon: "i-lucide-clipboard",
 				onSelect: async () => {
 					if (!selectedNode.value) return;
@@ -257,13 +302,13 @@ const handleItems = (editor: Editor): DropdownMenuItem[][] => {
 			{
 				kind: "moveUp",
 				pos: selectedNode.value?.pos,
-				label: "Выше",
+				label: t("tickets.editor.moveUp"),
 				icon: "i-lucide-arrow-up",
 			},
 			{
 				kind: "moveDown",
 				pos: selectedNode.value?.pos,
-				label: "Ниже",
+				label: t("tickets.editor.moveDown"),
 				icon: "i-lucide-arrow-down",
 			},
 		],
@@ -271,39 +316,41 @@ const handleItems = (editor: Editor): DropdownMenuItem[][] => {
 			{
 				kind: "delete",
 				pos: selectedNode.value?.pos,
-				label: "Удалить",
+				label: t("tickets.editor.delete"),
 				icon: "i-lucide-trash",
 			},
 		],
 	]) as DropdownMenuItem[][];
 };
 
-const suggestionItems = [
+const suggestionItems = computed((): EditorSuggestionMenuItem<typeof customHandlers>[][] => [
 	[
-		{ type: "label", label: "Стиль" },
-		{ kind: "paragraph", label: "Абзац", icon: "i-lucide-type" },
-		{ kind: "heading", level: 1, label: "Заголовок 1", icon: "i-lucide-heading-1" },
-		{ kind: "heading", level: 2, label: "Заголовок 2", icon: "i-lucide-heading-2" },
-		{ kind: "heading", level: 3, label: "Заголовок 3", icon: "i-lucide-heading-3" },
-		{ kind: "bulletList", label: "Список", icon: "i-lucide-list" },
-		{ kind: "orderedList", label: "Нумерация", icon: "i-lucide-list-ordered" },
-		{ kind: "blockquote", label: "Цитата", icon: "i-lucide-text-quote" },
-		{ kind: "codeBlock", label: "Блок кода", icon: "i-lucide-square-code" },
+		{ type: "label", label: t("tickets.editor.style") },
+		{ kind: "paragraph", label: t("tickets.editor.paragraph"), icon: "i-lucide-type" },
+		{ kind: "heading", level: 1, label: t("tickets.editor.heading1"), icon: "i-lucide-heading-1" },
+		{ kind: "heading", level: 2, label: t("tickets.editor.heading2"), icon: "i-lucide-heading-2" },
+		{ kind: "heading", level: 3, label: t("tickets.editor.heading3"), icon: "i-lucide-heading-3" },
+		{ kind: "bulletList", label: t("tickets.editor.list"), icon: "i-lucide-list" },
+		{ kind: "orderedList", label: t("tickets.editor.numberedList"), icon: "i-lucide-list-ordered" },
+		{ kind: "blockquote", label: t("tickets.editor.blockquote"), icon: "i-lucide-text-quote" },
+		{ kind: "codeBlock", label: t("tickets.editor.codeBlock"), icon: "i-lucide-square-code" },
 	],
 	[
-		{ type: "label", label: "Вставка" },
-		{ kind: "mention", label: "Упоминание", icon: "i-lucide-at-sign" },
-		{ kind: "horizontalRule", label: "Разделитель", icon: "i-lucide-separator-horizontal" },
+		{ type: "label", label: t("tickets.editor.insert") },
+		{ kind: "mention", label: t("tickets.editor.mention"), icon: "i-lucide-at-sign" },
+		{ kind: "horizontalRule", label: t("tickets.editor.horizontalRule"), icon: "i-lucide-separator-horizontal" },
 	],
-] satisfies EditorSuggestionMenuItem<typeof customHandlers>[][];
+]);
 
-const defaultMentionItems: EditorMentionMenuItem[] = [
-	{ label: "concept", icon: "i-lucide-bookmark" },
-	{ label: "definition", icon: "i-lucide-text-quote" },
-	{ label: "example", icon: "i-lucide-lightbulb" },
-];
+const defaultMentionItems = computed(
+	(): EditorMentionMenuItem[] => [
+		{ label: t("tickets.editor.mentionType.concept"), icon: "i-lucide-bookmark" },
+		{ label: t("tickets.editor.mentionType.definition"), icon: "i-lucide-text-quote" },
+		{ label: t("tickets.editor.mentionType.example"), icon: "i-lucide-lightbulb" },
+	],
+);
 
-const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMentionItems);
+const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMentionItems.value);
 </script>
 
 
@@ -313,7 +360,7 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 		v-model="model"
 		content-type="markdown"
 		:extensions="[TextAlign.configure({ types: ['heading', 'paragraph'] })]"
-		:placeholder="placeholder"
+		:placeholder="resolvedPlaceholder"
 		:ui="{ base: ['w-full', editorClass] }"
 		:class="['w-full bg-default transition-opacity duration-200', !editorEditable && 'ticket-editor--read-only']"
 	>

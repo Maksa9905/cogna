@@ -1,4 +1,5 @@
 {
+	"mySubjects": "My subjects",
 	"learnedOutOfTotal": "{learned} / {total} tickets",
 	"averageScore": "Average score: {score}%",
 	"progress": "Overall progress: {percent}% ({learned}/{total})",
