@@ -1,3 +1,3 @@
-import SubjectStatisticsProgressBar from './SubjectStatisticsProgressBar.vue';
+import SubjectStatisticsProgressBar from "./SubjectStatisticsProgressBar.vue";
 
 export default SubjectStatisticsProgressBar;

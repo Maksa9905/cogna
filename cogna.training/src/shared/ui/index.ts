@@ -4,5 +4,7 @@ export { default as Checkbox } from "./Checkbox";
 export { default as PasswordInput } from "./PasswordInput";
 export { default as CircularProgress } from "./CircularProgress";
 export { default as InfinityScroll } from "./InfinityScroll";
+export { default as Skeleton } from "./Skeleton";
+export { default as FloatingElement } from "./FloatingElement";
 
 export { LocaleSwitcher } from "./LocaleSwitcher";

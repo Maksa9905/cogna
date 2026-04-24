@@ -11,7 +11,17 @@ import { mapEditorItems } from "@nuxt/ui/utils/editor";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { upperFirst } from "scule";
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import EditorLinkPopover from "./EditorLinkPopover.vue";
+
+const { t } = useI18n();
+
+const editorEditable = ref(true);
+
+function toggleEditorEditable(editor: Editor) {
+	editorEditable.value = !editorEditable.value;
+	editor.setEditable(editorEditable.value);
+}
 
 const model = defineModel<string>({ default: "" });
 
@@ -20,16 +30,25 @@ const props = withDefaults(
 		placeholder?: string;
 		editorClass?: string;
 		mentionItems?: EditorMentionMenuItem[];
+		isLoading?: boolean;
 	}>(),
 	{
 		placeholder: "Ответ…",
 		editorClass: "",
+		isLoading: false,
 	},
 );
 
 const customHandlers = {} satisfies EditorCustomHandlers;
 
-const fixedToolbarItems = [
+const fixedToolbarToggleGroup = [
+	{
+		slot: "editableToggle" as const,
+		icon: "i-lucide-lock",
+	},
+] satisfies EditorToolbarItem<typeof customHandlers>[];
+
+const fixedToolbarGroupsEdit = [
 	[
 		{
 			kind: "undo",
@@ -95,7 +114,12 @@ const fixedToolbarItems = [
 			],
 		},
 	],
+	fixedToolbarToggleGroup,
 ] satisfies EditorToolbarItem<typeof customHandlers>[][];
+
+const fixedToolbarItems = computed((): EditorToolbarItem<typeof customHandlers>[][] =>
+	editorEditable.value ? fixedToolbarGroupsEdit : [fixedToolbarToggleGroup],
+);
 
 const bubbleToolbarItems = [
 	[
@@ -282,6 +306,7 @@ const defaultMentionItems: EditorMentionMenuItem[] = [
 const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMentionItems);
 </script>
 
+
 <template>
 	<UEditor
 		v-slot="{ editor, handlers }"
@@ -290,15 +315,30 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 		:extensions="[TextAlign.configure({ types: ['heading', 'paragraph'] })]"
 		:placeholder="placeholder"
 		:ui="{ base: ['w-full', editorClass] }"
-		class="w-full bg-default"
+		:class="['w-full bg-default transition-opacity duration-200', !editorEditable && 'ticket-editor--read-only']"
 	>
 		<UEditorToolbar
 			:editor="editor"
 			:items="fixedToolbarItems"
-			class="border-b border-muted sticky top-0 inset-x-0 z-1 bg-default overflow-x-auto px-3 sm:px-6 py-2"
+			:class="[
+				'ticket-editor-fixed-toolbar border-b border-muted sticky top-0 inset-x-0 z-1 overflow-x-auto px-3 sm:px-6 py-2 transition-[background-color,border-color] duration-200',
+				editorEditable ? 'bg-default' : 'bg-muted/30 ticket-editor-fixed-toolbar--read-only',
+			]"
 		>
 			<template #link>
 				<EditorLinkPopover :editor="editor" auto-open />
+			</template>
+			<template #editableToggle>
+				<UTooltip :text="editorEditable ? t('tickets.editorSwitchToReadOnly') : t('tickets.editorSwitchToEdit')">
+					<UButton
+						color="neutral"
+						variant="ghost"
+						size="sm"
+						:icon="editorEditable ? 'i-lucide-eye' : 'i-lucide-pencil-line'"
+						:active="!editorEditable"
+						@click="toggleEditorEditable(editor)"
+					/>
+				</UTooltip>
 			</template>
 		</UEditorToolbar>
 
@@ -307,7 +347,7 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 			:items="bubbleToolbarItems"
 			layout="bubble"
 			:should-show="({ editor: ed, view, state }) => {
-				if (ed.isActive('image')) return false;
+				if (!ed.isEditable || ed.isActive('image')) return false;
 				const { selection } = state;
 				return view.hasFocus() && !selection.empty;
 			}"
@@ -321,14 +361,20 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 			:editor="editor"
 			:items="imageToolbarItems(editor)"
 			layout="bubble"
-			:should-show="({ editor: ed, view }) => ed.isActive('image') && view.hasFocus()"
+			:should-show="({ editor: ed, view }) =>
+				ed.isEditable && ed.isActive('image') && view.hasFocus()"
 		/>
 
-		<UEditorSuggestionMenu :editor="editor" :items="suggestionItems" />
+		<UEditorSuggestionMenu v-if="editorEditable" :editor="editor" :items="suggestionItems" />
 
-		<UEditorMentionMenu :editor="editor" :items="resolvedMentionItems" />
+		<UEditorMentionMenu v-if="editorEditable" :editor="editor" :items="resolvedMentionItems" />
 
-		<UEditorDragHandle v-slot="{ ui, onClick }" :editor="editor" @node-change="selectedNode = $event">
+		<UEditorDragHandle
+			v-if="editorEditable"
+			v-slot="{ ui, onClick }"
+			:editor="editor"
+			@node-change="selectedNode = $event"
+		>
 			<UButton
 				icon="i-lucide-plus"
 				color="neutral"
@@ -366,8 +412,34 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 	</UEditor>
 </template>
 
+<style scoped>
+.ticket-editor-fixed-toolbar :deep([data-slot="base"]) {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	width: 100%;
+}
+
+.ticket-editor-fixed-toolbar :deep([data-slot="group"]:last-child) {
+	margin-left: auto;
+}
+
+/* Режим просмотра: одна группа — так же справа, как переключатель в полном тулбаре */
+.ticket-editor-fixed-toolbar--read-only :deep([data-slot="base"]) {
+	justify-content: flex-end;
+	flex-wrap: nowrap;
+}
+
+.ticket-editor-fixed-toolbar--read-only :deep([data-slot="group"]) {
+	margin-left: auto;
+}
+
+.ticket-editor--read-only :deep([data-slot="content"]) {
+	opacity: 0.92;
+}
+</style>
+
 <style>
-/* Блоки кода — стандартный codeBlock из StarterKit (без Shiki: избегаем гонок PM-декораций с async init) */
 .tiptap pre {
 	background-color: var(--ui-bg-muted);
 	border-radius: var(--ui-radius);

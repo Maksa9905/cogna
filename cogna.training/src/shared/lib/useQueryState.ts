@@ -1,7 +1,9 @@
 import { computed, type WritableComputedRef } from "vue";
 import { useRoute, useRouter, type LocationQueryRaw, type LocationQueryValue } from "vue-router";
 
-function queryValueToString(raw: LocationQueryValue | LocationQueryValue[] | undefined): string | undefined {
+function queryValueToString(
+	raw: LocationQueryValue | LocationQueryValue[] | undefined,
+): string | undefined {
 	if (raw == null) {
 		return undefined;
 	}

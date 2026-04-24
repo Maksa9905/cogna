@@ -24,17 +24,34 @@ const localizedRouteConfig: RouteRecordRaw[] = [
 					{
 						path: "",
 						component: () => RouterUtils.loadPage("home"),
-						meta: { requiresAuth: true, namespaces: ["common", "subjects", "tickets", "user", "menu"] },
+						meta: {
+							requiresAuth: true,
+							namespaces: ["common", "subjects", "tickets", "user", "menu"],
+						},
 					},
 					{
 						path: "subjects/:subjectId",
 						component: () => RouterUtils.loadPage("subject"),
-						meta: { requiresAuth: true, namespaces: ["common", "subjects", "tickets", "user", "menu"] },
+						meta: {
+							requiresAuth: true,
+							namespaces: ["common", "subjects", "tickets", "user", "menu"],
+						},
 					},
 					{
 						path: "subjects/:subjectId/tickets/:ticketId",
 						component: () => RouterUtils.loadPage("ticket"),
-						meta: { requiresAuth: true, namespaces: ["common", "subjects", "tickets", "user", "menu"] },
+						meta: {
+							requiresAuth: true,
+							namespaces: ["common", "subjects", "tickets", "user", "menu"],
+						},
+					},
+					{
+						path: "subjects/:subjectId/tickets/:ticketId/reproduce",
+						component: () => RouterUtils.loadPage("reproduceTicket"),
+						meta: {
+							requiresAuth: true,
+							namespaces: ["common", "subjects", "tickets", "user", "menu"],
+						}
 					}
 				],
 			},

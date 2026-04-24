@@ -1,5 +1,7 @@
 {
 	"editorHint": "«/» — Befehle und Blöcke, «@» — Erwähnungen. Links am Block: verschieben und Menü.",
+	"editorSwitchToReadOnly": "Nur lesen",
+	"editorSwitchToEdit": "Bearbeiten",
 	"searchPlaceholder": "Ticket suchen",
 	"sorting": {
 		"order": "In Listenreihenfolge",

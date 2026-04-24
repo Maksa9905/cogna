@@ -1,5 +1,7 @@
 {
 	"editorHint": "«/» — block commands, «@» — mentions. Use the handle on the left to move a block or open its menu.",
+	"editorSwitchToReadOnly": "View only",
+	"editorSwitchToEdit": "Edit",
 	"searchPlaceholder": "Search ticket",
 	"sorting": {
 		"order": "By list order",

@@ -103,6 +103,9 @@ const lastRepetitionText = computed(() => {
 	color: var(--text-color-default);
 	line-height: 1;
 	align-self: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .tickets-list-item__content {

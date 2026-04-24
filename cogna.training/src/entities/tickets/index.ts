@@ -28,7 +28,6 @@ export type {
 	UpdateTicketPayload,
 } from "./api/types";
 
-export { TicketEditor } from "./ui/TicketEditor";
 export { default as TicketLeariningStateSelect } from "./ui/TicketLeariningStateSelect";
 export { default as TicketSearchInput } from "./ui/TicketSearchInput";
 export { default as TicketsFilters } from "./ui/TicketsFilters";

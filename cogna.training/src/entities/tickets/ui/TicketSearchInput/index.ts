@@ -1,3 +1,3 @@
-import TicketSearchInput from './TicketSearchInput.vue';
+import TicketSearchInput from "./TicketSearchInput.vue";
 
 export default TicketSearchInput;

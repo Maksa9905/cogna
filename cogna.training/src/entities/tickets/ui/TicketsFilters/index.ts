@@ -1,3 +1,3 @@
-import TicketsFilters from './TicketsFilters.vue';
+import TicketsFilters from "./TicketsFilters.vue";
 
 export default TicketsFilters;

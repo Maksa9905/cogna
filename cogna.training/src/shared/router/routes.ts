@@ -6,7 +6,8 @@ export const localizedRoutes = (locale: SupportedLocale) => ({
 	login: `/${locale}/auth/login`,
 	signup: `/${locale}/auth/signup`,
 	subject: (id: string) => `/${locale}/subjects/${id}`,
-	ticket: (subjectId: string, ticketId: string) => `/${locale}/subjects/${subjectId}/tickets/${ticketId}`,
+	ticket: (subjectId: string, ticketId: string) =>
+		`/${locale}/subjects/${subjectId}/tickets/${ticketId}`,
 	subjects: `/${locale}/subjects`,
 	tests: `/${locale}/tests`,
 	statistics: `/${locale}/statistics`,
