@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket-attempt';
+import { LogExecutionTime } from '../../common/decorators';
 import { TicketAttemptRepository } from './ticket-attempt.repository';
 
 @Injectable()
@@ -8,6 +9,7 @@ export class TicketAttemptService {
     private readonly ticketAttemptRepository: TicketAttemptRepository,
   ) {}
 
+  @LogExecutionTime()
   public async handleTicketAttempt(dto: TicketAttemptRequest) {
     const ticketAttempt =
       await this.ticketAttemptRepository.createTicketAttemptWithProgress(dto);

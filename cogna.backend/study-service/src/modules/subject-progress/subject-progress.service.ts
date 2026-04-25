@@ -7,6 +7,7 @@ import {
   FindOneSubjectProgressResponse,
   SubjectProgress,
 } from '@cogna-edu/contracts/gen/study/subject-progress';
+import { LogExecutionTime } from '../../common/decorators';
 
 @Injectable()
 export class SubjectProgressService {
@@ -18,6 +19,7 @@ export class SubjectProgressService {
     this.logger = new Logger('SubjectProgressService');
   }
 
+  @LogExecutionTime()
   public async findOne(
     dto: FindOneSubjectProgressRequest,
   ): Promise<FindOneSubjectProgressResponse> {
@@ -51,6 +53,7 @@ export class SubjectProgressService {
     return response;
   }
 
+  @LogExecutionTime()
   public async findAll(
     dto: FindAllSubjectProgressRequest,
   ): Promise<FindAllSubjectProgressResponse> {

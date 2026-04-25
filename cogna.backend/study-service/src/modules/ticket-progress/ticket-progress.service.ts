@@ -10,6 +10,7 @@ import {
 } from '@cogna-edu/contracts/gen/study/ticket-progress';
 import { RpcException } from '@nestjs/microservices';
 import { TicketProgress as TicketProgressPrisma } from '../../../prisma/generated/client';
+import { LogExecutionTime } from '../../common/decorators';
 
 @Injectable()
 export class TicketProgressService {
@@ -21,6 +22,7 @@ export class TicketProgressService {
     this.logger = new Logger('TicketProgressService');
   }
 
+  @LogExecutionTime()
   public async findOne(
     dto: FindOneTicketProgressRequest,
   ): Promise<FindOneTicketProgressResponse> {
@@ -35,6 +37,7 @@ export class TicketProgressService {
     };
   }
 
+  @LogExecutionTime()
   public async findAll(
     dto: FindAllTicketsProgressRequest,
   ): Promise<FindAllTicketsProgressResponse> {
@@ -50,11 +53,10 @@ export class TicketProgressService {
     };
   }
 
+  @LogExecutionTime()
   public async batchTicketsBySubjects(
     dto: BatchTicketProgressBySubjectsRequest,
   ): Promise<FindAllTicketsProgressResponse> {
-    this.logger.debug('Batch TicketsBySubjects');
-
     const tickets = await this.ticketProgressRepository.batchBySubjects(
       dto.userId,
       dto.subjectIds,
