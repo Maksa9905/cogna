@@ -51,4 +51,13 @@ export class TicketAttemptRepository {
       return attempt;
     });
   }
+
+  public async batchByTicketProgress(data: {
+    userId: string;
+    ticketId: string;
+  }) {
+    return this.prismaService.ticketAttempt.findMany({
+      where: { userId: data.userId, ticketId: data.ticketId },
+    });
+  }
 }

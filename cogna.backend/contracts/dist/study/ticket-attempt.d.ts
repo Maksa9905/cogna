@@ -1,5 +1,4 @@
 import { Observable } from "rxjs";
-import { Empty } from "../google/protobuf/empty";
 export declare const protobufPackage = "study.ticket.attempt.v1";
 /**
  * Kafka. Assessment-service -> Study-service
@@ -43,16 +42,26 @@ export interface findAllTicketsAttemptsRequest {
 export interface findAllTicketsAttemptsResponse {
     ticketsAttempts: TicketAttempt[];
 }
+export interface batchTicketAttemptsRequest {
+    userId: string;
+    ticketIds: string;
+}
 export declare const STUDY_TICKET_ATTEMPT_V1_PACKAGE_NAME = "study.ticket.attempt.v1";
 export interface StudyTicketAttemptServiceClient {
-    ticketAttempt(request: TicketAttemptRequest): Observable<Empty>;
-    findOneTicketAttempt(request: findOneTicketAttemptRequest): Observable<findOneTicketAttemptResponse>;
-    findAllTicketsAttempts(request: findAllTicketsAttemptsRequest): Observable<findAllTicketsAttemptsResponse>;
+    /**
+     * rpc TicketAttempt(TicketAttemptRequest) returns (google.protobuf.Empty);
+     *  rpc FindOneTicketAttempt(findOneTicketAttemptRequest) returns (findOneTicketAttemptResponse);
+     *  rpc FindAllTicketsAttempts(findAllTicketsAttemptsRequest) returns (findAllTicketsAttemptsResponse);
+     */
+    batchTicketAttemptsByTicketProgress(request: batchTicketAttemptsRequest): Observable<findAllTicketsAttemptsResponse>;
 }
 export interface StudyTicketAttemptServiceController {
-    ticketAttempt(request: TicketAttemptRequest): void | Promise<void>;
-    findOneTicketAttempt(request: findOneTicketAttemptRequest): Promise<findOneTicketAttemptResponse> | Observable<findOneTicketAttemptResponse> | findOneTicketAttemptResponse;
-    findAllTicketsAttempts(request: findAllTicketsAttemptsRequest): Promise<findAllTicketsAttemptsResponse> | Observable<findAllTicketsAttemptsResponse> | findAllTicketsAttemptsResponse;
+    /**
+     * rpc TicketAttempt(TicketAttemptRequest) returns (google.protobuf.Empty);
+     *  rpc FindOneTicketAttempt(findOneTicketAttemptRequest) returns (findOneTicketAttemptResponse);
+     *  rpc FindAllTicketsAttempts(findAllTicketsAttemptsRequest) returns (findAllTicketsAttemptsResponse);
+     */
+    batchTicketAttemptsByTicketProgress(request: batchTicketAttemptsRequest): Promise<findAllTicketsAttemptsResponse> | Observable<findAllTicketsAttemptsResponse> | findAllTicketsAttemptsResponse;
 }
 export declare function StudyTicketAttemptServiceControllerMethods(): (constructor: Function) => void;
 export declare const STUDY_TICKET_ATTEMPT_SERVICE_NAME = "StudyTicketAttemptService";

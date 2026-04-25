@@ -22,7 +22,7 @@ protobufjs_1.wrappers[".google.protobuf.Timestamp"] = {
 };
 function StudyTicketAttemptServiceControllerMethods() {
     return function (constructor) {
-        const grpcMethods = ["ticketAttempt", "findOneTicketAttempt", "findAllTicketsAttempts"];
+        const grpcMethods = ["batchTicketAttemptsByTicketProgress"];
         for (const method of grpcMethods) {
             const descriptor = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
             (0, microservices_1.GrpcMethod)("StudyTicketAttemptService", method)(constructor.prototype[method], method, descriptor);

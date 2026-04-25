@@ -8,7 +8,6 @@
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
-import { Empty } from "../google/protobuf/empty";
 
 export const protobufPackage = "study.ticket.attempt.v1";
 
@@ -61,6 +60,11 @@ export interface findAllTicketsAttemptsResponse {
   ticketsAttempts: TicketAttempt[];
 }
 
+export interface batchTicketAttemptsRequest {
+  userId: string;
+  ticketIds: string;
+}
+
 export const STUDY_TICKET_ATTEMPT_V1_PACKAGE_NAME = "study.ticket.attempt.v1";
 
 wrappers[".google.protobuf.Timestamp"] = {
@@ -73,22 +77,24 @@ wrappers[".google.protobuf.Timestamp"] = {
 } as any;
 
 export interface StudyTicketAttemptServiceClient {
-  ticketAttempt(request: TicketAttemptRequest): Observable<Empty>;
+  /**
+   * rpc TicketAttempt(TicketAttemptRequest) returns (google.protobuf.Empty);
+   *  rpc FindOneTicketAttempt(findOneTicketAttemptRequest) returns (findOneTicketAttemptResponse);
+   *  rpc FindAllTicketsAttempts(findAllTicketsAttemptsRequest) returns (findAllTicketsAttemptsResponse);
+   */
 
-  findOneTicketAttempt(request: findOneTicketAttemptRequest): Observable<findOneTicketAttemptResponse>;
-
-  findAllTicketsAttempts(request: findAllTicketsAttemptsRequest): Observable<findAllTicketsAttemptsResponse>;
+  batchTicketAttemptsByTicketProgress(request: batchTicketAttemptsRequest): Observable<findAllTicketsAttemptsResponse>;
 }
 
 export interface StudyTicketAttemptServiceController {
-  ticketAttempt(request: TicketAttemptRequest): void | Promise<void>;
+  /**
+   * rpc TicketAttempt(TicketAttemptRequest) returns (google.protobuf.Empty);
+   *  rpc FindOneTicketAttempt(findOneTicketAttemptRequest) returns (findOneTicketAttemptResponse);
+   *  rpc FindAllTicketsAttempts(findAllTicketsAttemptsRequest) returns (findAllTicketsAttemptsResponse);
+   */
 
-  findOneTicketAttempt(
-    request: findOneTicketAttemptRequest,
-  ): Promise<findOneTicketAttemptResponse> | Observable<findOneTicketAttemptResponse> | findOneTicketAttemptResponse;
-
-  findAllTicketsAttempts(
-    request: findAllTicketsAttemptsRequest,
+  batchTicketAttemptsByTicketProgress(
+    request: batchTicketAttemptsRequest,
   ):
     | Promise<findAllTicketsAttemptsResponse>
     | Observable<findAllTicketsAttemptsResponse>
@@ -97,7 +103,7 @@ export interface StudyTicketAttemptServiceController {
 
 export function StudyTicketAttemptServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["ticketAttempt", "findOneTicketAttempt", "findAllTicketsAttempts"];
+    const grpcMethods: string[] = ["batchTicketAttemptsByTicketProgress"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("StudyTicketAttemptService", method)(constructor.prototype[method], method, descriptor);

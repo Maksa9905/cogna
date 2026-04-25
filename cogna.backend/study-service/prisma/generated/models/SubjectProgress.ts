@@ -1098,6 +1098,11 @@ export type SubjectProgressFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Skip the first `n` SubjectProgresses.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of SubjectProgresses.
+   */
   distinct?: Prisma.SubjectProgressScalarFieldEnum | Prisma.SubjectProgressScalarFieldEnum[]
 }
 

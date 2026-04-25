@@ -10,7 +10,7 @@ import {
 } from '@cogna-edu/contracts/gen/study/ticket-progress';
 import { RpcException } from '@nestjs/microservices';
 import { TicketProgress as TicketProgressPrisma } from '../../../prisma/generated/client';
-import { LogExecutionTime } from '../../common/decorators';
+import { LogExecutionTime } from '@cogna-edu/corn';
 
 @Injectable()
 export class TicketProgressService {

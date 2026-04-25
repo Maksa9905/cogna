@@ -7,7 +7,7 @@ import {
   FindOneSubjectProgressResponse,
   SubjectProgress,
 } from '@cogna-edu/contracts/gen/study/subject-progress';
-import { LogExecutionTime } from '../../common/decorators';
+import { LogExecutionTime } from '@cogna-edu/corn';
 
 @Injectable()
 export class SubjectProgressService {

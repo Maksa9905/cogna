@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket-attempt';
-import { LogExecutionTime } from '../../common/decorators';
+import { LogExecutionTime } from '@cogna-edu/corn';
 import { TicketAttemptRepository } from './ticket-attempt.repository';
 
 @Injectable()

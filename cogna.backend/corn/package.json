@@ -1,6 +1,6 @@
 {
   "name": "@cogna-edu/corn",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,6 +9,7 @@
     "src"
   ],
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
