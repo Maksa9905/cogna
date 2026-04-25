@@ -24,6 +24,9 @@ import { Request } from 'express';
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn';
 import { TicketService } from '../services/ticket.service';
+import { SubjectProgressGql } from '../../study/dto';
+import { SubjectProgressService } from '../../study/services/subject-progress.service';
+import { firstValueFrom } from 'rxjs';
 
 @Protected(UserRole.USER)
 @Resolver(() => SubjectGql)
@@ -31,6 +34,7 @@ export class SubjectResolver {
   constructor(
     private readonly subjectService: SubjectService,
     private readonly ticketService: TicketService,
+    private readonly subjectProgressService: SubjectProgressService,
   ) {}
 
   // @ResolveField(() => [TicketGql])
@@ -96,5 +100,16 @@ export class SubjectResolver {
     const { id } = subject;
     const response = await this.ticketService.findAllTickets({ subjectId: id });
     return response.tickets;
+  }
+
+  @ResolveField(() => SubjectProgressGql, { nullable: true })
+  public async subjectProgress(@Parent() subject: SubjectGql) {
+    const result = await firstValueFrom(
+      this.subjectProgressService.findOne({
+        subjectId: subject.id,
+        userId: subject.userId,
+      }),
+    );
+    return result.subjectProgress ?? null;
   }
 }

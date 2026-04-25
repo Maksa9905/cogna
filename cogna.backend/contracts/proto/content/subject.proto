@@ -3,6 +3,7 @@ syntax = 'proto3';
 package subject.v1;
 
 import "content/common.proto";
+//import "contracts/proto/content/common.proto";
 import "google/protobuf/timestamp.proto";
 
 service SubjectService {

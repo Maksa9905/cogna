@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { SubjectProgressRepository } from './subject-progress.repository';
 import {
   FindAllSubjectProgressRequest,
@@ -7,23 +7,33 @@ import {
   FindOneSubjectProgressResponse,
   SubjectProgress,
 } from '@cogna-edu/contracts/gen/study/subject-progress';
-import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class SubjectProgressService {
+  private logger: Logger;
+
   constructor(
     private readonly subjectProgressRepository: SubjectProgressRepository,
-  ) {}
+  ) {
+    this.logger = new Logger('SubjectProgressService');
+  }
 
   public async findOne(
     dto: FindOneSubjectProgressRequest,
   ): Promise<FindOneSubjectProgressResponse> {
+    this.logger.log(
+      `userId: ${dto.userId.slice(0, 7)}, subjectId: ${dto.subjectId}`,
+    );
+
     const subject = await this.subjectProgressRepository.findOne(
       dto.userId,
       dto.subjectId,
     );
 
-    if (!subject) throw new RpcException({});
+    if (!subject) {
+      this.logger.debug('Предмет не найден');
+      return { subjectProgress: undefined };
+    }
 
     const response: FindOneSubjectProgressResponse = {
       subjectProgress: {

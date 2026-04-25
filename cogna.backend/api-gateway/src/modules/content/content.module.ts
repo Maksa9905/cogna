@@ -5,9 +5,11 @@ import { TicketResolver } from './resolvers/ticket.resolver';
 import { SubjectResolver } from './resolvers/subject.resolver';
 import { SubjectService } from './services/subject.service';
 import { TicketService } from './services/ticket.service';
+import { StudyModule } from '../study/study.module';
 
 @Module({
   imports: [
+    StudyModule,
     ClientsModule.registerAsync([
       {
         name: 'CONTENT_GRPC',

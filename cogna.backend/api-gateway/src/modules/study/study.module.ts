@@ -57,5 +57,6 @@ import { TicketProgressService } from './services/ticket-progress.service';
     TicketProgressService,
     TicketProgressLoadersService,
   ],
+  exports: [ClientsModule, SubjectProgressService],
 })
 export class StudyModule {}
