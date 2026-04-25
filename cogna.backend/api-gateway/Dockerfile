@@ -22,4 +22,5 @@ COPY ./api-gateway .
 #RUN npx prisma generate
 RUN npm run build
 
-CMD ["node", "dist/main.js"]
+# OpenTelemetry: патч HTTP до загрузки Nest (см. src/tracing.ts)
+CMD ["node", "--require", "./dist/tracing.js", "dist/main.js"]

@@ -58,6 +58,11 @@ message findAllTicketsAttemptsResponse {
   repeated TicketAttempt tickets_attempts = 1;
 }
 
+message batchTicketAttemptsRequest {
+  string user_id = 1;
+  string ticket_ids = 2;
+}
+
 
 
 
