@@ -32,9 +32,6 @@ export interface ThesisAssessment {
 export interface TicketAttempt {
   id: string;
   ticketProgressId: string;
-  ticketId: string;
-  userId: string;
-  subjectId: string;
   score: number;
   summary: string;
   theses: ThesisAssessment[];
@@ -42,28 +39,28 @@ export interface TicketAttempt {
   updatedAt: Date | undefined;
 }
 
-export interface findOneTicketAttemptRequest {
+export interface FindOneTicketAttemptRequest {
   ticketAttemptId: string;
   ticketId: string;
   userId: string;
 }
 
-export interface findOneTicketAttemptResponse {
+export interface FindOneTicketAttemptResponse {
   ticketAttempt: TicketAttempt | undefined;
 }
 
-export interface findAllTicketsAttemptsRequest {
+export interface FindAllTicketsAttemptsRequest {
   ticketId: string;
   userId: string;
 }
 
-export interface findAllTicketsAttemptsResponse {
+export interface FindAllTicketsAttemptsResponse {
   ticketsAttempts: TicketAttempt[];
 }
 
-export interface batchTicketAttemptsRequest {
+export interface BatchTicketAttemptsRequest {
   userId: string;
-  ticketIds: string;
+  ticketProgressIds: string;
 }
 
 export const STUDY_TICKET_ATTEMPT_V1_PACKAGE_NAME = "study.ticket.attempt.v1";
@@ -84,7 +81,7 @@ export interface StudyTicketAttemptServiceClient {
    *  rpc FindAllTicketsAttempts(findAllTicketsAttemptsRequest) returns (findAllTicketsAttemptsResponse);
    */
 
-  batchTicketAttemptsByTicketProgress(request: batchTicketAttemptsRequest): Observable<findAllTicketsAttemptsResponse>;
+  batchTicketAttemptsByTicketProgress(request: BatchTicketAttemptsRequest): Observable<FindAllTicketsAttemptsResponse>;
 }
 
 export interface StudyTicketAttemptServiceController {
@@ -95,11 +92,11 @@ export interface StudyTicketAttemptServiceController {
    */
 
   batchTicketAttemptsByTicketProgress(
-    request: batchTicketAttemptsRequest,
+    request: BatchTicketAttemptsRequest,
   ):
-    | Promise<findAllTicketsAttemptsResponse>
-    | Observable<findAllTicketsAttemptsResponse>
-    | findAllTicketsAttemptsResponse;
+    | Promise<FindAllTicketsAttemptsResponse>
+    | Observable<FindAllTicketsAttemptsResponse>
+    | FindAllTicketsAttemptsResponse;
 }
 
 export function StudyTicketAttemptServiceControllerMethods() {

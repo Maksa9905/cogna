@@ -86,15 +86,17 @@ export class TicketProgressService {
     dto: TicketProgressAfterAttemptInput,
     tx?: Pick<PrismaService, 'ticketProgress'>,
   ): Promise<{ progress: TicketProgressPrisma; newlyStudied: boolean }> {
-    const existing = await this.ticketProgressRepository.findByUserIdAndTicketId(
-      dto.userId,
-      dto.ticketId,
-      tx,
-    );
+    const existing =
+      await this.ticketProgressRepository.findByUserIdAndTicketId(
+        dto.userId,
+        dto.ticketId,
+        tx,
+      );
 
     const newTotalCount = existing ? existing.totalCount + 1 : 1;
     const newAverageScore = existing
-      ? (existing.averageScore * existing.totalCount + dto.score) / newTotalCount
+      ? (existing.averageScore * existing.totalCount + dto.score) /
+        newTotalCount
       : dto.score;
     const newBestScore = existing
       ? Math.max(existing.bestScore, dto.score)
@@ -103,18 +105,19 @@ export class TicketProgressService {
     const isNowStudied = newBestScore >= 5;
     const newlyStudied = !wasStudied && isNowStudied;
 
-    const progress = await this.ticketProgressRepository.upsertAfterAttemptScore(
-      {
-        userId: dto.userId,
-        ticketId: dto.ticketId,
-        subjectId: dto.subjectId,
-        attemptScore: dto.score,
-        newTotalCount,
-        newBestScore,
-        newAverageScore,
-      },
-      tx,
-    );
+    const progress =
+      await this.ticketProgressRepository.upsertAfterAttemptScore(
+        {
+          userId: dto.userId,
+          ticketId: dto.ticketId,
+          subjectId: dto.subjectId,
+          attemptScore: dto.score,
+          newTotalCount,
+          newBestScore,
+          newAverageScore,
+        },
+        tx,
+      );
 
     return { progress, newlyStudied };
   }

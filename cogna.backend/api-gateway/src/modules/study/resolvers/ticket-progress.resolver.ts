@@ -37,5 +37,4 @@ export class TicketProgressResolver {
       subjectId: data.subjectId,
     });
   }
-
 }

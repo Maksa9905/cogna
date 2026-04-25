@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { ThesisAssessmentGql } from '../../../../common/graphql/thesis-assessment.gql';
+import { ThesisAssessmentGql } from '../../../study/dto/entities/ticket-attempt.entity';
 import { AssessmentCompletedResponse } from '@cogna-edu/contracts/gen/assessment/assessment';
 
 @ObjectType()

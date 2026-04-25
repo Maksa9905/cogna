@@ -9,7 +9,7 @@ service StudyTicketAttemptService {
 //  rpc TicketAttempt(TicketAttemptRequest) returns (google.protobuf.Empty);
 //  rpc FindOneTicketAttempt(findOneTicketAttemptRequest) returns (findOneTicketAttemptResponse);
 //  rpc FindAllTicketsAttempts(findAllTicketsAttemptsRequest) returns (findAllTicketsAttemptsResponse);
-  rpc BatchTicketAttemptsByTicketProgress(batchTicketAttemptsRequest) returns (findAllTicketsAttemptsResponse);
+  rpc BatchTicketAttemptsByTicketProgress(BatchTicketAttemptsRequest) returns (FindAllTicketsAttemptsResponse);
 }
 
 // Kafka. Assessment-service -> Study-service
@@ -31,9 +31,6 @@ message ThesisAssessment {
 message TicketAttempt {
   string id = 1;
   string ticket_progress_id = 2;
-  string ticket_id = 3;
-  string user_id = 4;
-  string subject_id = 5;
   float score = 6;
   string summary = 7;
   repeated ThesisAssessment theses = 8;
@@ -41,28 +38,28 @@ message TicketAttempt {
   google.protobuf.Timestamp updated_at = 10;
 }
 
-message findOneTicketAttemptRequest {
+message FindOneTicketAttemptRequest {
   string ticket_attempt_id = 1;
   string ticket_id = 2;
   string user_id = 3;
 }
 
-message findOneTicketAttemptResponse {
+message FindOneTicketAttemptResponse {
   TicketAttempt ticket_attempt = 1;
 }
 
-message findAllTicketsAttemptsRequest {
+message FindAllTicketsAttemptsRequest {
   string ticket_id = 2;
   string user_id = 3;
 }
 
-message findAllTicketsAttemptsResponse {
+message FindAllTicketsAttemptsResponse {
   repeated TicketAttempt tickets_attempts = 1;
 }
 
-message batchTicketAttemptsRequest {
+message BatchTicketAttemptsRequest {
   string user_id = 1;
-  string ticket_ids = 2;
+  string ticket_progress_ids = 2;
 }
 
 

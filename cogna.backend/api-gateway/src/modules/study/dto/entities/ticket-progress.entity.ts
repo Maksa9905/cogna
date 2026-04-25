@@ -1,5 +1,6 @@
 import { TicketProgress } from '@cogna-edu/contracts/gen/study/ticket-progress';
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import { TicketAttemptGql } from './ticket-attempt.entity';
 
 @ObjectType()
 export class TicketProgressGql implements TicketProgress {
@@ -26,6 +27,9 @@ export class TicketProgressGql implements TicketProgress {
 
   @Field(() => Float)
   averageScore: number;
+
+  @Field(() => [TicketAttemptGql])
+  ticketAttempts: TicketAttemptGql[];
 
   @Field(() => Date, { nullable: true })
   createdAt: Date | undefined;

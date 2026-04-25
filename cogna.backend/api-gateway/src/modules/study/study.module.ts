@@ -3,8 +3,11 @@ import { ClientsModule, GrpcOptions, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SubjectProgressFieldsResolver } from './resolvers/subject-progress.fields.resolver';
 import { SubjectProgressResolver } from './resolvers/subject-progress.resolver';
+import { TicketProgressFieldsResolver } from './resolvers/ticket-progress.fields.resolver';
 import { TicketProgressResolver } from './resolvers/ticket-progress.resolver';
 import { SubjectProgressService } from './services/subject-progress.service';
+import { TicketAttemptLoadersService } from './services/ticket-attempt-loaders.service';
+import { TicketAttemptService } from './services/ticket-attempt.service';
 import { TicketProgressLoadersService } from './services/ticket-progress-loaders.service';
 import { TicketProgressService } from './services/ticket-progress.service';
 
@@ -52,8 +55,11 @@ import { TicketProgressService } from './services/ticket-progress.service';
   providers: [
     SubjectProgressResolver,
     SubjectProgressFieldsResolver,
+    TicketProgressFieldsResolver,
     TicketProgressResolver,
     SubjectProgressService,
+    TicketAttemptService,
+    TicketAttemptLoadersService,
     TicketProgressService,
     TicketProgressLoadersService,
   ],
