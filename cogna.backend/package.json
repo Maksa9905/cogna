@@ -1,0 +1,12 @@
+{
+  "name": "cogna-backend",
+  "private": true,
+  "description": "Monorepo root: shared Prettier and tooling",
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2"
+  }
+}
