@@ -11,6 +11,15 @@ import {
 import { RpcException } from '@nestjs/microservices';
 import { TicketProgress as TicketProgressPrisma } from '../../../prisma/generated/client';
 import { LogExecutionTime } from '@cogna-edu/corn';
+import { PrismaService } from '../../infra/prisma/prisma.service';
+
+/** Событие: новая оценка по билету (например из Kafka ticket-attempt). */
+export type TicketProgressAfterAttemptInput = {
+  ticketId: string;
+  userId: string;
+  subjectId: string;
+  score: number;
+};
 
 @Injectable()
 export class TicketProgressService {
@@ -67,6 +76,47 @@ export class TicketProgressService {
         return this.mapPrismaToGrpc(t);
       }),
     };
+  }
+
+  /**
+   * Пересчёт агрегатов прогресса по билету после оценки попытки
+   * (gRPC-методы выше сюда не заходят).
+   */
+  public async upsertWithNewScore(
+    dto: TicketProgressAfterAttemptInput,
+    tx?: Pick<PrismaService, 'ticketProgress'>,
+  ): Promise<{ progress: TicketProgressPrisma; newlyStudied: boolean }> {
+    const existing = await this.ticketProgressRepository.findByUserIdAndTicketId(
+      dto.userId,
+      dto.ticketId,
+      tx,
+    );
+
+    const newTotalCount = existing ? existing.totalCount + 1 : 1;
+    const newAverageScore = existing
+      ? (existing.averageScore * existing.totalCount + dto.score) / newTotalCount
+      : dto.score;
+    const newBestScore = existing
+      ? Math.max(existing.bestScore, dto.score)
+      : dto.score;
+    const wasStudied = (existing?.bestScore ?? 0) >= 5;
+    const isNowStudied = newBestScore >= 5;
+    const newlyStudied = !wasStudied && isNowStudied;
+
+    const progress = await this.ticketProgressRepository.upsertAfterAttemptScore(
+      {
+        userId: dto.userId,
+        ticketId: dto.ticketId,
+        subjectId: dto.subjectId,
+        attemptScore: dto.score,
+        newTotalCount,
+        newBestScore,
+        newAverageScore,
+      },
+      tx,
+    );
+
+    return { progress, newlyStudied };
   }
 
   private mapPrismaToGrpc(

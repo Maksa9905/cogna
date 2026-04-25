@@ -6,5 +6,6 @@ import { TicketProgressRepository } from './ticket-progress.repository';
 @Module({
   controllers: [TicketProgressController],
   providers: [TicketProgressService, TicketProgressRepository],
+  exports: [TicketProgressService],
 })
 export class TicketProgressModule {}
