@@ -11,10 +11,14 @@ import {
 } from '@cogna-edu/contracts/gen/content/subject';
 import { RpcException } from '@nestjs/microservices';
 import { SuccessResponse } from '@cogna-edu/contracts/gen/content/common';
+import { KafkaStudyClient } from '../../infra/kafka/clients/kafka-study.client';
 
 @Injectable()
 export class SubjectService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly studyKafkaClient: KafkaStudyClient,
+  ) {}
 
   public async createSubject(
     dto: CreateSubjectRequest,
@@ -81,6 +85,7 @@ export class SubjectService {
     await this.prismaService.subject.delete({
       where: { id, userId },
     });
+    await this.studyKafkaClient.deleteSubjectProgress(dto);
     return { ok: true };
   }
 }

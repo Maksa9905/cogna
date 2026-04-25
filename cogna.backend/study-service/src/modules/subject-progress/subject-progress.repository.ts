@@ -108,4 +108,10 @@ export class SubjectProgressRepository {
       where: { userId: userId },
     });
   }
+
+  public async delete(userId: string, subjectId: string) {
+    return this.prismaService.subjectProgress.delete({
+      where: { userId_subjectId: { userId, subjectId } },
+    });
+  }
 }

@@ -50,7 +50,9 @@ export class TicketProgressRepository {
   ): Promise<TicketProgress> {
     const client = tx ?? this.prismaService;
     return client.ticketProgress.upsert({
-      where: { userId_ticketId: { userId: data.userId, ticketId: data.ticketId } },
+      where: {
+        userId_ticketId: { userId: data.userId, ticketId: data.ticketId },
+      },
       create: {
         ticketId: data.ticketId,
         userId: data.userId,
