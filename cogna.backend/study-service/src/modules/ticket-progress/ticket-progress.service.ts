@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { TicketProgressRepository } from './ticket-progress.repository';
 import {
   BatchTicketProgressBySubjectsRequest,
@@ -13,9 +13,13 @@ import { TicketProgress as TicketProgressPrisma } from '../../../prisma/generate
 
 @Injectable()
 export class TicketProgressService {
+  private logger: Logger;
+
   constructor(
     private readonly ticketProgressRepository: TicketProgressRepository,
-  ) {}
+  ) {
+    this.logger = new Logger('TicketProgressService');
+  }
 
   public async findOne(
     dto: FindOneTicketProgressRequest,
@@ -49,6 +53,8 @@ export class TicketProgressService {
   public async batchTicketsBySubjects(
     dto: BatchTicketProgressBySubjectsRequest,
   ): Promise<FindAllTicketsProgressResponse> {
+    this.logger.debug('Batch TicketsBySubjects');
+
     const tickets = await this.ticketProgressRepository.batchBySubjects(
       dto.userId,
       dto.subjectIds,
