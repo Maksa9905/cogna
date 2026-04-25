@@ -1,13 +1,13 @@
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn';
-import { Args, Context, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { TicketProgressService } from '../services/ticket-progress.service';
 import { Request } from 'express';
 import {
   FindAllTicketsProgressRequestGql,
   FindAllTicketsProgressResponseGql,
   FindOneTicketProgressRequestGql,
-  FindOneTicketProgressResponseGql,
+  FindOneTicketProgressResponseGql, TicketAttemptEntity,
 } from '../dto';
 
 @Protected(UserRole.USER)
@@ -37,4 +37,5 @@ export class TicketProgressResolver {
       subjectId: data.subjectId,
     });
   }
+
 }

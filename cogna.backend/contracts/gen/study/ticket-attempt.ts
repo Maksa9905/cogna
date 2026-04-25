@@ -31,6 +31,7 @@ export interface ThesisAssessment {
 
 export interface TicketAttempt {
   id: string;
+  ticketProgressId: string;
   ticketId: string;
   userId: string;
   subjectId: string;

@@ -36,9 +36,7 @@ export type TicketAttemptSumAggregateOutputType = {
 
 export type TicketAttemptMinAggregateOutputType = {
   id: string | null
-  ticketId: string | null
-  userId: string | null
-  subjectId: string | null
+  ticketProgressId: string | null
   score: number | null
   summary: string | null
   createdAt: Date | null
@@ -47,9 +45,7 @@ export type TicketAttemptMinAggregateOutputType = {
 
 export type TicketAttemptMaxAggregateOutputType = {
   id: string | null
-  ticketId: string | null
-  userId: string | null
-  subjectId: string | null
+  ticketProgressId: string | null
   score: number | null
   summary: string | null
   createdAt: Date | null
@@ -58,9 +54,7 @@ export type TicketAttemptMaxAggregateOutputType = {
 
 export type TicketAttemptCountAggregateOutputType = {
   id: number
-  ticketId: number
-  userId: number
-  subjectId: number
+  ticketProgressId: number
   score: number
   summary: number
   theses: number
@@ -80,9 +74,7 @@ export type TicketAttemptSumAggregateInputType = {
 
 export type TicketAttemptMinAggregateInputType = {
   id?: true
-  ticketId?: true
-  userId?: true
-  subjectId?: true
+  ticketProgressId?: true
   score?: true
   summary?: true
   createdAt?: true
@@ -91,9 +83,7 @@ export type TicketAttemptMinAggregateInputType = {
 
 export type TicketAttemptMaxAggregateInputType = {
   id?: true
-  ticketId?: true
-  userId?: true
-  subjectId?: true
+  ticketProgressId?: true
   score?: true
   summary?: true
   createdAt?: true
@@ -102,9 +92,7 @@ export type TicketAttemptMaxAggregateInputType = {
 
 export type TicketAttemptCountAggregateInputType = {
   id?: true
-  ticketId?: true
-  userId?: true
-  subjectId?: true
+  ticketProgressId?: true
   score?: true
   summary?: true
   theses?: true
@@ -201,9 +189,7 @@ export type TicketAttemptGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 
 export type TicketAttemptGroupByOutputType = {
   id: string
-  ticketId: string
-  userId: string
-  subjectId: string
+  ticketProgressId: string
   score: number
   summary: string | null
   theses: runtime.JsonValue | null
@@ -236,26 +222,24 @@ export type TicketAttemptWhereInput = {
   OR?: Prisma.TicketAttemptWhereInput[]
   NOT?: Prisma.TicketAttemptWhereInput | Prisma.TicketAttemptWhereInput[]
   id?: Prisma.StringFilter<"TicketAttempt"> | string
-  ticketId?: Prisma.StringFilter<"TicketAttempt"> | string
-  userId?: Prisma.StringFilter<"TicketAttempt"> | string
-  subjectId?: Prisma.StringFilter<"TicketAttempt"> | string
+  ticketProgressId?: Prisma.StringFilter<"TicketAttempt"> | string
   score?: Prisma.FloatFilter<"TicketAttempt"> | number
   summary?: Prisma.StringNullableFilter<"TicketAttempt"> | string | null
   theses?: Prisma.JsonNullableFilter<"TicketAttempt">
   createdAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
+  ticketProgress?: Prisma.XOR<Prisma.TicketProgressScalarRelationFilter, Prisma.TicketProgressWhereInput>
 }
 
 export type TicketAttemptOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  ticketId?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrder
+  ticketProgressId?: Prisma.SortOrder
   score?: Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
   theses?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  ticketProgress?: Prisma.TicketProgressOrderByWithRelationInput
 }
 
 export type TicketAttemptWhereUniqueInput = Prisma.AtLeast<{
@@ -263,21 +247,18 @@ export type TicketAttemptWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.TicketAttemptWhereInput | Prisma.TicketAttemptWhereInput[]
   OR?: Prisma.TicketAttemptWhereInput[]
   NOT?: Prisma.TicketAttemptWhereInput | Prisma.TicketAttemptWhereInput[]
-  ticketId?: Prisma.StringFilter<"TicketAttempt"> | string
-  userId?: Prisma.StringFilter<"TicketAttempt"> | string
-  subjectId?: Prisma.StringFilter<"TicketAttempt"> | string
+  ticketProgressId?: Prisma.StringFilter<"TicketAttempt"> | string
   score?: Prisma.FloatFilter<"TicketAttempt"> | number
   summary?: Prisma.StringNullableFilter<"TicketAttempt"> | string | null
   theses?: Prisma.JsonNullableFilter<"TicketAttempt">
   createdAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
+  ticketProgress?: Prisma.XOR<Prisma.TicketProgressScalarRelationFilter, Prisma.TicketProgressWhereInput>
 }, "id">
 
 export type TicketAttemptOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  ticketId?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrder
+  ticketProgressId?: Prisma.SortOrder
   score?: Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
   theses?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -295,9 +276,7 @@ export type TicketAttemptScalarWhereWithAggregatesInput = {
   OR?: Prisma.TicketAttemptScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TicketAttemptScalarWhereWithAggregatesInput | Prisma.TicketAttemptScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"TicketAttempt"> | string
-  ticketId?: Prisma.StringWithAggregatesFilter<"TicketAttempt"> | string
-  userId?: Prisma.StringWithAggregatesFilter<"TicketAttempt"> | string
-  subjectId?: Prisma.StringWithAggregatesFilter<"TicketAttempt"> | string
+  ticketProgressId?: Prisma.StringWithAggregatesFilter<"TicketAttempt"> | string
   score?: Prisma.FloatWithAggregatesFilter<"TicketAttempt"> | number
   summary?: Prisma.StringNullableWithAggregatesFilter<"TicketAttempt"> | string | null
   theses?: Prisma.JsonNullableWithAggregatesFilter<"TicketAttempt">
@@ -307,21 +286,17 @@ export type TicketAttemptScalarWhereWithAggregatesInput = {
 
 export type TicketAttemptCreateInput = {
   id?: string
-  ticketId: string
-  userId: string
-  subjectId: string
   score: number
   summary?: string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  ticketProgress: Prisma.TicketProgressCreateNestedOneWithoutAttemptsInput
 }
 
 export type TicketAttemptUncheckedCreateInput = {
   id?: string
-  ticketId: string
-  userId: string
-  subjectId: string
+  ticketProgressId: string
   score: number
   summary?: string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -331,21 +306,17 @@ export type TicketAttemptUncheckedCreateInput = {
 
 export type TicketAttemptUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  ticketId?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ticketProgress?: Prisma.TicketProgressUpdateOneRequiredWithoutAttemptsNestedInput
 }
 
 export type TicketAttemptUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  ticketId?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  ticketProgressId?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -355,9 +326,7 @@ export type TicketAttemptUncheckedUpdateInput = {
 
 export type TicketAttemptCreateManyInput = {
   id?: string
-  ticketId: string
-  userId: string
-  subjectId: string
+  ticketProgressId: string
   score: number
   summary?: string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -367,9 +336,6 @@ export type TicketAttemptCreateManyInput = {
 
 export type TicketAttemptUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  ticketId?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -379,9 +345,7 @@ export type TicketAttemptUpdateManyMutationInput = {
 
 export type TicketAttemptUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  ticketId?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  ticketProgressId?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -391,9 +355,7 @@ export type TicketAttemptUncheckedUpdateManyInput = {
 
 export type TicketAttemptCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  ticketId?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrder
+  ticketProgressId?: Prisma.SortOrder
   score?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   theses?: Prisma.SortOrder
@@ -407,9 +369,7 @@ export type TicketAttemptAvgOrderByAggregateInput = {
 
 export type TicketAttemptMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  ticketId?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrder
+  ticketProgressId?: Prisma.SortOrder
   score?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -418,9 +378,7 @@ export type TicketAttemptMaxOrderByAggregateInput = {
 
 export type TicketAttemptMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  ticketId?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrder
+  ticketProgressId?: Prisma.SortOrder
   score?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -429,6 +387,16 @@ export type TicketAttemptMinOrderByAggregateInput = {
 
 export type TicketAttemptSumOrderByAggregateInput = {
   score?: Prisma.SortOrder
+}
+
+export type TicketAttemptListRelationFilter = {
+  every?: Prisma.TicketAttemptWhereInput
+  some?: Prisma.TicketAttemptWhereInput
+  none?: Prisma.TicketAttemptWhereInput
+}
+
+export type TicketAttemptOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -451,49 +419,179 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type TicketAttemptCreateNestedManyWithoutTicketProgressInput = {
+  create?: Prisma.XOR<Prisma.TicketAttemptCreateWithoutTicketProgressInput, Prisma.TicketAttemptUncheckedCreateWithoutTicketProgressInput> | Prisma.TicketAttemptCreateWithoutTicketProgressInput[] | Prisma.TicketAttemptUncheckedCreateWithoutTicketProgressInput[]
+  connectOrCreate?: Prisma.TicketAttemptCreateOrConnectWithoutTicketProgressInput | Prisma.TicketAttemptCreateOrConnectWithoutTicketProgressInput[]
+  createMany?: Prisma.TicketAttemptCreateManyTicketProgressInputEnvelope
+  connect?: Prisma.TicketAttemptWhereUniqueInput | Prisma.TicketAttemptWhereUniqueInput[]
+}
+
+export type TicketAttemptUncheckedCreateNestedManyWithoutTicketProgressInput = {
+  create?: Prisma.XOR<Prisma.TicketAttemptCreateWithoutTicketProgressInput, Prisma.TicketAttemptUncheckedCreateWithoutTicketProgressInput> | Prisma.TicketAttemptCreateWithoutTicketProgressInput[] | Prisma.TicketAttemptUncheckedCreateWithoutTicketProgressInput[]
+  connectOrCreate?: Prisma.TicketAttemptCreateOrConnectWithoutTicketProgressInput | Prisma.TicketAttemptCreateOrConnectWithoutTicketProgressInput[]
+  createMany?: Prisma.TicketAttemptCreateManyTicketProgressInputEnvelope
+  connect?: Prisma.TicketAttemptWhereUniqueInput | Prisma.TicketAttemptWhereUniqueInput[]
+}
+
+export type TicketAttemptUpdateManyWithoutTicketProgressNestedInput = {
+  create?: Prisma.XOR<Prisma.TicketAttemptCreateWithoutTicketProgressInput, Prisma.TicketAttemptUncheckedCreateWithoutTicketProgressInput> | Prisma.TicketAttemptCreateWithoutTicketProgressInput[] | Prisma.TicketAttemptUncheckedCreateWithoutTicketProgressInput[]
+  connectOrCreate?: Prisma.TicketAttemptCreateOrConnectWithoutTicketProgressInput | Prisma.TicketAttemptCreateOrConnectWithoutTicketProgressInput[]
+  upsert?: Prisma.TicketAttemptUpsertWithWhereUniqueWithoutTicketProgressInput | Prisma.TicketAttemptUpsertWithWhereUniqueWithoutTicketProgressInput[]
+  createMany?: Prisma.TicketAttemptCreateManyTicketProgressInputEnvelope
+  set?: Prisma.TicketAttemptWhereUniqueInput | Prisma.TicketAttemptWhereUniqueInput[]
+  disconnect?: Prisma.TicketAttemptWhereUniqueInput | Prisma.TicketAttemptWhereUniqueInput[]
+  delete?: Prisma.TicketAttemptWhereUniqueInput | Prisma.TicketAttemptWhereUniqueInput[]
+  connect?: Prisma.TicketAttemptWhereUniqueInput | Prisma.TicketAttemptWhereUniqueInput[]
+  update?: Prisma.TicketAttemptUpdateWithWhereUniqueWithoutTicketProgressInput | Prisma.TicketAttemptUpdateWithWhereUniqueWithoutTicketProgressInput[]
+  updateMany?: Prisma.TicketAttemptUpdateManyWithWhereWithoutTicketProgressInput | Prisma.TicketAttemptUpdateManyWithWhereWithoutTicketProgressInput[]
+  deleteMany?: Prisma.TicketAttemptScalarWhereInput | Prisma.TicketAttemptScalarWhereInput[]
+}
+
+export type TicketAttemptUncheckedUpdateManyWithoutTicketProgressNestedInput = {
+  create?: Prisma.XOR<Prisma.TicketAttemptCreateWithoutTicketProgressInput, Prisma.TicketAttemptUncheckedCreateWithoutTicketProgressInput> | Prisma.TicketAttemptCreateWithoutTicketProgressInput[] | Prisma.TicketAttemptUncheckedCreateWithoutTicketProgressInput[]
+  connectOrCreate?: Prisma.TicketAttemptCreateOrConnectWithoutTicketProgressInput | Prisma.TicketAttemptCreateOrConnectWithoutTicketProgressInput[]
+  upsert?: Prisma.TicketAttemptUpsertWithWhereUniqueWithoutTicketProgressInput | Prisma.TicketAttemptUpsertWithWhereUniqueWithoutTicketProgressInput[]
+  createMany?: Prisma.TicketAttemptCreateManyTicketProgressInputEnvelope
+  set?: Prisma.TicketAttemptWhereUniqueInput | Prisma.TicketAttemptWhereUniqueInput[]
+  disconnect?: Prisma.TicketAttemptWhereUniqueInput | Prisma.TicketAttemptWhereUniqueInput[]
+  delete?: Prisma.TicketAttemptWhereUniqueInput | Prisma.TicketAttemptWhereUniqueInput[]
+  connect?: Prisma.TicketAttemptWhereUniqueInput | Prisma.TicketAttemptWhereUniqueInput[]
+  update?: Prisma.TicketAttemptUpdateWithWhereUniqueWithoutTicketProgressInput | Prisma.TicketAttemptUpdateWithWhereUniqueWithoutTicketProgressInput[]
+  updateMany?: Prisma.TicketAttemptUpdateManyWithWhereWithoutTicketProgressInput | Prisma.TicketAttemptUpdateManyWithWhereWithoutTicketProgressInput[]
+  deleteMany?: Prisma.TicketAttemptScalarWhereInput | Prisma.TicketAttemptScalarWhereInput[]
+}
+
+export type TicketAttemptCreateWithoutTicketProgressInput = {
+  id?: string
+  score: number
+  summary?: string | null
+  theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TicketAttemptUncheckedCreateWithoutTicketProgressInput = {
+  id?: string
+  score: number
+  summary?: string | null
+  theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TicketAttemptCreateOrConnectWithoutTicketProgressInput = {
+  where: Prisma.TicketAttemptWhereUniqueInput
+  create: Prisma.XOR<Prisma.TicketAttemptCreateWithoutTicketProgressInput, Prisma.TicketAttemptUncheckedCreateWithoutTicketProgressInput>
+}
+
+export type TicketAttemptCreateManyTicketProgressInputEnvelope = {
+  data: Prisma.TicketAttemptCreateManyTicketProgressInput | Prisma.TicketAttemptCreateManyTicketProgressInput[]
+  skipDuplicates?: boolean
+}
+
+export type TicketAttemptUpsertWithWhereUniqueWithoutTicketProgressInput = {
+  where: Prisma.TicketAttemptWhereUniqueInput
+  update: Prisma.XOR<Prisma.TicketAttemptUpdateWithoutTicketProgressInput, Prisma.TicketAttemptUncheckedUpdateWithoutTicketProgressInput>
+  create: Prisma.XOR<Prisma.TicketAttemptCreateWithoutTicketProgressInput, Prisma.TicketAttemptUncheckedCreateWithoutTicketProgressInput>
+}
+
+export type TicketAttemptUpdateWithWhereUniqueWithoutTicketProgressInput = {
+  where: Prisma.TicketAttemptWhereUniqueInput
+  data: Prisma.XOR<Prisma.TicketAttemptUpdateWithoutTicketProgressInput, Prisma.TicketAttemptUncheckedUpdateWithoutTicketProgressInput>
+}
+
+export type TicketAttemptUpdateManyWithWhereWithoutTicketProgressInput = {
+  where: Prisma.TicketAttemptScalarWhereInput
+  data: Prisma.XOR<Prisma.TicketAttemptUpdateManyMutationInput, Prisma.TicketAttemptUncheckedUpdateManyWithoutTicketProgressInput>
+}
+
+export type TicketAttemptScalarWhereInput = {
+  AND?: Prisma.TicketAttemptScalarWhereInput | Prisma.TicketAttemptScalarWhereInput[]
+  OR?: Prisma.TicketAttemptScalarWhereInput[]
+  NOT?: Prisma.TicketAttemptScalarWhereInput | Prisma.TicketAttemptScalarWhereInput[]
+  id?: Prisma.StringFilter<"TicketAttempt"> | string
+  ticketProgressId?: Prisma.StringFilter<"TicketAttempt"> | string
+  score?: Prisma.FloatFilter<"TicketAttempt"> | number
+  summary?: Prisma.StringNullableFilter<"TicketAttempt"> | string | null
+  theses?: Prisma.JsonNullableFilter<"TicketAttempt">
+  createdAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
+}
+
+export type TicketAttemptCreateManyTicketProgressInput = {
+  id?: string
+  score: number
+  summary?: string | null
+  theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TicketAttemptUpdateWithoutTicketProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.FloatFieldUpdateOperationsInput | number
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TicketAttemptUncheckedUpdateWithoutTicketProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.FloatFieldUpdateOperationsInput | number
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TicketAttemptUncheckedUpdateManyWithoutTicketProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.FloatFieldUpdateOperationsInput | number
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 
 
 export type TicketAttemptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  ticketId?: boolean
-  userId?: boolean
-  subjectId?: boolean
+  ticketProgressId?: boolean
   score?: boolean
   summary?: boolean
   theses?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  ticketProgress?: boolean | Prisma.TicketProgressDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ticketAttempt"]>
 
 export type TicketAttemptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  ticketId?: boolean
-  userId?: boolean
-  subjectId?: boolean
+  ticketProgressId?: boolean
   score?: boolean
   summary?: boolean
   theses?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  ticketProgress?: boolean | Prisma.TicketProgressDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ticketAttempt"]>
 
 export type TicketAttemptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  ticketId?: boolean
-  userId?: boolean
-  subjectId?: boolean
+  ticketProgressId?: boolean
   score?: boolean
   summary?: boolean
   theses?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  ticketProgress?: boolean | Prisma.TicketProgressDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ticketAttempt"]>
 
 export type TicketAttemptSelectScalar = {
   id?: boolean
-  ticketId?: boolean
-  userId?: boolean
-  subjectId?: boolean
+  ticketProgressId?: boolean
   score?: boolean
   summary?: boolean
   theses?: boolean
@@ -501,16 +599,25 @@ export type TicketAttemptSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TicketAttemptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ticketId" | "userId" | "subjectId" | "score" | "summary" | "theses" | "createdAt" | "updatedAt", ExtArgs["result"]["ticketAttempt"]>
+export type TicketAttemptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ticketProgressId" | "score" | "summary" | "theses" | "createdAt" | "updatedAt", ExtArgs["result"]["ticketAttempt"]>
+export type TicketAttemptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ticketProgress?: boolean | Prisma.TicketProgressDefaultArgs<ExtArgs>
+}
+export type TicketAttemptIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ticketProgress?: boolean | Prisma.TicketProgressDefaultArgs<ExtArgs>
+}
+export type TicketAttemptIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ticketProgress?: boolean | Prisma.TicketProgressDefaultArgs<ExtArgs>
+}
 
 export type $TicketAttemptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TicketAttempt"
-  objects: {}
+  objects: {
+    ticketProgress: Prisma.$TicketProgressPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    ticketId: string
-    userId: string
-    subjectId: string
+    ticketProgressId: string
     score: number
     summary: string | null
     theses: runtime.JsonValue | null
@@ -910,6 +1017,7 @@ readonly fields: TicketAttemptFieldRefs;
  */
 export interface Prisma__TicketAttemptClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  ticketProgress<T extends Prisma.TicketProgressDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TicketProgressDefaultArgs<ExtArgs>>): Prisma.Prisma__TicketProgressClient<runtime.Types.Result.GetResult<Prisma.$TicketProgressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -940,9 +1048,7 @@ export interface Prisma__TicketAttemptClient<T, Null = never, ExtArgs extends ru
  */
 export interface TicketAttemptFieldRefs {
   readonly id: Prisma.FieldRef<"TicketAttempt", 'String'>
-  readonly ticketId: Prisma.FieldRef<"TicketAttempt", 'String'>
-  readonly userId: Prisma.FieldRef<"TicketAttempt", 'String'>
-  readonly subjectId: Prisma.FieldRef<"TicketAttempt", 'String'>
+  readonly ticketProgressId: Prisma.FieldRef<"TicketAttempt", 'String'>
   readonly score: Prisma.FieldRef<"TicketAttempt", 'Float'>
   readonly summary: Prisma.FieldRef<"TicketAttempt", 'String'>
   readonly theses: Prisma.FieldRef<"TicketAttempt", 'Json'>
@@ -965,6 +1071,10 @@ export type TicketAttemptFindUniqueArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.TicketAttemptOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptInclude<ExtArgs> | null
+  /**
    * Filter, which TicketAttempt to fetch.
    */
   where: Prisma.TicketAttemptWhereUniqueInput
@@ -983,6 +1093,10 @@ export type TicketAttemptFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ext
    */
   omit?: Prisma.TicketAttemptOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptInclude<ExtArgs> | null
+  /**
    * Filter, which TicketAttempt to fetch.
    */
   where: Prisma.TicketAttemptWhereUniqueInput
@@ -1000,6 +1114,10 @@ export type TicketAttemptFindFirstArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the TicketAttempt
    */
   omit?: Prisma.TicketAttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptInclude<ExtArgs> | null
   /**
    * Filter, which TicketAttempt to fetch.
    */
@@ -1049,6 +1167,10 @@ export type TicketAttemptFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.TicketAttemptOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptInclude<ExtArgs> | null
+  /**
    * Filter, which TicketAttempt to fetch.
    */
   where?: Prisma.TicketAttemptWhereInput
@@ -1096,6 +1218,10 @@ export type TicketAttemptFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the TicketAttempt
    */
   omit?: Prisma.TicketAttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptInclude<ExtArgs> | null
   /**
    * Filter, which TicketAttempts to fetch.
    */
@@ -1145,6 +1271,10 @@ export type TicketAttemptCreateArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.TicketAttemptOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptInclude<ExtArgs> | null
+  /**
    * The data needed to create a TicketAttempt.
    */
   data: Prisma.XOR<Prisma.TicketAttemptCreateInput, Prisma.TicketAttemptUncheckedCreateInput>
@@ -1178,6 +1308,10 @@ export type TicketAttemptCreateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    */
   data: Prisma.TicketAttemptCreateManyInput | Prisma.TicketAttemptCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1192,6 +1326,10 @@ export type TicketAttemptUpdateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the TicketAttempt
    */
   omit?: Prisma.TicketAttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptInclude<ExtArgs> | null
   /**
    * The data needed to update a TicketAttempt.
    */
@@ -1244,6 +1382,10 @@ export type TicketAttemptUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    * Limit how many TicketAttempts to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1258,6 +1400,10 @@ export type TicketAttemptUpsertArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the TicketAttempt
    */
   omit?: Prisma.TicketAttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptInclude<ExtArgs> | null
   /**
    * The filter to search for the TicketAttempt to update in case it exists.
    */
@@ -1284,6 +1430,10 @@ export type TicketAttemptDeleteArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the TicketAttempt
    */
   omit?: Prisma.TicketAttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptInclude<ExtArgs> | null
   /**
    * Filter which TicketAttempt to delete.
    */
@@ -1316,4 +1466,8 @@ export type TicketAttemptDefaultArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the TicketAttempt
    */
   omit?: Prisma.TicketAttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketAttemptInclude<ExtArgs> | null
 }

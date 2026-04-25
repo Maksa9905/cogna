@@ -12,6 +12,31 @@ export class SubjectProgressRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   /**
+   * Нужна существующая строка до вставки TicketProgress (FK subject_progress).
+   */
+  public async ensureExists(
+    userId: string,
+    subjectId: string,
+    tx?: Pick<PrismaService, 'subjectProgress'>,
+  ) {
+    const client = tx ?? this.prismaService;
+    const where = {
+      userId_subjectId: { userId, subjectId },
+    };
+    const existing = await client.subjectProgress.findUnique({ where });
+    if (existing) return;
+    await client.subjectProgress.create({
+      data: {
+        userId,
+        subjectId,
+        studiedTickets: 0,
+        averageTicketsScore: 0,
+        lastRepetitionDate: new Date(),
+      },
+    });
+  }
+
+  /**
    * Updates SubjectProgress when a ticket attempt is made.
    * Computes average from TicketProgress (AVG of ticket averages) and stores it.
    * Pass tx when called inside transaction so aggregate sees updated TicketProgress.

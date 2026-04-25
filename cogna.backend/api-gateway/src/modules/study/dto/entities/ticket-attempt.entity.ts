@@ -7,6 +7,8 @@ export class TicketAttemptEntity implements Omit<TicketAttempt, 'userId'> {
   @Field()
   id: string;
   @Field()
+  ticketProgressId: string;
+  @Field()
   score: number;
   @Field()
   subjectId: string;

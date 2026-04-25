@@ -11,9 +11,8 @@ datasource db {
 model TicketAttempt {
   id String @id @default(uuid())
 
-  ticketId  String @map("ticket_id")
-  userId    String @map("user_id")
-  subjectId String @map("subject_id")
+  ticketProgressId String         @map("ticket_progress_id")
+  ticketProgress   TicketProgress @relation(fields: [ticketProgressId], references: [id], onDelete: Cascade)
 
   score   Float // оценка в числовом формате для расчетов, от 1 до 10
   summary String? // краткий анализ ответа
@@ -25,8 +24,7 @@ model TicketAttempt {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
 
-  @@index([userId, ticketId])
-  @@index([subjectId])
+  @@index([ticketProgressId])
   @@index([createdAt])
   @@map("ticket_attempts")
 }
@@ -38,6 +36,8 @@ model TicketProgress {
   ticketId  String @map("ticket_id") // Unique потому что один билет - одна запись прогресса
   userId    String @map("user_id")
   subjectId String @map("subject_id")
+
+  subjectProgress SubjectProgress @relation(fields: [userId, subjectId], references: [userId, subjectId], onDelete: Cascade)
 
   totalCount   Int   @default(0) @map("total_attempts") // общее количество попыток
   bestScore    Float @map("best_score") // лучший результат
@@ -56,6 +56,8 @@ model TicketProgress {
   @@index([userId])
   @@index([subjectId])
   // @@index([status])
+  attempts TicketAttempt[]
+
   @@map("ticket_progress")
 }
 
@@ -112,6 +114,8 @@ model SubjectProgress {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
+
+  ticketsProgress TicketProgress[]
 
   @@unique([userId, subjectId])
   @@index([userId])

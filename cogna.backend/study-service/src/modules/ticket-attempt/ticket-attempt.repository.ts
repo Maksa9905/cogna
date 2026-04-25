@@ -14,21 +14,13 @@ export class TicketAttemptRepository {
 
   public async createTicketAttemptWithProgress(dto: TicketAttemptRequest) {
     return this.prismaService.$transaction(async (tx) => {
-      const attempt = await tx.ticketAttempt.create({
-        data: {
-          ticketId: dto.ticketId,
-          userId: dto.userId,
-          subjectId: dto.subjectId,
-          score: dto.score,
-          summary: dto.summary,
-          theses: dto.theses.map(({ thesis, assessment }) => ({
-            thesis,
-            assessment,
-          })),
-        },
-      });
+      await this.subjectProgressRepository.ensureExists(
+        dto.userId,
+        dto.subjectId,
+        tx,
+      );
 
-      const { newlyStudied } =
+      const { progress, newlyStudied } =
         await this.ticketProgressRepository.upsertWithNewScore(
           {
             ticketId: dto.ticketId,
@@ -38,6 +30,18 @@ export class TicketAttemptRepository {
           },
           tx,
         );
+
+      const attempt = await tx.ticketAttempt.create({
+        data: {
+          ticketProgressId: progress.id,
+          score: dto.score,
+          summary: dto.summary,
+          theses: dto.theses.map(({ thesis, assessment }) => ({
+            thesis,
+            assessment,
+          })),
+        },
+      });
 
       await this.subjectProgressRepository.upsertOnTicketAttempt(
         {
@@ -57,7 +61,12 @@ export class TicketAttemptRepository {
     ticketId: string;
   }) {
     return this.prismaService.ticketAttempt.findMany({
-      where: { userId: data.userId, ticketId: data.ticketId },
+      where: {
+        ticketProgress: {
+          userId: data.userId,
+          ticketId: data.ticketId,
+        },
+      },
     });
   }
 }

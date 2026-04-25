@@ -74,9 +74,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const TicketAttemptScalarFieldEnum = {
   id: 'id',
-  ticketId: 'ticketId',
-  userId: 'userId',
-  subjectId: 'subjectId',
+  ticketProgressId: 'ticketProgressId',
   score: 'score',
   summary: 'summary',
   theses: 'theses',

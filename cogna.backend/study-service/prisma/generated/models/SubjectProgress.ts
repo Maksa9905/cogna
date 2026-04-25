@@ -244,6 +244,7 @@ export type SubjectProgressWhereInput = {
   lastRepetitionDate?: Prisma.DateTimeNullableFilter<"SubjectProgress"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SubjectProgress"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SubjectProgress"> | Date | string
+  ticketsProgress?: Prisma.TicketProgressListRelationFilter
 }
 
 export type SubjectProgressOrderByWithRelationInput = {
@@ -255,6 +256,7 @@ export type SubjectProgressOrderByWithRelationInput = {
   lastRepetitionDate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  ticketsProgress?: Prisma.TicketProgressOrderByRelationAggregateInput
 }
 
 export type SubjectProgressWhereUniqueInput = Prisma.AtLeast<{
@@ -270,6 +272,7 @@ export type SubjectProgressWhereUniqueInput = Prisma.AtLeast<{
   lastRepetitionDate?: Prisma.DateTimeNullableFilter<"SubjectProgress"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SubjectProgress"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SubjectProgress"> | Date | string
+  ticketsProgress?: Prisma.TicketProgressListRelationFilter
 }, "id" | "userId_subjectId">
 
 export type SubjectProgressOrderByWithAggregationInput = {
@@ -311,6 +314,7 @@ export type SubjectProgressCreateInput = {
   lastRepetitionDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  ticketsProgress?: Prisma.TicketProgressCreateNestedManyWithoutSubjectProgressInput
 }
 
 export type SubjectProgressUncheckedCreateInput = {
@@ -322,6 +326,7 @@ export type SubjectProgressUncheckedCreateInput = {
   lastRepetitionDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  ticketsProgress?: Prisma.TicketProgressUncheckedCreateNestedManyWithoutSubjectProgressInput
 }
 
 export type SubjectProgressUpdateInput = {
@@ -333,6 +338,7 @@ export type SubjectProgressUpdateInput = {
   lastRepetitionDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ticketsProgress?: Prisma.TicketProgressUpdateManyWithoutSubjectProgressNestedInput
 }
 
 export type SubjectProgressUncheckedUpdateInput = {
@@ -344,6 +350,7 @@ export type SubjectProgressUncheckedUpdateInput = {
   lastRepetitionDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ticketsProgress?: Prisma.TicketProgressUncheckedUpdateManyWithoutSubjectProgressNestedInput
 }
 
 export type SubjectProgressCreateManyInput = {
@@ -377,6 +384,11 @@ export type SubjectProgressUncheckedUpdateManyInput = {
   lastRepetitionDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SubjectProgressScalarRelationFilter = {
+  is?: Prisma.SubjectProgressWhereInput
+  isNot?: Prisma.SubjectProgressWhereInput
 }
 
 export type SubjectProgressUserIdSubjectIdCompoundUniqueInput = {
@@ -427,10 +439,113 @@ export type SubjectProgressSumOrderByAggregateInput = {
   averageTicketsScore?: Prisma.SortOrder
 }
 
+export type SubjectProgressCreateNestedOneWithoutTicketsProgressInput = {
+  create?: Prisma.XOR<Prisma.SubjectProgressCreateWithoutTicketsProgressInput, Prisma.SubjectProgressUncheckedCreateWithoutTicketsProgressInput>
+  connectOrCreate?: Prisma.SubjectProgressCreateOrConnectWithoutTicketsProgressInput
+  connect?: Prisma.SubjectProgressWhereUniqueInput
+}
+
+export type SubjectProgressUpdateOneRequiredWithoutTicketsProgressNestedInput = {
+  create?: Prisma.XOR<Prisma.SubjectProgressCreateWithoutTicketsProgressInput, Prisma.SubjectProgressUncheckedCreateWithoutTicketsProgressInput>
+  connectOrCreate?: Prisma.SubjectProgressCreateOrConnectWithoutTicketsProgressInput
+  upsert?: Prisma.SubjectProgressUpsertWithoutTicketsProgressInput
+  connect?: Prisma.SubjectProgressWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubjectProgressUpdateToOneWithWhereWithoutTicketsProgressInput, Prisma.SubjectProgressUpdateWithoutTicketsProgressInput>, Prisma.SubjectProgressUncheckedUpdateWithoutTicketsProgressInput>
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type SubjectProgressCreateWithoutTicketsProgressInput = {
+  id?: string
+  subjectId: string
+  userId: string
+  studiedTickets?: number
+  averageTicketsScore?: number
+  lastRepetitionDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SubjectProgressUncheckedCreateWithoutTicketsProgressInput = {
+  id?: string
+  subjectId: string
+  userId: string
+  studiedTickets?: number
+  averageTicketsScore?: number
+  lastRepetitionDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SubjectProgressCreateOrConnectWithoutTicketsProgressInput = {
+  where: Prisma.SubjectProgressWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubjectProgressCreateWithoutTicketsProgressInput, Prisma.SubjectProgressUncheckedCreateWithoutTicketsProgressInput>
+}
+
+export type SubjectProgressUpsertWithoutTicketsProgressInput = {
+  update: Prisma.XOR<Prisma.SubjectProgressUpdateWithoutTicketsProgressInput, Prisma.SubjectProgressUncheckedUpdateWithoutTicketsProgressInput>
+  create: Prisma.XOR<Prisma.SubjectProgressCreateWithoutTicketsProgressInput, Prisma.SubjectProgressUncheckedCreateWithoutTicketsProgressInput>
+  where?: Prisma.SubjectProgressWhereInput
+}
+
+export type SubjectProgressUpdateToOneWithWhereWithoutTicketsProgressInput = {
+  where?: Prisma.SubjectProgressWhereInput
+  data: Prisma.XOR<Prisma.SubjectProgressUpdateWithoutTicketsProgressInput, Prisma.SubjectProgressUncheckedUpdateWithoutTicketsProgressInput>
+}
+
+export type SubjectProgressUpdateWithoutTicketsProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  studiedTickets?: Prisma.IntFieldUpdateOperationsInput | number
+  averageTicketsScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastRepetitionDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SubjectProgressUncheckedUpdateWithoutTicketsProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  studiedTickets?: Prisma.IntFieldUpdateOperationsInput | number
+  averageTicketsScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastRepetitionDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type SubjectProgressCountOutputType
+ */
+
+export type SubjectProgressCountOutputType = {
+  ticketsProgress: number
+}
+
+export type SubjectProgressCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ticketsProgress?: boolean | SubjectProgressCountOutputTypeCountTicketsProgressArgs
+}
+
+/**
+ * SubjectProgressCountOutputType without action
+ */
+export type SubjectProgressCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SubjectProgressCountOutputType
+   */
+  select?: Prisma.SubjectProgressCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * SubjectProgressCountOutputType without action
+ */
+export type SubjectProgressCountOutputTypeCountTicketsProgressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TicketProgressWhereInput
+}
 
 
 export type SubjectProgressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -442,6 +557,8 @@ export type SubjectProgressSelect<ExtArgs extends runtime.Types.Extensions.Inter
   lastRepetitionDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  ticketsProgress?: boolean | Prisma.SubjectProgress$ticketsProgressArgs<ExtArgs>
+  _count?: boolean | Prisma.SubjectProgressCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subjectProgress"]>
 
 export type SubjectProgressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -478,10 +595,18 @@ export type SubjectProgressSelectScalar = {
 }
 
 export type SubjectProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "subjectId" | "userId" | "studiedTickets" | "averageTicketsScore" | "lastRepetitionDate" | "createdAt" | "updatedAt", ExtArgs["result"]["subjectProgress"]>
+export type SubjectProgressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ticketsProgress?: boolean | Prisma.SubjectProgress$ticketsProgressArgs<ExtArgs>
+  _count?: boolean | Prisma.SubjectProgressCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type SubjectProgressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type SubjectProgressIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $SubjectProgressPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SubjectProgress"
-  objects: {}
+  objects: {
+    ticketsProgress: Prisma.$TicketProgressPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     subjectId: string
@@ -885,6 +1010,7 @@ readonly fields: SubjectProgressFieldRefs;
  */
 export interface Prisma__SubjectProgressClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  ticketsProgress<T extends Prisma.SubjectProgress$ticketsProgressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubjectProgress$ticketsProgressArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TicketProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -939,6 +1065,10 @@ export type SubjectProgressFindUniqueArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.SubjectProgressOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectProgressInclude<ExtArgs> | null
+  /**
    * Filter, which SubjectProgress to fetch.
    */
   where: Prisma.SubjectProgressWhereUniqueInput
@@ -957,6 +1087,10 @@ export type SubjectProgressFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.E
    */
   omit?: Prisma.SubjectProgressOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectProgressInclude<ExtArgs> | null
+  /**
    * Filter, which SubjectProgress to fetch.
    */
   where: Prisma.SubjectProgressWhereUniqueInput
@@ -974,6 +1108,10 @@ export type SubjectProgressFindFirstArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the SubjectProgress
    */
   omit?: Prisma.SubjectProgressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectProgressInclude<ExtArgs> | null
   /**
    * Filter, which SubjectProgress to fetch.
    */
@@ -1023,6 +1161,10 @@ export type SubjectProgressFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ex
    */
   omit?: Prisma.SubjectProgressOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectProgressInclude<ExtArgs> | null
+  /**
    * Filter, which SubjectProgress to fetch.
    */
   where?: Prisma.SubjectProgressWhereInput
@@ -1070,6 +1212,10 @@ export type SubjectProgressFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the SubjectProgress
    */
   omit?: Prisma.SubjectProgressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectProgressInclude<ExtArgs> | null
   /**
    * Filter, which SubjectProgresses to fetch.
    */
@@ -1119,6 +1265,10 @@ export type SubjectProgressCreateArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.SubjectProgressOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectProgressInclude<ExtArgs> | null
+  /**
    * The data needed to create a SubjectProgress.
    */
   data: Prisma.XOR<Prisma.SubjectProgressCreateInput, Prisma.SubjectProgressUncheckedCreateInput>
@@ -1166,6 +1316,10 @@ export type SubjectProgressUpdateArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the SubjectProgress
    */
   omit?: Prisma.SubjectProgressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectProgressInclude<ExtArgs> | null
   /**
    * The data needed to update a SubjectProgress.
    */
@@ -1233,6 +1387,10 @@ export type SubjectProgressUpsertArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.SubjectProgressOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectProgressInclude<ExtArgs> | null
+  /**
    * The filter to search for the SubjectProgress to update in case it exists.
    */
   where: Prisma.SubjectProgressWhereUniqueInput
@@ -1259,6 +1417,10 @@ export type SubjectProgressDeleteArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.SubjectProgressOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectProgressInclude<ExtArgs> | null
+  /**
    * Filter which SubjectProgress to delete.
    */
   where: Prisma.SubjectProgressWhereUniqueInput
@@ -1279,6 +1441,30 @@ export type SubjectProgressDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
+ * SubjectProgress.ticketsProgress
+ */
+export type SubjectProgress$ticketsProgressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TicketProgress
+   */
+  select?: Prisma.TicketProgressSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TicketProgress
+   */
+  omit?: Prisma.TicketProgressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TicketProgressInclude<ExtArgs> | null
+  where?: Prisma.TicketProgressWhereInput
+  orderBy?: Prisma.TicketProgressOrderByWithRelationInput | Prisma.TicketProgressOrderByWithRelationInput[]
+  cursor?: Prisma.TicketProgressWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TicketProgressScalarFieldEnum | Prisma.TicketProgressScalarFieldEnum[]
+}
+
+/**
  * SubjectProgress without action
  */
 export type SubjectProgressDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1290,4 +1476,8 @@ export type SubjectProgressDefaultArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the SubjectProgress
    */
   omit?: Prisma.SubjectProgressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectProgressInclude<ExtArgs> | null
 }

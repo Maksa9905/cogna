@@ -30,14 +30,15 @@ message ThesisAssessment {
 
 message TicketAttempt {
   string id = 1;
-  string ticket_id = 2;
-  string user_id = 3;
-  string subject_id = 4;
-  float score = 5;
-  string summary = 6;
-  repeated ThesisAssessment theses = 7;
-  google.protobuf.Timestamp created_at = 8;
-  google.protobuf.Timestamp updated_at = 9;
+  string ticket_progress_id = 2;
+  string ticket_id = 3;
+  string user_id = 4;
+  string subject_id = 5;
+  float score = 6;
+  string summary = 7;
+  repeated ThesisAssessment theses = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
 }
 
 message findOneTicketAttemptRequest {
