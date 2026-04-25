@@ -1,36 +1,35 @@
-import { Field, ObjectType } from '@nestjs/graphql';
 import { TicketProgress } from '@cogna-edu/contracts/gen/study/ticket-progress';
-import { TicketAttemptEntity } from './ticket-attempt.entity';
+import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class TicketProgressEntity implements Omit<TicketProgress, 'userId'> {
+export class TicketProgressGql implements TicketProgress {
   @Field()
   id: string;
-
-  @Field()
-  subjectId: string;
 
   @Field()
   ticketId: string;
 
   @Field()
-  averageScore: number;
+  userId: string;
 
   @Field()
-  bestScore: number;
+  subjectId: string;
 
-  @Field()
-  lastScore: number;
-
-  @Field()
+  @Field(() => Int)
   totalCount: number;
 
-  @Field(() => [TicketAttemptEntity])
-  ticketsAttempts: TicketAttemptEntity[];
+  @Field(() => Float)
+  bestScore: number;
 
-  @Field()
-  updatedAt: Date;
+  @Field(() => Float)
+  lastScore: number;
 
-  @Field()
-  createdAt: Date;
+  @Field(() => Float)
+  averageScore: number;
+
+  @Field(() => Date, { nullable: true })
+  createdAt: Date | undefined;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt: Date | undefined;
 }

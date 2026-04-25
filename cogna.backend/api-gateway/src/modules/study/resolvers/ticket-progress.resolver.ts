@@ -7,7 +7,7 @@ import {
   FindAllTicketsProgressRequestGql,
   FindAllTicketsProgressResponseGql,
   FindOneTicketProgressRequestGql,
-  FindOneTicketProgressResponseGql, TicketAttemptEntity,
+  FindOneTicketProgressResponseGql,
 } from '../dto';
 
 @Protected(UserRole.USER)
