@@ -85,7 +85,7 @@ const handleReproduceTicket = async () => {
 		<section class="ticket-page__answer" :aria-label="t('tickets.answerAriaLabel')">
 			<Skeleton :is-loading="isLoading">
 				<template #skeleton>
-					<USkeleton # class="w-full h-[340px] bg-default rounded-lg flex items-center justify-center">
+					<USkeleton class="w-full h-[340px] bg-default rounded-lg flex items-center justify-center">
 						<LoadingIcon class="w-[24px] h-[24px]" />
 					</USkeleton>
 				</template>

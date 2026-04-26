@@ -1,3 +1,3 @@
-import ReproduceTicketPage from './ReproduceTicketPage.vue';
+import ReproduceTicketPage from "./ReproduceTicketPage.vue";
 
 export default ReproduceTicketPage;

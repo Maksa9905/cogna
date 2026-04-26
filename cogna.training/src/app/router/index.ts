@@ -51,8 +51,8 @@ const localizedRouteConfig: RouteRecordRaw[] = [
 						meta: {
 							requiresAuth: true,
 							namespaces: ["common", "subjects", "tickets", "user", "menu"],
-						}
-					}
+						},
+					},
 				],
 			},
 			{

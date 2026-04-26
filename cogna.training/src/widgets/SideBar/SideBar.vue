@@ -3,10 +3,13 @@ import { UserCard } from "@/entities/user";
 import { useLocalizedRouter } from "@/shared/i18n";
 import { Logotype } from "@/shared/ui";
 import useSideBarItems from "./useSideBarItems";
+import { useI18n } from "vue-i18n";
 
 defineOptions({
   name: "SideBar",
 })
+
+const { t } = useI18n();
 
 const expanded = defineModel<boolean>('expanded', { default: true });
 
@@ -56,6 +59,7 @@ const items = useSideBarItems();
               :aria-current="isActive ? 'page' : undefined"
               @click="navigate"
             >
+              <span class="sr-only">{{t('subjects')}}</span>
               <UIcon
                 :aria-selected="isActive ? 'true' : 'false'"
                 class="side-bar-icon"
@@ -74,6 +78,7 @@ const items = useSideBarItems();
               :aria-current="isActive ? 'page' : undefined"
               @click="navigate"
             >
+              <span class="sr-only">{{t('statistics')}}</span>
               <UIcon
                 :aria-selected="isActive ? 'true' : 'false'"
                 class="side-bar-icon"
@@ -92,6 +97,7 @@ const items = useSideBarItems();
               :aria-current="isActive ? 'page' : undefined"
               @click="navigate"
             >
+              <span class="sr-only">{{t('statistics')}}</span>
               <UIcon
                 :aria-selected="isActive ? 'true' : 'false'"
                 class="side-bar-icon"
@@ -110,6 +116,7 @@ const items = useSideBarItems();
               :aria-current="isActive ? 'page' : undefined"
               @click="navigate"
             >
+              <span class='sr-only'>{{t('settings')}}</span>
               <UIcon
                 :aria-selected="isActive ? 'true' : 'false'"
                 class="side-bar-icon"
@@ -123,6 +130,7 @@ const items = useSideBarItems();
             rel="noopener noreferrer"
             target="_blank"
           >
+            <span class="sr-only">{{t('help')}}</span>
             <UIcon class="side-bar-icon" name="i-lucide-help-circle" />
           </a>
         </div>

@@ -40,7 +40,7 @@ const logout = () => {
       <span class="user-card__status">{{ t(`user.status.${status}`) }}</span>
       <p class="user-card__email">{{ email }}</p>
     </div>
-    <button class="user-card__exit" @click="logout">
+    <button type="button" class="user-card__exit" @click="logout">
       <ExitIcon/>
     </button>
   </div>

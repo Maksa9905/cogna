@@ -12,9 +12,7 @@ const props = withDefaults(
 	},
 );
 
-defineEmits<{
-	(e: "click"): void;
-}>();
+defineEmits<(e: "click") => void>();
 
 const floatingStyle = computed(() => {
 	const o =
