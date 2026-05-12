@@ -7,7 +7,6 @@ import { HttpsProxyAgent } from 'https-proxy-agent';
 import Groq from 'groq-sdk';
 import { ConfigService } from '@nestjs/config';
 
-
 @Injectable()
 export class ThesisService {
   private agent: HttpsProxyAgent<string>;
@@ -30,7 +29,7 @@ export class ThesisService {
       messages: [
         {
           role: 'system',
-          content: `Тебе надо написать тезисы по экзамиционному билету и эталонному твету на него,Отвечай на том же языке, максимум 3-5 тезисов, пиши емко и только суть, максимум слов в тезисе 15`,
+          content: `Тебе надо написать тезисы по экзамиционному билету и эталонному твету на него,Отвечай строго на Русском, максимум 3-5 тезисов, пиши емко и только суть, максимум слов в тезисе 15`,
         },
         {
           role: 'user',
