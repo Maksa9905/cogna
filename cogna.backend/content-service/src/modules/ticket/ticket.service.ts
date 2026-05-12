@@ -10,7 +10,7 @@ import {
   FindAllTicketsResponse,
   FindOneTicketRequest,
   GenerateThesesRequest,
-  UpdateTicketRequest,
+  PatchTicketRequest,
 } from '@cogna-edu/contracts/dist/content/ticket';
 import {
   GenerateThesesRequest as GenThesesRequest,
@@ -85,25 +85,30 @@ export class TicketService {
     return { tickets: tickets, totalCount: total_count };
   }
 
-  public async updateTicket(dto: UpdateTicketRequest): Promise<TicketResponse> {
-    const { id, userId, answer, question, theses } = dto;
+  public async patchTicket(dto: PatchTicketRequest): Promise<TicketResponse> {
+    const { id, userId } = dto;
+
+    const data: Record<string, unknown> = {};
+
+    if (dto.answer !== undefined) data.answer = dto.answer;
+    if (dto.question !== undefined) data.question = dto.question;
+    if (dto.theses?.items !== undefined) {
+      data.theses = {
+        deleteMany: {},
+        create: dto.theses.items.map((t) => ({
+          value: t.value,
+          importance: t.importance,
+        })),
+      };
+    }
+
     try {
       const ticket = await this.prismaService.ticket.update({
         where: {
           id,
           subject: { userId },
         },
-        data: {
-          answer: answer || undefined,
-          question: question || undefined,
-          theses: {
-            deleteMany: {},
-            create: (theses || []).map((t) => ({
-              value: t.value,
-              importance: t.importance,
-            })),
-          },
-        },
+        data,
         include: { theses: true },
       });
       return { ticket: ticket ?? undefined };

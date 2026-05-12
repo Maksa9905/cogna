@@ -1,11 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { UpdateTicketRequest } from '@cogna-edu/contracts/gen/content/ticket';
+import { PatchTicketRequest } from '@cogna-edu/contracts/gen/content/ticket';
 import { ThesisInputGql } from '../../entities';
 
 @InputType()
-export class UpdateTicketRequestGql implements Omit<
-  UpdateTicketRequest,
-  'userId'
+export class PatchTicketRequestGql implements Omit<
+  PatchTicketRequest,
+  'userId' | 'theses'
 > {
   @Field()
   id: string;
@@ -14,8 +14,8 @@ export class UpdateTicketRequestGql implements Omit<
   question?: string;
 
   @Field({ nullable: true })
-  answer: string;
+  answer?: string;
 
   @Field(() => [ThesisInputGql], { nullable: true, defaultValue: [] })
-  theses: ThesisInputGql[];
+  theses?: ThesisInputGql[];
 }

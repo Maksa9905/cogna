@@ -10,7 +10,7 @@ service TicketService {
   rpc CreateTicket (CreateTicketRequest) returns (TicketResponse);
   rpc FindAllTickets (FindAllTicketsRequest) returns (FindAllTicketsResponse);
   rpc FindOneTicket (FindOneTicketRequest) returns (TicketResponse);
-  rpc UpdateTicket (UpdateTicketRequest) returns (TicketResponse);
+  rpc PatchTicket (PatchTicketRequest) returns (TicketResponse);
   rpc DeleteTicket (DeleteTicketRequest) returns (common.content.v1.SuccessResponse);
 
   // Метод для (пере)генерации тезисов через ИИ
@@ -70,12 +70,16 @@ message FindOneTicketRequest {
   string user_id = 2;
 }
 
-message UpdateTicketRequest {
+
+message ThesisInputList {
+  repeated ThesisInput items = 1;
+}
+message PatchTicketRequest {
   string id = 1;
   string user_id = 2;
   optional string question = 3;
   optional string answer = 4;
-  repeated ThesisInput theses = 5;
+  optional ThesisInputList theses = 5;
 }
 
 message DeleteTicketRequest {

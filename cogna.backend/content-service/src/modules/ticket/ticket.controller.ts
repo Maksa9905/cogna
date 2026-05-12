@@ -9,7 +9,7 @@ import {
   GenerateThesesRequest,
   TicketResponse,
   TicketServiceControllerMethods,
-  UpdateTicketRequest,
+  PatchTicketRequest,
   TicketServiceController
 } from '@cogna-edu/contracts/dist/content/ticket';
 import { SuccessResponse } from '@cogna-edu/contracts/gen/content/common';
@@ -41,7 +41,7 @@ export class TicketController implements TicketServiceController {
     return this.ticketService.generateThesis(request);
   }
 
-  updateTicket(request: UpdateTicketRequest): Promise<TicketResponse> {
-    return this.ticketService.updateTicket(request);
+  patchTicket(request: PatchTicketRequest): Promise<TicketResponse> {
+    return this.ticketService.patchTicket(request);
   }
 }

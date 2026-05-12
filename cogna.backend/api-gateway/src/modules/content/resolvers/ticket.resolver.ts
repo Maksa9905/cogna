@@ -15,7 +15,7 @@ import {
   GenerateThesesRequestGql,
   SuccessResponseContentGql,
   TicketResponseGql,
-  UpdateTicketRequestGql,
+  PatchTicketRequestGql,
 } from '../dto';
 import { TicketService } from '../services/ticket.service';
 import { Request } from 'express';
@@ -34,7 +34,7 @@ const pubSub = new PubSub();
 
 @Protected(UserRole.USER)
 @Resolver()
-export class TicketResolver{
+export class TicketResolver {
   constructor(private readonly ticketService: TicketService) {}
 
   //todo подумать о том что пользователь сразу сам сможет написать тезисы и тогда их надо сохранить вмесет с новым обькектом
@@ -64,13 +64,14 @@ export class TicketResolver{
 
   //todo подумать о patch и Сохранение новых тезисов
   @Mutation(() => TicketResponseGql)
-  public async ticketUpdateTicket(
+  public async ticketPatchTicket(
     @Context('req') req: Request,
-    @Args('data') dto: UpdateTicketRequestGql,
+    @Args('data') dto: PatchTicketRequestGql,
   ) {
-    return await this.ticketService.updateTicket({
+    return await this.ticketService.patchTicket({
       userId: req.user.sub,
       ...dto,
+      theses: dto.theses && { items: dto.theses },
     });
   }
 

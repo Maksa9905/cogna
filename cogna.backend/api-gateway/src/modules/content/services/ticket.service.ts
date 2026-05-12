@@ -6,7 +6,7 @@ import {
   FindOneTicketRequest,
   GenerateThesesRequest,
   TicketServiceClient,
-  UpdateTicketRequest,
+  PatchTicketRequest,
 } from '@cogna-edu/contracts/dist/content/ticket';
 import { firstValueFrom } from 'rxjs';
 import { ClientGrpc } from '@nestjs/microservices';
@@ -31,8 +31,8 @@ export class TicketService {
     return await firstValueFrom(this.ticketClient.findAllTickets(dto));
   }
 
-  public async updateTicket(dto: UpdateTicketRequest) {
-    return await firstValueFrom(this.ticketClient.updateTicket(dto));
+  public async patchTicket(dto: PatchTicketRequest) {
+    return await firstValueFrom(this.ticketClient.patchTicket(dto));
   }
 
   public async deleteTicket(dto: DeleteTicketRequest) {
