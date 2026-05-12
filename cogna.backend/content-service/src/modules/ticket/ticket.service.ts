@@ -86,21 +86,18 @@ export class TicketService {
   }
 
   public async patchTicket(dto: PatchTicketRequest): Promise<TicketResponse> {
-    const { id, userId } = dto;
+    const { id, userId, answer, question, theses } = dto;
 
-    const data: Record<string, unknown> = {};
-
-    if (dto.answer !== undefined) data.answer = dto.answer;
-    if (dto.question !== undefined) data.question = dto.question;
-    if (dto.theses?.items !== undefined) {
-      data.theses = {
-        deleteMany: {},
-        create: dto.theses.items.map((t) => ({
-          value: t.value,
-          importance: t.importance,
-        })),
-      };
-    }
+    const thesesUpdate =
+      theses?.items !== undefined
+        ? {
+            deleteMany: {},
+            create: theses.items.map((t) => ({
+              value: t.value,
+              importance: t.importance,
+            })),
+          }
+        : undefined;
 
     try {
       const ticket = await this.prismaService.ticket.update({
@@ -108,7 +105,11 @@ export class TicketService {
           id,
           subject: { userId },
         },
-        data,
+        data: {
+          answer,
+          question,
+          theses: thesesUpdate,
+        },
         include: { theses: true },
       });
       return { ticket: ticket ?? undefined };
