@@ -35,19 +35,20 @@ const progressStats = computed(() => {
 
 <template>
     <header v-if="!isLoading" class="subject-page__header">
-      <!-- <UBreadcrumb :items="breadcrumbs || []" /> -->
       <h1 class="subject-page__title">{{subjectData?.subject.title}}</h1>
       <SubjectExamDateChip class="subject-page__exam-date-chip" :date="'2026-03-26T12:00:00.000Z'" />
     </header>
     <USkeleton v-else class="h-[36px] subject-page__header" />
-		<TicketsFilters />
-		<TicketsList
-			v-if="subjectData?.subject.id"
-			:key="subjectData.subject.id"
-			class="tickets-list"
-			:subject-id="subjectData.subject.id"
-      @click="(ticket) => router.push(routes.ticket(subjectId as string, ticket.id))"
-		/>
+    <section class="subject-page__subjects">
+      <TicketsFilters />
+      <TicketsList
+        v-if="subjectData?.subject.id"
+        :key="subjectData.subject.id"
+        class="tickets-list"
+        :subject-id="subjectData.subject.id"
+        @click="(ticket) => router.push(routes.ticket(subjectId as string, ticket.id))"
+      />
+    </section>
   
   <footer class="subject-page__footer">
 		<SubjectStatisticsProgressBar :learned="progressStats.learned" :total="progressStats.total" />
@@ -93,5 +94,9 @@ const progressStats = computed(() => {
 .subject-page__exam-date-chip {
   position: relative;
   top: 2px;
+}
+
+.subject-page__subjects {
+  max-width: 800px;
 }
 </style>

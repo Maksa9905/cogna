@@ -1,26 +1,26 @@
-import { useTicketFindOneQuery, useUpdateTicketMutation } from "@/entities/tickets";
-import { onBeforeUnmount, onMounted } from "vue";
+import { useTicketFindOneQuery, usePatchTicketMutation } from "@/entities/tickets";
+import { onBeforeUnmount, onMounted, type Ref } from "vue";
 
 type UseTicketAutosaveProps = {
 	id: string;
-	answer: string;
-	title: string;
+	answer: Ref<string, string>;
+	title: Ref<string, string>;
 };
 
 export const useTicketAutosave = ({ id, answer, title }: UseTicketAutosaveProps) => {
 	const { data: ticketData } = useTicketFindOneQuery({ id });
-	const { mutateAsync: updateTicket } = useUpdateTicketMutation();
+	const { mutateAsync: updateTicket } = usePatchTicketMutation();
 
 	onMounted(() => {
 		const interval = setInterval(() => {
 			if (
-				ticketData.value?.ticket?.answer === answer &&
-				ticketData.value?.ticket?.question === title
+				ticketData.value?.ticket?.answer === answer.value &&
+				ticketData.value?.ticket?.question === title.value
 			)
 				return;
 
-			updateTicket({ id, answer, question: title });
-		}, 30000);
+			updateTicket({ id, answer: answer.value, question: title.value });
+		}, 5000);
 
 		onBeforeUnmount(() => {
 			clearInterval(interval);

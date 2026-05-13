@@ -11,7 +11,7 @@ export {
 	useGenerateThesesMutation,
 	useTicketFindAllQuery,
 	useTicketFindOneQuery,
-	useUpdateTicketMutation,
+	usePatchTicketMutation,
 } from "./api/api";
 export type {
 	CreateTicketPayload,
@@ -21,12 +21,17 @@ export type {
 	FindOneTicketPayload,
 	GenerateThesesPayload,
 	SuccessResponseContent,
-	Thesis,
+	Thesis as ApiThesis,
 	ThesisInput,
 	Ticket,
 	TicketResponse,
-	UpdateTicketPayload,
+	PatchTicketPayload,
 } from "./api/types";
+export {
+	EThesisImportance,
+} from './api/types'
+
+export { type Thesis } from './model/types'
 
 export { default as TicketLeariningStateSelect } from "./ui/TicketLeariningStateSelect";
 export { default as TicketSearchInput } from "./ui/TicketSearchInput";

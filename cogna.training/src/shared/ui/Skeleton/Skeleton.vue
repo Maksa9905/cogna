@@ -17,6 +17,7 @@ const props = withDefaults(
 );
 
 const showDelayedSkeleton = ref(false);
+const hasShownContentOnce = ref(false);
 let delayTimer: ReturnType<typeof setTimeout> | undefined;
 
 watch(
@@ -27,7 +28,12 @@ watch(
 			delayTimer = undefined;
 		}
 		if (!loading) {
+			hasShownContentOnce.value = true;
 			showDelayedSkeleton.value = false;
+			return;
+		}
+		if (hasShownContentOnce.value) {
+			showDelayedSkeleton.value = true;
 			return;
 		}
 		showDelayedSkeleton.value = false;
@@ -67,7 +73,7 @@ onScopeDispose(() => {
 
 <style scoped>
 .skeleton-root__panel {
-	width: 100%;
+	flex: 1;
 	min-height: 0;
 }
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useTicketFindOneQuery, useUpdateTicketMutation } from "@/entities/tickets";
-import { TicketEditor, useTicketAutosave, useTicketEditingStore } from "@/features/ticket-editing";
+import { useGenerateThesesMutation, useTicketFindOneQuery, usePatchTicketMutation } from "@/entities/tickets";
+import { TicketEditor, TicketThesesEditor, useTicketAutosave, useTicketEditingStore } from "@/features/ticket-editing";
 import { useBreadCrumbs } from "@/features/navigation";
-import { ref, useTemplateRef } from "vue";
+import { provide, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { FloatingElement, Skeleton } from "@/shared/ui";
@@ -16,14 +16,16 @@ const {
 const router = useRouter();
 
 
-const { title, answer } = useTicketEditingStore({ id: ticketId as string });
+const ticketEditingStore = useTicketEditingStore({ id: ticketId as string });
+provide('tickerEditingStore', ticketEditingStore)
 
-const { mutateAsync: updateTicket } = useUpdateTicketMutation()
+const { title, answer, theses } = ticketEditingStore
 
+const { mutateAsync: updateTicket } = usePatchTicketMutation()
+const { mutateAsync: generateTheses, isPending } = useGenerateThesesMutation();
 const { data: ticketData, isLoading } = useTicketFindOneQuery({
 	id: ticketId as string,
 });
-
 
 const breadcrumbs = useBreadCrumbs();
 
@@ -31,7 +33,7 @@ const input = useTemplateRef<HTMLInputElement>("input");
 
 const isTitleEditable = ref(false);
 
-useTicketAutosave({ id: ticketId as string, answer: answer.value, title: title.value });
+useTicketAutosave({ id: ticketId as string, answer, title });
 
 const handleEditTitle = () => {
 	isTitleEditable.value = true
@@ -61,6 +63,29 @@ const handleBlurAnswer = async () => {
 const handleReproduceTicket = async () => {
 	router.push(`/subjects/${subjectId}/tickets/${ticketId}/reproduce`);
 }
+
+const handleGenerateTheses = async () => {
+	if (!ticketId) return;
+
+	await generateTheses({
+		ticketId: ticketId as string,
+		question: title.value,
+		answer: answer.value,
+	})
+}
+
+const handleUpdateTheses = async () => {
+	if (!ticketId) return;
+
+	updateTicket({
+		id: ticketId as string,
+		theses: theses.value.flatMap(thesis => [{
+			value: thesis.value,
+			importance: thesis.importance,
+			id: undefined,
+		}])
+	})
+}
 </script>
 
 <template>
@@ -82,23 +107,36 @@ const handleReproduceTicket = async () => {
 			</template>
 		</Skeleton>
 
-		<section class="ticket-page__answer" :aria-label="t('tickets.answerAriaLabel')">
-			<Skeleton :is-loading="isLoading">
+		<div class="ticket-page__main">
+			<Skeleton :is-loading="isLoading || isPending">
+				<template #default>
+					<TicketThesesEditor @blur="handleUpdateTheses" @generate="handleGenerateTheses" :isLoading="isLoading" />
+				</template>
 				<template #skeleton>
-					<USkeleton class="w-full h-[340px] bg-default rounded-lg flex items-center justify-center">
+					<USkeleton class="theses-editor__skeleton">
 						<LoadingIcon class="w-[24px] h-[24px]" />
 					</USkeleton>
 				</template>
-				<template #default>
-					<div class="ticket-page__editor">
-						<TicketEditor @blur="handleBlurAnswer" :is-loading="isLoading" v-model="answer" editor-class="px-3 sm:px-6 py-4 min-h-[340px]" />
-					</div>
-				</template>
 			</Skeleton>
-		</section>
+
+			<section class="ticket-page__answer" :aria-label="t('tickets.answerAriaLabel')">
+				<Skeleton :is-loading="isLoading">
+					<template #skeleton>
+						<USkeleton class="w-full h-[340px] bg-default rounded-lg flex items-center justify-center">
+							<LoadingIcon class="w-[24px] h-[24px]" />
+						</USkeleton>
+					</template>
+					<template #default>
+						<div class="ticket-page__editor">
+							<TicketEditor @blur="handleBlurAnswer" :is-loading="isLoading" v-model="answer" editor-class="px-3 sm:px-6 py-4 min-h-[340px]" />
+						</div>
+					</template>
+				</Skeleton>
+			</section>
+		</div>
 	</div>
 
-	<FloatingElement position="bottom-right" :offset='16'>
+	<FloatingElement position="bottom-right" class="floating-button">
 		<UButton @click="handleReproduceTicket" size="md" icon="i-lucide-check" class="rounded-4 min-w-10 min-h-10">
 			{{ t('tickets.rememberedButton') }}
 		</UButton>
@@ -154,10 +192,65 @@ textarea.ticket-page__title {
 	border: none;
 }
 
+.ticket-page__main {
+	display: flex;
+	flex-direction: row-reverse;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
 .ticket-page__answer {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	flex: 1;
+	min-width: 800px;
+	width: 100%;
+}
+
+.ticket-page__theses {
+	flex: 1;
+	background: var(--ui-bg);
+	border: 1px solid var(--ui-bg-accented);
+	height: fit-content;
+	padding: 24px;
+	padding-block: 16px;
+}
+
+@media screen and (max-width: 1440px) {
+	.ticket-page__main {
+		flex-direction: column;
+	}
+
+	.ticket-page__answer {
+		min-width: unset;
+	}
+
+	.ticket-page__theses {
+		min-width: unset;
+	}
+}
+
+
+.theses-editor__skeleton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 460px;
+	height: 200px;
+	background: var(--ui-bg)
+}
+
+.theses-header h2 {
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.theses-header svg {
+	display: inline;
+	margin-right: 4px;
+	position: relative;
+	top: -1.5px;
 }
 
 .ticket-page__editor {
@@ -173,5 +266,17 @@ textarea.ticket-page__title {
 
 .visibility-switch {
 	align-self: flex-end;
+}
+
+.floating-button {
+	bottom: 16px;
+	right: 16px;
+}
+
+@media screen and (max-width: 576px) {
+	.floating-button {
+		bottom: 78px !important;
+		right: 16px;
+	}
 }
 </style>

@@ -11,9 +11,9 @@ export default defineConfig({
 		tailwindcss(),
 		ui({
 			theme: {
-				colors: ["primary", "error"],
+				colors: ["primary", "error", "warning", 'success'],
 			},
-			ui: { colors: { primary: "purple" } },
+			ui: { colors: { primary: "purple"} },
 		}),
 	],
 	resolve: {

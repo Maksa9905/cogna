@@ -49,9 +49,9 @@ export const ticketCreateTicketMutationDocument = `
   }
 `;
 
-export const ticketUpdateTicketMutationDocument = `
-  mutation TicketUpdateTicket($data: UpdateTicketRequestGql!) {
-    ticketUpdateTicket(data: $data) {
+export const ticketPatchTicketMutationDocument = `
+  mutation ticketPatchTicket($data: PatchTicketRequestGql!) {
+    ticketPatchTicket(data: $data) {
       ticket {
         ${ticketFields}
       }

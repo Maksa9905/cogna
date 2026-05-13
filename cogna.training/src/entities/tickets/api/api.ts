@@ -6,7 +6,7 @@ import {
 	ticketFindAllQueryDocument,
 	ticketFindOneQueryDocument,
 	ticketGenerateThesesMutationDocument,
-	ticketUpdateTicketMutationDocument,
+	ticketPatchTicketMutationDocument,
 } from "./graphql";
 import type {
 	CreateTicketPayload,
@@ -17,7 +17,7 @@ import type {
 	GenerateThesesPayload,
 	SuccessResponseContent,
 	TicketResponse,
-	UpdateTicketPayload,
+	PatchTicketPayload,
 } from "./types";
 
 export const TICKET_FIND_ALL_STALE_MS = 60_000;
@@ -82,13 +82,13 @@ export function useCreateTicketMutation() {
 	});
 }
 
-export function useUpdateTicketMutation() {
+export function usePatchTicketMutation() {
 	const queryClient = useQueryClient();
-	return useMutation<TicketResponse, Error, UpdateTicketPayload>({
+	return useMutation<TicketResponse, Error, PatchTicketPayload>({
 		mutationFn: (payload) =>
-			authRequest<{ ticketUpdateTicket: TicketResponse }>(ticketUpdateTicketMutationDocument, {
+			authRequest<{ ticketPatchTicket: TicketResponse }>(ticketPatchTicketMutationDocument, {
 				data: payload,
-			}).then((res) => res.ticketUpdateTicket),
+			}).then((res) => res.ticketPatchTicket),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ticketsKey });
 		},
