@@ -26,4 +26,7 @@ export class ThesisInputGql implements ThesisInput {
 
   @Field()
   importance: string;
+
+  @Field({ nullable: true })
+  id?: string;
 }

@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../infra/prisma/prisma.service';
 import {
   CreateTicketRequest,
+  PatchTicketRequest,
+  ThesisInput,
   TicketResponse,
 } from '@cogna-edu/contracts/dist/content/ticket';
 import {
@@ -10,7 +12,6 @@ import {
   FindAllTicketsResponse,
   FindOneTicketRequest,
   GenerateThesesRequest,
-  PatchTicketRequest,
 } from '@cogna-edu/contracts/dist/content/ticket';
 import {
   GenerateThesesRequest as GenThesesRequest,
@@ -88,30 +89,43 @@ export class TicketService {
   public async patchTicket(dto: PatchTicketRequest): Promise<TicketResponse> {
     const { id, userId, answer, question, theses } = dto;
 
-    const thesesUpdate =
-      theses?.items !== undefined
-        ? {
-            deleteMany: {},
-            create: theses.items.map((t) => ({
-              value: t.value,
-              importance: t.importance,
-            })),
-          }
-        : undefined;
-
     try {
-      const ticket = await this.prismaService.ticket.update({
-        where: {
-          id,
-          subject: { userId },
-        },
-        data: {
-          answer,
-          question,
-          theses: thesesUpdate,
-        },
-        include: { theses: true },
+      const ticket = await this.prismaService.$transaction(async (tx) => {
+        await tx.ticket.update({
+          where: { id, subject: { userId } },
+          data: { answer, question },
+        });
+
+        if (theses?.items) {
+          const toUpdate = theses.items.filter(
+            (t): t is ThesisInput & { id: string } => !!t.id,
+          );
+          const toCreate = theses.items.filter((t) => !t.id);
+
+          for (const t of toUpdate) {
+            await tx.thesis.update({
+              where: { id: t.id },
+              data: { value: t.value, importance: t.importance },
+            });
+          }
+
+          for (const t of toCreate) {
+            await tx.thesis.create({
+              data: {
+                ticketId: id,
+                value: t.value,
+                importance: t.importance,
+              },
+            });
+          }
+        }
+
+        return tx.ticket.findUnique({
+          where: { id },
+          include: { theses: true },
+        });
       });
+
       return { ticket: ticket ?? undefined };
     } catch {
       throw new RpcException({

@@ -5,16 +5,15 @@ package ticket.v1;
 import "content/common.proto";
 import "google/protobuf/timestamp.proto";
 
-
 service TicketService {
-  rpc CreateTicket (CreateTicketRequest) returns (TicketResponse);
-  rpc FindAllTickets (FindAllTicketsRequest) returns (FindAllTicketsResponse);
-  rpc FindOneTicket (FindOneTicketRequest) returns (TicketResponse);
-  rpc PatchTicket (PatchTicketRequest) returns (TicketResponse);
-  rpc DeleteTicket (DeleteTicketRequest) returns (common.content.v1.SuccessResponse);
+  rpc CreateTicket(CreateTicketRequest) returns (TicketResponse);
+  rpc FindAllTickets(FindAllTicketsRequest) returns (FindAllTicketsResponse);
+  rpc FindOneTicket(FindOneTicketRequest) returns (TicketResponse);
+  rpc PatchTicket(PatchTicketRequest) returns (TicketResponse);
+  rpc DeleteTicket(DeleteTicketRequest) returns (common.content.v1.SuccessResponse);
 
   // Метод для (пере)генерации тезисов через ИИ
-  rpc GenerateTheses (GenerateThesesRequest) returns (TicketResponse);
+  rpc GenerateTheses(GenerateThesesRequest) returns (TicketResponse);
 }
 
 // Сущность тезиса для использования в ответах
@@ -29,6 +28,7 @@ message Thesis {
 message ThesisInput {
   string value = 1;
   string importance = 2;
+  optional string id = 3;
 }
 
 // Основной объект билета
@@ -69,7 +69,6 @@ message FindOneTicketRequest {
   string id = 1;
   string user_id = 2;
 }
-
 
 message ThesisInputList {
   repeated ThesisInput items = 1;

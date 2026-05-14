@@ -25,6 +25,7 @@ export interface Thesis {
 export interface ThesisInput {
   value: string;
   importance: string;
+  id?: string | undefined;
 }
 
 /** Основной объект билета */
