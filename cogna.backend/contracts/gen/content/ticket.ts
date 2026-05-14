@@ -13,18 +13,25 @@ import { SuccessResponse } from "./common";
 export const protobufPackage = "ticket.v1";
 
 /** Сущность тезиса для использования в ответах */
+export enum Importance {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
 export interface Thesis {
   id: string;
   /** Сам тезис */
   value: string;
-  importance: string;
+  importance: Importance;
   createdAt: Date | undefined;
   updatedAt: Date | undefined;
 }
 
 export interface ThesisInput {
   value: string;
-  importance: string;
+  importance: Importance;
   id?: string | undefined;
 }
 

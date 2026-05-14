@@ -4,6 +4,7 @@ import {
   CreateTicketRequest,
   PatchTicketRequest,
   ThesisInput,
+  Ticket,
   TicketResponse,
 } from '@cogna-edu/contracts/dist/content/ticket';
 import {
@@ -21,6 +22,16 @@ import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import { SuccessResponse } from '@cogna-edu/contracts/gen/content/common';
 import { ThesisServiceClient } from '@cogna-edu/contracts/gen/thesis/thesis';
 import { firstValueFrom } from 'rxjs';
+import { Importance } from '../../../prisma/generated/enums';
+
+const ImportanceMap: Record<number, Importance> = {
+  0: 'LOW',
+  1: 'MEDIUM',
+  2: 'HIGH',
+};
+
+const toImportance = (v: string | number): Importance =>
+  typeof v === 'string' ? (v as Importance) : (ImportanceMap[v] ?? 'LOW');
 
 @Injectable()
 export class TicketService {
@@ -43,7 +54,7 @@ export class TicketService {
         theses: {
           create: (theses || []).map((t) => ({
             value: t.value,
-            importance: t.importance,
+            importance: toImportance(t.importance),
           })),
         },
       },
@@ -63,7 +74,7 @@ export class TicketService {
       },
     });
     if (!ticket) throw new RpcException({});
-    return { ticket: ticket };
+    return { ticket: ticket as Ticket };
   }
 
   public async findAllTickets(
@@ -83,7 +94,7 @@ export class TicketService {
         where: { subjectId },
       }),
     ]);
-    return { tickets: tickets, totalCount: total_count };
+    return { tickets: tickets as Ticket[], totalCount: total_count };
   }
 
   public async patchTicket(dto: PatchTicketRequest): Promise<TicketResponse> {
@@ -103,9 +114,10 @@ export class TicketService {
           const toCreate = theses.items.filter((t) => !t.id);
 
           for (const t of toUpdate) {
+            console.log(`t importande: ${t.importance}}`);
             await tx.thesis.update({
               where: { id: t.id },
-              data: { value: t.value, importance: t.importance },
+              data: { value: t.value, importance: toImportance(t.importance) },
             });
           }
 
@@ -114,7 +126,7 @@ export class TicketService {
               data: {
                 ticketId: id,
                 value: t.value,
-                importance: t.importance,
+                importance: toImportance(t.importance),
               },
             });
           }
@@ -126,8 +138,9 @@ export class TicketService {
         });
       });
 
-      return { ticket: ticket ?? undefined };
-    } catch {
+      return { ticket: (ticket as Ticket) ?? undefined };
+    } catch (e) {
+      console.error(e);
       throw new RpcException({
         code: 5,
         message: 'Билет не найден или доступ запрещен',
@@ -167,13 +180,13 @@ export class TicketService {
           deleteMany: {},
           create: response.theses.map((t) => ({
             value: t.value,
-            importance: t.importance,
+            importance: toImportance(t.importance),
           })),
         },
       },
       include: { theses: true },
     });
     if (!ticket) throw new RpcException({});
-    return { ticket: ticket };
+    return { ticket: ticket as Ticket };
   }
 }

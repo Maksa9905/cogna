@@ -17,17 +17,23 @@ service TicketService {
 }
 
 // Сущность тезиса для использования в ответах
+enum Importance {
+  LOW = 0;
+  MEDIUM = 1;
+  HIGH = 2;
+}
+
 message Thesis {
   string id = 1;
   string value = 2; // Сам тезис
-  string importance = 3;
+  Importance importance = 3;
   google.protobuf.Timestamp created_at = 4;
   google.protobuf.Timestamp updated_at = 5;
 }
 
 message ThesisInput {
   string value = 1;
-  string importance = 2;
+  Importance importance = 2;
   optional string id = 3;
 }
 

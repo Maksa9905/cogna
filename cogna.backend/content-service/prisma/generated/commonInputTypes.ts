@@ -72,6 +72,23 @@ export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
+export type EnumImportanceFilter<$PrismaModel = never> = {
+  equals?: $Enums.Importance | Prisma.EnumImportanceFieldRefInput<$PrismaModel>
+  in?: $Enums.Importance[] | Prisma.ListEnumImportanceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Importance[] | Prisma.ListEnumImportanceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImportanceFilter<$PrismaModel> | $Enums.Importance
+}
+
+export type EnumImportanceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.Importance | Prisma.EnumImportanceFieldRefInput<$PrismaModel>
+  in?: $Enums.Importance[] | Prisma.ListEnumImportanceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Importance[] | Prisma.ListEnumImportanceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImportanceWithAggregatesFilter<$PrismaModel> | $Enums.Importance
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumImportanceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumImportanceFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -137,6 +154,23 @@ export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedDateTimeFilter<$PrismaModel>
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
+}
+
+export type NestedEnumImportanceFilter<$PrismaModel = never> = {
+  equals?: $Enums.Importance | Prisma.EnumImportanceFieldRefInput<$PrismaModel>
+  in?: $Enums.Importance[] | Prisma.ListEnumImportanceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Importance[] | Prisma.ListEnumImportanceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImportanceFilter<$PrismaModel> | $Enums.Importance
+}
+
+export type NestedEnumImportanceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.Importance | Prisma.EnumImportanceFieldRefInput<$PrismaModel>
+  in?: $Enums.Importance[] | Prisma.ListEnumImportanceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Importance[] | Prisma.ListEnumImportanceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImportanceWithAggregatesFilter<$PrismaModel> | $Enums.Importance
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumImportanceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumImportanceFilter<$PrismaModel>
 }
 
 

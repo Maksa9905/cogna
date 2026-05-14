@@ -53,7 +53,10 @@ export class ThesisService {
                   type: 'object',
                   properties: {
                     value: { type: 'string' },
-                    importance: { type: 'string' },
+                    importance: {
+                      type: 'string',
+                      enum: ['LOW', 'MEDIUM', 'HIGH'],
+                    },
                   },
                   required: ['value', 'importance'],
                   additionalProperties: false,

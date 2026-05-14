@@ -23,7 +23,6 @@ import { Protected } from '../../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn';
 import { PubSub } from 'graphql-subscriptions';
 import { interval, map, take } from 'rxjs';
-import { TicketServiceController } from '@cogna-edu/contracts/dist/content/ticket';
 
 export type PubSubEvents = {
   TEST_STREAM_1: { testStream: string };

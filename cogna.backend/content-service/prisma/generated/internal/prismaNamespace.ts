@@ -753,6 +753,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Importance'
+ */
+export type EnumImportanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Importance'>
+    
+
+
+/**
+ * Reference to a field of type 'Importance[]'
+ */
+export type ListEnumImportanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Importance[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>

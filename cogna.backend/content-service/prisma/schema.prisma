@@ -38,13 +38,19 @@ model Ticket {
   @@map("tickets")
 }
 
+enum Importance {
+  LOW
+  MEDIUM
+  HIGH
+}
+
 model Thesis {
   id String @id @default(uuid())
 
   ticketId String @map("ticket_id")
 
   value      String
-  importance String
+  importance Importance
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")

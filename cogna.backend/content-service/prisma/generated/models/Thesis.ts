@@ -28,7 +28,7 @@ export type ThesisMinAggregateOutputType = {
   id: string | null
   ticketId: string | null
   value: string | null
-  importance: string | null
+  importance: $Enums.Importance | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -37,7 +37,7 @@ export type ThesisMaxAggregateOutputType = {
   id: string | null
   ticketId: string | null
   value: string | null
-  importance: string | null
+  importance: $Enums.Importance | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -157,7 +157,7 @@ export type ThesisGroupByOutputType = {
   id: string
   ticketId: string
   value: string
-  importance: string
+  importance: $Enums.Importance
   createdAt: Date
   updatedAt: Date
   _count: ThesisCountAggregateOutputType | null
@@ -187,7 +187,7 @@ export type ThesisWhereInput = {
   id?: Prisma.StringFilter<"Thesis"> | string
   ticketId?: Prisma.StringFilter<"Thesis"> | string
   value?: Prisma.StringFilter<"Thesis"> | string
-  importance?: Prisma.StringFilter<"Thesis"> | string
+  importance?: Prisma.EnumImportanceFilter<"Thesis"> | $Enums.Importance
   createdAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
   ticket?: Prisma.XOR<Prisma.TicketScalarRelationFilter, Prisma.TicketWhereInput>
@@ -210,7 +210,7 @@ export type ThesisWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ThesisWhereInput | Prisma.ThesisWhereInput[]
   ticketId?: Prisma.StringFilter<"Thesis"> | string
   value?: Prisma.StringFilter<"Thesis"> | string
-  importance?: Prisma.StringFilter<"Thesis"> | string
+  importance?: Prisma.EnumImportanceFilter<"Thesis"> | $Enums.Importance
   createdAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
   ticket?: Prisma.XOR<Prisma.TicketScalarRelationFilter, Prisma.TicketWhereInput>
@@ -235,7 +235,7 @@ export type ThesisScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Thesis"> | string
   ticketId?: Prisma.StringWithAggregatesFilter<"Thesis"> | string
   value?: Prisma.StringWithAggregatesFilter<"Thesis"> | string
-  importance?: Prisma.StringWithAggregatesFilter<"Thesis"> | string
+  importance?: Prisma.EnumImportanceWithAggregatesFilter<"Thesis"> | $Enums.Importance
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Thesis"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Thesis"> | Date | string
 }
@@ -243,7 +243,7 @@ export type ThesisScalarWhereWithAggregatesInput = {
 export type ThesisCreateInput = {
   id?: string
   value: string
-  importance: string
+  importance: $Enums.Importance
   createdAt?: Date | string
   updatedAt?: Date | string
   ticket: Prisma.TicketCreateNestedOneWithoutThesesInput
@@ -253,7 +253,7 @@ export type ThesisUncheckedCreateInput = {
   id?: string
   ticketId: string
   value: string
-  importance: string
+  importance: $Enums.Importance
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -261,7 +261,7 @@ export type ThesisUncheckedCreateInput = {
 export type ThesisUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
-  importance?: Prisma.StringFieldUpdateOperationsInput | string
+  importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ticket?: Prisma.TicketUpdateOneRequiredWithoutThesesNestedInput
@@ -271,7 +271,7 @@ export type ThesisUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
-  importance?: Prisma.StringFieldUpdateOperationsInput | string
+  importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -280,7 +280,7 @@ export type ThesisCreateManyInput = {
   id?: string
   ticketId: string
   value: string
-  importance: string
+  importance: $Enums.Importance
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -288,7 +288,7 @@ export type ThesisCreateManyInput = {
 export type ThesisUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
-  importance?: Prisma.StringFieldUpdateOperationsInput | string
+  importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -297,7 +297,7 @@ export type ThesisUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
-  importance?: Prisma.StringFieldUpdateOperationsInput | string
+  importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -381,10 +381,14 @@ export type ThesisUncheckedUpdateManyWithoutTicketNestedInput = {
   deleteMany?: Prisma.ThesisScalarWhereInput | Prisma.ThesisScalarWhereInput[]
 }
 
+export type EnumImportanceFieldUpdateOperationsInput = {
+  set?: $Enums.Importance
+}
+
 export type ThesisCreateWithoutTicketInput = {
   id?: string
   value: string
-  importance: string
+  importance: $Enums.Importance
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -392,7 +396,7 @@ export type ThesisCreateWithoutTicketInput = {
 export type ThesisUncheckedCreateWithoutTicketInput = {
   id?: string
   value: string
-  importance: string
+  importance: $Enums.Importance
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -430,7 +434,7 @@ export type ThesisScalarWhereInput = {
   id?: Prisma.StringFilter<"Thesis"> | string
   ticketId?: Prisma.StringFilter<"Thesis"> | string
   value?: Prisma.StringFilter<"Thesis"> | string
-  importance?: Prisma.StringFilter<"Thesis"> | string
+  importance?: Prisma.EnumImportanceFilter<"Thesis"> | $Enums.Importance
   createdAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
 }
@@ -438,7 +442,7 @@ export type ThesisScalarWhereInput = {
 export type ThesisCreateManyTicketInput = {
   id?: string
   value: string
-  importance: string
+  importance: $Enums.Importance
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -446,7 +450,7 @@ export type ThesisCreateManyTicketInput = {
 export type ThesisUpdateWithoutTicketInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
-  importance?: Prisma.StringFieldUpdateOperationsInput | string
+  importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -454,7 +458,7 @@ export type ThesisUpdateWithoutTicketInput = {
 export type ThesisUncheckedUpdateWithoutTicketInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
-  importance?: Prisma.StringFieldUpdateOperationsInput | string
+  importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -462,7 +466,7 @@ export type ThesisUncheckedUpdateWithoutTicketInput = {
 export type ThesisUncheckedUpdateManyWithoutTicketInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
-  importance?: Prisma.StringFieldUpdateOperationsInput | string
+  importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -528,7 +532,7 @@ export type $ThesisPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     id: string
     ticketId: string
     value: string
-    importance: string
+    importance: $Enums.Importance
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["thesis"]>
@@ -958,7 +962,7 @@ export interface ThesisFieldRefs {
   readonly id: Prisma.FieldRef<"Thesis", 'String'>
   readonly ticketId: Prisma.FieldRef<"Thesis", 'String'>
   readonly value: Prisma.FieldRef<"Thesis", 'String'>
-  readonly importance: Prisma.FieldRef<"Thesis", 'String'>
+  readonly importance: Prisma.FieldRef<"Thesis", 'Importance'>
   readonly createdAt: Prisma.FieldRef<"Thesis", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Thesis", 'DateTime'>
 }
