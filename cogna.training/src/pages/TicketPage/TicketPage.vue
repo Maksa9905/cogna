@@ -1,91 +1,127 @@
 <script setup lang="ts">
-import { useGenerateThesesMutation, useTicketFindOneQuery, usePatchTicketMutation } from "@/entities/tickets";
-import { TicketEditor, TicketThesesEditor, useTicketAutosave, useTicketEditingStore } from "@/features/ticket-editing";
+import { useGenerateThesesMutation, useTicketFindOneQuery } from "@/entities/tickets";
+import { CREATE_TICKET_ID, TicketEditor, TicketThesesEditor, useTicketAutosave, useTicketEditingMutations, useTicketEditingStore } from "@/features/ticket-editing";
 import { useBreadCrumbs } from "@/features/navigation";
-import { provide, ref, useTemplateRef } from "vue";
+import { useLocalizedRouter } from "@/shared/i18n";
+import { computed, provide } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
-import { FloatingElement, Skeleton } from "@/shared/ui";
+import { FloatingElement, InlineTextareaField, Skeleton } from "@/shared/ui";
 import { LoadingIcon } from "@/shared/icons";
+import { type ChangeThesisPayload, mapThesis } from "@/features/ticket-editing";
 
 const { t } = useI18n();
 
-const {
-	params: { ticketId, subjectId },
-} = useRoute();	
+const route = useRoute();
+
+const ticketId = computed(() => route.params.ticketId as string);
+const subjectId = computed(() => route.params.subjectId as string);
+
 const router = useRouter();
+const { routes } = useLocalizedRouter();
 
+const isNew = computed(() => route.params.ticketId === CREATE_TICKET_ID)
 
-const ticketEditingStore = useTicketEditingStore({ id: ticketId as string });
-provide('tickerEditingStore', ticketEditingStore)
+const { 
+	title, 
+	answer, 
+	theses,
+	addNewThesis,
+	changeThesis
+} = useTicketEditingStore(ticketId);
 
-const { title, answer, theses } = ticketEditingStore
+const { saveTicket, isLoading: isSaveLoading } = useTicketEditingMutations();
 
-const { mutateAsync: updateTicket } = usePatchTicketMutation()
 const { mutateAsync: generateTheses, isPending } = useGenerateThesesMutation();
-const { data: ticketData, isLoading } = useTicketFindOneQuery({
-	id: ticketId as string,
-});
+const { data: ticketData, isLoading } = useTicketFindOneQuery(ticketId);
 
 const breadcrumbs = useBreadCrumbs();
 
-const input = useTemplateRef<HTMLInputElement>("input");
+useTicketAutosave({ 
+	id: ticketId, 
+	subjectId, 
+	answer,
+	title 
+});
 
-const isTitleEditable = ref(false);
+const handleCreateTicket = async () => {
+	if (!isNew.value) return;
 
-useTicketAutosave({ id: ticketId as string, answer, title });
+	const created = await saveTicket({
+		id: ticketId.value,
+		subjectId: subjectId.value,
+		question: title.value,
+		answer: answer.value,
+		theses: theses.value.map(mapThesis),
+	});
 
-const handleEditTitle = () => {
-	isTitleEditable.value = true
+	if (!created || !created.ticket) return;
 
-	setTimeout(() => {
-		input.value?.focus();
-	}, 0);
-}
+	await router.push(routes.value.ticket(subjectId.value, created.ticket.id));
+};
 
-const handleBlurTitle = async () => {
-	if (!title.value) return;
 
-	await updateTicket({
-		id: ticketId as string,
+const handleCommitTitle = async () => {
+	if (isNew.value) return;
+
+	if (title.value === ticketData.value?.ticket?.question) return;
+
+	await saveTicket({
+		id: ticketId.value,
+		subjectId: subjectId.value,
 		question: title.value,
 	})
-
-	isTitleEditable.value = false
 }
 
-const handleBlurAnswer = async () => {
+const handleCommitAnswer = async () => {
+	if (isNew.value) return;
 	if (answer.value === ticketData.value?.ticket?.answer) return;
 
-	await updateTicket({ id: ticketId as string, answer: answer.value })
+	await saveTicket({
+		id: ticketId.value, 
+		subjectId: subjectId.value, 
+		answer: answer.value
+	})
 }
 
 const handleReproduceTicket = async () => {
-	router.push(`/subjects/${subjectId}/tickets/${ticketId}/reproduce`);
+	router.push(`/subjects/${subjectId.value}/tickets/${ticketId.value}/reproduce`);
 }
 
 const handleGenerateTheses = async () => {
 	if (!ticketId) return;
 
 	await generateTheses({
-		ticketId: ticketId as string,
+		ticketId: ticketId.value,
 		question: title.value,
 		answer: answer.value,
 	})
 }
 
 const handleUpdateTheses = async () => {
-	if (!ticketId) return;
+	if (isNew.value) return;
 
-	updateTicket({
-		id: ticketId as string,
-		theses: theses.value.flatMap(thesis => [{
-			value: thesis.value,
-			importance: thesis.importance,
-			id: undefined,
-		}])
+	await saveTicket({ 
+		id: ticketId.value, 
+		subjectId: subjectId.value, 
+		theses: theses.value.map(mapThesis),
 	})
+};
+
+const handleCreateThesis = () => {
+	addNewThesis();
 }
+
+const handleChangeThesis = (payload: ChangeThesisPayload) => {
+	changeThesis(payload);
+	saveTicket({
+		id: ticketId.value, 
+		subjectId: subjectId.value,
+		theses: theses.value.map(mapThesis),
+	});
+}
+
+provide('tickerEditingStore', { title, answer, theses })
 </script>
 
 <template>
@@ -100,8 +136,14 @@ const handleUpdateTheses = async () => {
 
 			<template #default>
 				<header class="ticket-page__header">
-					<textarea :placeholder="t('tickets.titlePlaceholder')" v-model="title" class="ticket-page__title" v-if="isTitleEditable || !title" @blur="handleBlurTitle" ref="input" />
-					<h1 v-else @click="handleEditTitle" class="ticket-page__title">{{ title }}</h1>
+					<InlineTextareaField
+						v-model="title"
+						:placeholder="t('tickets.titlePlaceholder')"
+						:ariaDescription="t('tickets.titlePlaceholder')"
+						class="ticket-page__title"
+						textarea-class="ticket-page__title"
+						@commit="handleCommitTitle"
+					/>
 					<UBreadcrumb :items="breadcrumbs || []" />
 				</header>
 			</template>
@@ -110,7 +152,13 @@ const handleUpdateTheses = async () => {
 		<div class="ticket-page__main">
 			<Skeleton :is-loading="isLoading || isPending">
 				<template #default>
-					<TicketThesesEditor @blur="handleUpdateTheses" @generate="handleGenerateTheses" :isLoading="isLoading" />
+					<TicketThesesEditor 
+						@change="handleChangeThesis" 
+						@create="handleCreateThesis" 
+						@blur="handleUpdateTheses" 
+						@generate="handleGenerateTheses" 
+						:isLoading="isLoading"
+					/>
 				</template>
 				<template #skeleton>
 					<USkeleton class="theses-editor__skeleton">
@@ -128,7 +176,12 @@ const handleUpdateTheses = async () => {
 					</template>
 					<template #default>
 						<div class="ticket-page__editor">
-							<TicketEditor @blur="handleBlurAnswer" :is-loading="isLoading" v-model="answer" editor-class="px-3 sm:px-6 py-4 min-h-[340px]" />
+							<TicketEditor 
+								@commit="handleCommitAnswer" 
+								:is-loading="isLoading" 
+								v-model="answer"
+								editor-class="px-3 sm:px-6 py-4 min-h-[340px]" 
+							/>
 						</div>
 					</template>
 				</Skeleton>
@@ -137,7 +190,17 @@ const handleUpdateTheses = async () => {
 	</div>
 
 	<FloatingElement position="bottom-right" class="floating-button">
-		<UButton @click="handleReproduceTicket" size="md" icon="i-lucide-check" class="rounded-4 min-w-10 min-h-10">
+		<UButton
+			v-if="isNew"
+			@click="handleCreateTicket"
+			:loading="isSaveLoading"
+			size="md"
+			icon="i-lucide-plus"
+			class="rounded-4 min-w-10 min-h-10"
+		>
+			Создать
+		</UButton>
+		<UButton v-else @click="handleReproduceTicket" size="md" icon="i-lucide-check" class="rounded-4 min-w-10 min-h-10">
 			{{ t('tickets.rememberedButton') }}
 		</UButton>
 	</FloatingElement>
@@ -174,22 +237,11 @@ const handleUpdateTheses = async () => {
 }
 
 .ticket-page__title {
-	field-sizing: content;
 	min-width: 120px;
 	min-height: 36px;
 	font-size: 24px;
 	font-weight: 600;
 	color: var(--text-color-default);
-}
-
-textarea.ticket-page__title {
-  overflow-y: hidden;
-  resize: none;
-}
-
-.ticket-page__title:focus-visible {
-	outline: none;
-	border: none;
 }
 
 .ticket-page__main {

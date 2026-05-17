@@ -1,10 +1,11 @@
 export enum EThesisImportance {
-	HIGH = 'high',
-	MEDIUM = 'medium',
-	LOW = 'low'
+	HIGH = "high",
+	MEDIUM = "medium",
+	LOW = "low",
 }
 
 export interface ThesisInput {
+	id?: string
 	value: string;
 	importance: EThesisImportance;
 }
@@ -41,9 +42,9 @@ export interface SuccessResponseContent {
 }
 
 export interface CreateTicketPayload {
-	subjectId: string;
 	question: string;
 	answer: string;
+	subjectId: string;
 	theses?: ThesisInput[];
 }
 
@@ -54,13 +55,9 @@ export interface PatchTicketPayload {
 	theses?: ThesisInput[];
 }
 
-export interface DeleteTicketPayload {
-	id: string;
-}
+export type DeleteTicketPayload = string
 
-export interface FindOneTicketPayload {
-	id: string;
-}
+export type FindOneTicketPayload = string
 
 export interface FindAllTicketsPayload {
 	subjectId: string;

@@ -38,6 +38,7 @@ async function bootstrap() {
       'https://dev.cogna.localhost',
       'https://www.cogna.ru',
       'https://cogna.ru',
+      'http://192.168.0.100:5173',
     ],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { authRequest } from "@/shared/api";
+import { subjectFindAllKey } from "@/entities/subjects/api/api";
 import {
 	ticketCreateTicketMutationDocument,
 	ticketDeleteTicketMutationDocument,
@@ -19,10 +20,16 @@ import type {
 	TicketResponse,
 	PatchTicketPayload,
 } from "./types";
+import { CreateTicketSchema, FindOneTicketSchema, PatchTicketSchema } from "./schemas";
+import { computed, type Ref } from "vue";
 
 export const TICKET_FIND_ALL_STALE_MS = 60_000;
 
 const ticketsKey = ["tickets"] as const;
+
+async function invalidateRelatedSubjectsCache(queryClient: ReturnType<typeof useQueryClient>) {
+	await queryClient.invalidateQueries({ queryKey: subjectFindAllKey() });
+}
 
 function ticketFindAllKey(payload: FindAllTicketsPayload) {
 	return [
@@ -33,15 +40,15 @@ function ticketFindAllKey(payload: FindAllTicketsPayload) {
 	] as const;
 }
 
-function ticketFindOneKey(payload: FindOneTicketPayload) {
-	return [...ticketsKey, "one", payload.id] as const;
+function ticketFindOneKey(id: FindOneTicketPayload) {
+	return [...ticketsKey, "one", id] as const;
 }
 
 export const TICKET_FIND_ONE_STALE_MS = 60_000;
 
-export function fetchTicketFindOne(payload: FindOneTicketPayload) {
+export function fetchTicketFindOne(id: FindOneTicketPayload) {
 	return authRequest<{ ticketFindOneTicket: TicketResponse }>(ticketFindOneQueryDocument, {
-		data: payload,
+		data: { id },
 	}).then((res) => res.ticketFindOneTicket);
 }
 
@@ -51,33 +58,40 @@ export function fetchTicketFindAll(payload: FindAllTicketsPayload) {
 	}).then((res) => res.ticketFindAllTickets);
 }
 
-export function useTicketFindAllQuery(payload: FindAllTicketsPayload, enabled: boolean = true) {
+export function useTicketFindAllQuery(payload: Ref<FindAllTicketsPayload>, enabled: boolean = true) {
 	return useQuery({
-		queryKey: ticketFindAllKey(payload),
-		queryFn: () => fetchTicketFindAll(payload),
+		queryKey: ticketFindAllKey(payload.value),
+		queryFn: () => fetchTicketFindAll(payload.value),
 		staleTime: TICKET_FIND_ALL_STALE_MS,
 		enabled,
 	});
 }
 
-export function useTicketFindOneQuery(payload: FindOneTicketPayload, enabled: boolean = true) {
+export function useTicketFindOneQuery(payload: Ref<FindOneTicketPayload>) {
+	const enabled = computed(() => FindOneTicketSchema.safeParse(payload.value).success);
+
 	return useQuery({
-		queryKey: ticketFindOneKey(payload),
-		queryFn: () => fetchTicketFindOne(payload),
-		enabled,
+		queryKey: ticketFindOneKey(payload.value),
+		queryFn: () => fetchTicketFindOne(payload.value),
+		enabled: enabled,
 		staleTime: TICKET_FIND_ONE_STALE_MS,
 	});
 }
 
 export function useCreateTicketMutation() {
 	const queryClient = useQueryClient();
+
 	return useMutation<TicketResponse, Error, CreateTicketPayload>({
-		mutationFn: (payload) =>
-			authRequest<{ ticketCreateTicket: TicketResponse }>(ticketCreateTicketMutationDocument, {
+		mutationFn: (payload) => {
+			CreateTicketSchema.parse(payload)
+
+			return authRequest<{ ticketCreateTicket: TicketResponse }>(ticketCreateTicketMutationDocument, {
 				data: payload,
-			}).then((res) => res.ticketCreateTicket),
+			}).then((res) => res.ticketCreateTicket)
+		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ticketsKey });
+			void invalidateRelatedSubjectsCache(queryClient);
 		},
 	});
 }
@@ -85,12 +99,16 @@ export function useCreateTicketMutation() {
 export function usePatchTicketMutation() {
 	const queryClient = useQueryClient();
 	return useMutation<TicketResponse, Error, PatchTicketPayload>({
-		mutationFn: (payload) =>
-			authRequest<{ ticketPatchTicket: TicketResponse }>(ticketPatchTicketMutationDocument, {
+		mutationFn: (payload) => {
+			PatchTicketSchema.parse(payload)
+
+			return authRequest<{ ticketPatchTicket: TicketResponse }>(ticketPatchTicketMutationDocument, {
 				data: payload,
-			}).then((res) => res.ticketPatchTicket),
+			}).then((res) => res.ticketPatchTicket)
+		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ticketsKey });
+			void invalidateRelatedSubjectsCache(queryClient);
 		},
 	});
 }
@@ -98,13 +116,14 @@ export function usePatchTicketMutation() {
 export function useDeleteTicketMutation() {
 	const queryClient = useQueryClient();
 	return useMutation<SuccessResponseContent, Error, DeleteTicketPayload>({
-		mutationFn: (payload) =>
+		mutationFn: (id) =>
 			authRequest<{ ticketDeleteTicket: SuccessResponseContent }>(
 				ticketDeleteTicketMutationDocument,
-				{ data: payload },
+				{ data: { id } },
 			).then((res) => res.ticketDeleteTicket),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ticketsKey });
+			void invalidateRelatedSubjectsCache(queryClient);
 		},
 	});
 }

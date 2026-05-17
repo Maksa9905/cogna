@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { authRequest } from "@/shared/api";
+import { computed, type Ref } from "vue";
 import {
 	subjectCreateSubjectMutationDocument,
 	subjectDeleteSubjectMutationDocument,
@@ -24,15 +25,15 @@ function subjectFindAllKey(payload?: FindAllSubjectsPayload) {
 	return [...subjectsKey, "list", payload ?? {}] as const;
 }
 
-function subjectFindOneKey(payload: FindOneSubjectPayload) {
-	return [...subjectsKey, "one", payload.id] as const;
+function subjectFindOneKey(id: FindOneSubjectPayload) {
+	return [...subjectsKey, "one", id] as const;
 }
 
 export const SUBJECT_FIND_ONE_STALE_MS = 60_000;
 
-export function fetchSubjectFindOne(payload: FindOneSubjectPayload) {
+export function fetchSubjectFindOne(id: FindOneSubjectPayload) {
 	return authRequest<{ subjectFindOne: SubjectResponse }>(subjectFindOneQueryDocument, {
-		data: payload,
+		data: { id },
 	}).then((res) => res.subjectFindOne);
 }
 
@@ -46,11 +47,13 @@ export function useSubjectFindAllQuery(payload?: FindAllSubjectsPayload) {
 	});
 }
 
-export function useSubjectFindOneQuery(payload: FindOneSubjectPayload, enabled: boolean = true) {
+export function useSubjectFindOneQuery(
+	payload: Ref<FindOneSubjectPayload>,
+) {
 	return useQuery({
-		queryKey: subjectFindOneKey(payload),
-		queryFn: () => fetchSubjectFindOne(payload),
-		enabled,
+		queryKey: computed(() => subjectFindOneKey(payload.value)),
+		queryFn: () => fetchSubjectFindOne(payload.value),
+		enabled: Boolean(payload.value) && payload.value !== 'create',
 		staleTime: SUBJECT_FIND_ONE_STALE_MS,
 	});
 }

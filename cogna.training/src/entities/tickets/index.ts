@@ -15,6 +15,7 @@ export {
 } from "./api/api";
 export type {
 	CreateTicketPayload,
+	PatchTicketPayload,
 	DeleteTicketPayload,
 	FindAllTicketsPayload,
 	FindAllTicketsResponse,
@@ -25,13 +26,8 @@ export type {
 	ThesisInput,
 	Ticket,
 	TicketResponse,
-	PatchTicketPayload,
 } from "./api/types";
-export {
-	EThesisImportance,
-} from './api/types'
-
-export { type Thesis } from './model/types'
+export { EThesisImportance } from "./api/types";
 
 export { default as TicketLeariningStateSelect } from "./ui/TicketLeariningStateSelect";
 export { default as TicketSearchInput } from "./ui/TicketSearchInput";

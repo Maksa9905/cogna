@@ -23,7 +23,7 @@
 	"answerAriaLabel": "Ответ",
 	"rememberedButton": "Я запомнил",
 	"editor": {
-		"answerPlaceholder": "Ответ…",
+		"answerPlaceholder": "Введите содержание билета",
 		"undo": "Отменить",
 		"redo": "Вернуть",
 		"headings": "Заголовки",

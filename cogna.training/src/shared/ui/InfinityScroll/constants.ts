@@ -7,5 +7,7 @@ export interface InfinityScrollContext {
 	items: { value: unknown[] };
 	loading: { value: boolean };
 	hasMore: { value: boolean };
+	firstPageLoaded: { value: boolean };
+	firstPageEmpty: { value: boolean };
 	triggerLoadMore: () => Promise<void>;
 }

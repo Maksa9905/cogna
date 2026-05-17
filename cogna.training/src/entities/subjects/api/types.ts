@@ -36,9 +36,7 @@ export interface DeleteSubjectPayload {
 	id: string;
 }
 
-export interface FindOneSubjectPayload {
-	id: string;
-}
+export type FindOneSubjectPayload = string
 
 export interface FindAllSubjectsPayload {
 	limit?: number;

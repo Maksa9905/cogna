@@ -1,5 +1,3 @@
-import { type Thesis as ApiThesis } from '../api/types'
-
 export enum ETicketsSorting {
 	ORDER = "order",
 	NEWEST = "newest",
@@ -16,8 +14,4 @@ export enum ETicketLearningState {
 	SHOULD_LEARN = "should_learn",
 	LEARNED = "learned",
 	FORGOTTEN = "forgotten",
-}
-
-export type Thesis = Omit<ApiThesis, 'updatedAt' | 'createdAt'> & {
-	isNew: boolean
 }

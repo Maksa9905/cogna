@@ -1,18 +1,11 @@
 
 <script setup lang="ts">
 import { EThesisImportance } from '@/entities/tickets';
+import { InlineTextareaField } from '@/shared/ui';
 import type { DropdownMenuItem } from '@nuxt/ui';
-import { ref, useTemplateRef, watchEffect } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { ref } from 'vue';
+import type { ChangeThesisPayload } from '../../model/types';
 
-export type ChangeThesisPayload = {
-  id: string;
-  isNew: boolean;
-  thesis?: string, 
-  importance?: EThesisImportance
-};
-
-const { t } = useI18n();
 
 const { thesis, id, isNew } = defineProps<{
   id: string;
@@ -23,27 +16,12 @@ const { thesis, id, isNew } = defineProps<{
 
 const emit = defineEmits<(e: "change", thesis: ChangeThesisPayload) => void>();
 
-const input = useTemplateRef<HTMLInputElement>("thesis-input");
-
 const thesisValue = ref(thesis);
-const isEditable = ref(false);
+const thesisPlaceholder = "Введите содержимое вашего тезиса";
 
-watchEffect(() => {
-  if (!thesisValue.value) isEditable.value = true
-})
-
-const handleBlurThesis = () => {
+const handleCommitThesis = () => {
   emit('change', { id, isNew, thesis: thesisValue.value });
 }
-
-const handleThesisClick = () => {
-  isEditable.value = true
-
-  setTimeout(() => {
-    input.value?.focus();
-  }, 0);
-}
-
 
 const items = ref<DropdownMenuItem[]>([
   {
@@ -73,8 +51,13 @@ const items = ref<DropdownMenuItem[]>([
     <UDropdownMenu :items="items">
       <UIcon name="i-lucide-circle-small" class="importance-indicator" :class="importance" />
     </UDropdownMenu>
-    <textarea :placeholder='"Введите содержимое вашего тезиса"' v-model="thesisValue" class="thesis-editor" v-if="isEditable" @blur="handleBlurThesis" ref="thesis-input" />
-    <span @click="handleThesisClick" v-else>{{thesisValue}}</span>
+    <InlineTextareaField
+      v-model="thesisValue"
+      :placeholder="thesisPlaceholder"
+      :ariaDescription="thesisPlaceholder"
+      textarea-class="thesis-editor"
+      @commit="handleCommitThesis"
+    />
   </li>
 </template>
 

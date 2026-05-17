@@ -20,7 +20,10 @@ const props = withDefaults(
 );
 
 
-const emit = defineEmits<(e: "click") => void>();
+const emit = defineEmits<{
+	click: [],
+	delete: [],
+}>();
 
 const handleClick = () => {
   emit("click");
@@ -36,6 +39,12 @@ const lastRepetitionText = computed(() => {
 	const msg = SubjectsListItemUtils.getLastRepetitionMessage(timeSinceLastRepetition.value);
 	return msg.n != null ? t(msg.key, msg.n, { named: { n: msg.n } }) : t(msg.key);
 });
+
+const handleDeleteTicket = (event: PointerEvent) => {
+	event.stopPropagation();
+
+	emit('delete')
+}
 </script>
 
 <template>
@@ -53,7 +62,10 @@ const lastRepetitionText = computed(() => {
 			<ClockIcon class="tickets-list-item__clock" />
 			{{ lastRepetitionText }}
 		</p>
-		<LoaderIcon class="tickets-list-item__loader" v-if="isLoading" />
+		<LoaderIcon class="tickets-list-item__corner" v-if="isLoading" />
+		<span v-else class="tickets-list-item__corner" @click="handleDeleteTicket">
+			<UButton icon="i-lucide-trash" variant="link" color="neutral" />
+		</span>
 	</li>
 </template>
 
@@ -139,7 +151,7 @@ const lastRepetitionText = computed(() => {
 	align-self: center;
 }
 
-.tickets-list-item__loader {
+.tickets-list-item__corner {
 	position: absolute;
 	top: 8px;
 	right: 8px;

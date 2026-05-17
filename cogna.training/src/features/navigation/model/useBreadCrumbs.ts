@@ -6,24 +6,14 @@ import { useTicketFindOneQuery } from "@/entities/tickets";
 import type { BreadcrumbItem } from "@nuxt/ui";
 
 export const useBreadCrumbs = () => {
-	const {
-		params: { ticketId, subjectId },
-	} = useRoute();
+	const route = useRoute();
 	const { routes } = useLocalizedRouter();
 
-	const { data: subjectData, isLoading: isLoadingSubject } = useSubjectFindOneQuery(
-		{
-			id: subjectId as string,
-		},
-		Boolean(subjectId),
-	);
+	const subjectId = computed(() => route.params.subjectId as string);
+	const ticketId = computed(() => route.params.ticketId as string);
 
-	const { data: ticketData, isLoading: isLoadingTicket } = useTicketFindOneQuery(
-		{
-			id: ticketId as string,
-		},
-		Boolean(ticketId),
-	);
+	const { data: subjectData, isLoading: isLoadingSubject } = useSubjectFindOneQuery(subjectId)
+	const { data: ticketData, isLoading: isLoadingTicket } = useTicketFindOneQuery(ticketId);
 
 	const subjectTitle = computed(() => subjectData.value?.subject.title);
 	const ticketQuestion = computed(() => ticketData.value?.ticket?.question);
@@ -34,12 +24,15 @@ export const useBreadCrumbs = () => {
 		if (isLoadingSubject.value || isLoadingTicket.value) return null;
 
 		if (subjectTitle.value && subjectId)
-			result.push({ label: subjectTitle.value, to: routes.value.subject(subjectId as string) });
+			result.push({ 
+				label: subjectTitle.value, 
+				to: routes.value.subject(subjectId.value) 
+			});
 		if (ticketQuestion.value && ticketId)
 			result.push({
 				icon: "i-lucide-file-text",
 				label: ticketQuestion.value,
-				to: routes.value.ticket(subjectId as string, ticketId as string),
+				to: routes.value.ticket(subjectId.value, ticketId.value),
 			});
 
 		const last = result[result.length - 1];

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Badge, Logotype } from "@/shared/ui";
+import { Badge } from "@/shared/ui";
 import { AiIcon, BrainIcon, TrendingIcon, BookIcon, LogotypeIcon } from "@/shared/icons";
 import FeaturesList from "../FeaturesList";
 import { useI18n } from "vue-i18n";
@@ -22,7 +22,7 @@ const { t } = useI18n();
       <p class="description">
         {{ t('auth.onboarding.description') }}
       </p>
-      <FeaturesList>
+      <FeaturesList class="features">
         <FeaturesList.Item>
           <FeaturesList.Item.Icon>
             <BookIcon class="icon" />
@@ -157,6 +157,12 @@ aside {
   display: flex;
   flex-direction: row;
   grid-row: 1 / 3;
+}
+
+@media screen and (max-height: 800px) {
+  .features {
+    display: none;
+  } 
 }
 
 @media (max-width: 1024px) {

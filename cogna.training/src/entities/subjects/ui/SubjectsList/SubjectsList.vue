@@ -49,8 +49,8 @@ async function handleItemClick(subject: Subject) {
 	try {
 		await Promise.all([
 			queryClient.prefetchQuery({
-				queryKey: subjectFindOneKey({ id: subject.id }),
-				queryFn: () => fetchSubjectFindOne({ id: subject.id }),
+				queryKey: subjectFindOneKey(subject.id),
+				queryFn: () => fetchSubjectFindOne(subject.id),
 				staleTime: SUBJECT_FIND_ONE_STALE_MS,
 			}),
 
@@ -85,6 +85,16 @@ async function handleItemClick(subject: Subject) {
 				@click="handleItemClick(item as Subject)" />
 		</InfinityScroll.List>
 		<InfinityScroll.Mark />
+		<InfinityScroll.Empty>
+			<div class="empty-subjects">
+				<span class="empty-subjects__label">
+					Список предметов пока пуст. Создайте свой первый предмет.
+				</span>
+				<UButton variant="link" trailing-icon="i-lucide-plus">
+					Создать предмет
+				</UButton>
+			</div>
+		</InfinityScroll.Empty>
 	</InfinityScroll>
 </template>
 
@@ -100,5 +110,19 @@ async function handleItemClick(subject: Subject) {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+}
+
+.empty-subjects {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	height: 200px;
+	gap: 16px;
+}
+
+.empty-subjects__label {
+	color: var(--ui-text-toned);
+	text-align: center;
 }
 </style>

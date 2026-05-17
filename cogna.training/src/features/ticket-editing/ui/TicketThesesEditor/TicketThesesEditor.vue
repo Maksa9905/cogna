@@ -1,71 +1,33 @@
 <script setup lang="ts">
 
-import { inject, watchEffect } from 'vue';
-import TicketThesisItem, { type ChangeThesisPayload } from './TicketThesisItem.vue';
+import { inject } from 'vue';
+import TicketThesisItem from './TicketThesisItem.vue';
 
+import { type ChangeThesisPayload } from '../../model/types'
 import type { TicketEditingStore } from '../../model/useTicketEditingStore';
-import { EThesisImportance } from '@/entities/tickets';
-import { uuid } from '@tanstack/vue-form';
 
 defineProps<{
   isLoading: boolean;
 }>()
 
 const emit = defineEmits<{
-  blur: [],
-  generate: []
+  generate: [],
+  change: [ChangeThesisPayload],
+  create: [],
 }>()
 
 const { theses } = inject<TicketEditingStore>('tickerEditingStore')!
 
-const handleCreateThesis = () => {
-  if (theses.value.some(thesis => thesis.isNew && !thesis.value)) return;
-
-  const newThesis = {
-    id: uuid() as string,
-    isNew: true,
-    value: "",
-    importance: EThesisImportance.LOW
-  }
-
-  theses.value = [
-    ...theses.value,
-    newThesis,
-  ]
-}
-
-watchEffect(() => {
-  console.debug(theses.value)
-})
-
-const handleChangeThesis = (payload: ChangeThesisPayload) => {
-  const newTheses = [
-    ...theses.value
-  ]
-
-  const editingThesis = newTheses.find(thesis => thesis.id === payload.id)
-
-  if (!editingThesis) return;
-
-  if (payload.thesis === "") {
-    theses.value = theses.value.filter(thesis => thesis.id !== payload.id)
-    emit('blur')
-
-    return;
-  }
-
-  if (editingThesis) {
-    if (payload.thesis) editingThesis.value = payload.thesis
-    if (payload.importance) editingThesis.importance = payload.importance
-  }
-
-  theses.value = newTheses;
-
-  emit('blur')
-}
-
 const handleGenerateThesis = () => {
   emit('generate');
+}
+
+const handleCreateThesis = () => {
+  emit('create')
+}
+
+const handleChangeThesis = (payload: ChangeThesisPayload) => {
+  emit('change', payload)
 }
 </script>
 

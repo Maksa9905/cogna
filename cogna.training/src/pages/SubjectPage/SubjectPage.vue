@@ -1,24 +1,32 @@
 <script setup lang="ts">
-import { SubjectExamDateChip, useSubjectFindOneQuery, SubjectStatisticsProgressBar } from "@/entities/subjects";
+import {
+  SubjectExamDateChip,
+  useCreateSubjectMutation,
+  useSubjectFindOneQuery,
+  SubjectStatisticsProgressBar,
+} from "@/entities/subjects";
 import { TicketsFilters, TicketsList } from "@/entities/tickets";
 import { useLocalizedRouter } from "@/shared/i18n";
-import { computed } from "vue";
+import { InlineTextareaField } from "@/shared/ui";
+import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 defineOptions({
 	name: "SubjectPage",
 });
 
-const {
-	params: { subjectId },
-} = useRoute();
+const subjectTitle = ref("")
+
+const route = useRoute();
+const subjectId = computed(() => route.params.subjectId as string);
+
+const isNew = computed(() => subjectId.value === "create");
 
 const router = useRouter()
 const { routes } = useLocalizedRouter();
+const { mutateAsync: createSubject } = useCreateSubjectMutation();
 
-const { data: subjectData, isLoading } = useSubjectFindOneQuery({
-  id: subjectId as string,
-});
+const { data: subjectData, isLoading } = useSubjectFindOneQuery(subjectId);
 
 const progressStats = computed(() => {
   const s = subjectData.value?.subject;
@@ -29,14 +37,47 @@ const progressStats = computed(() => {
   const percent = total > 0 ? Math.round((learned / total) * 100) : 0;
 
   return { percent, learned, total };
-}); 
+});
+
+const handleCreateTicket = async () => {
+  if (isNew.value) {
+    const title = subjectTitle.value.trim();
+    if (!title) return;
+
+    const created = await createSubject({ title });
+    await router.push(routes.value.ticket(created.subject.id, "create"));
+    return;
+  }
+
+  await router.push(routes.value.ticket(subjectId.value, "create"));
+};
 
 </script>
 
 <template>
+  <template v-if="isNew">
+    <InlineTextareaField
+      v-model="subjectTitle"
+      class="title-input"
+      placeholder="Введите название предмета"
+      ariaDescription="Введите название предмета"
+    />
+    <section class="subject-page__subjects">
+      <TicketsFilters />
+      <TicketsList
+        class="tickets-list"
+        :subject-id="subjectId"
+        :is-new-subject="true"
+        @create="handleCreateTicket"
+        @click="(ticket) => router.push(routes.ticket(subjectId, ticket.id))"
+      />
+    </section>
+  </template>
+  <template v-else>
     <header v-if="!isLoading" class="subject-page__header">
       <h1 class="subject-page__title">{{subjectData?.subject.title}}</h1>
-      <SubjectExamDateChip class="subject-page__exam-date-chip" :date="'2026-03-26T12:00:00.000Z'" />
+      <!-- <SubjectExamDateChip class="subject-page__exam-date-chip" :date="'2026-03-26T12:00:00.000Z'" /> -->
+      <UButton variant="link" @click="handleCreateTicket" trailing-icon="i-lucide-plus">Добавить билет</UButton>
     </header>
     <USkeleton v-else class="h-[36px] subject-page__header" />
     <section class="subject-page__subjects">
@@ -46,13 +87,16 @@ const progressStats = computed(() => {
         :key="subjectData.subject.id"
         class="tickets-list"
         :subject-id="subjectData.subject.id"
-        @click="(ticket) => router.push(routes.ticket(subjectId as string, ticket.id))"
+        :is-new-subject="false"
+        @create="handleCreateTicket"
+        @click="(ticket) => router.push(routes.ticket(subjectId, ticket.id))"
       />
     </section>
   
-  <footer class="subject-page__footer">
-		<SubjectStatisticsProgressBar :learned="progressStats.learned" :total="progressStats.total" />
-  </footer>
+    <footer class="subject-page__footer">
+      <SubjectStatisticsProgressBar :learned="progressStats.learned" :total="progressStats.total" />
+    </footer>
+  </template>
 </template>
 
 <style scoped>
@@ -65,9 +109,10 @@ const progressStats = computed(() => {
 
 .subject-page__header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  max-width: 800px;
   gap: 10px;
 }
 
@@ -98,5 +143,10 @@ const progressStats = computed(() => {
 
 .subject-page__subjects {
   max-width: 800px;
+}
+
+.title-input {
+  font-size: 24px;
+  font-weight: 600;
 }
 </style>

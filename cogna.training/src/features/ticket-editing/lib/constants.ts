@@ -1,0 +1,1 @@
+export const CREATE_TICKET_ID = 'create' as const

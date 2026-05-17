@@ -39,6 +39,10 @@ const props = withDefaults(
 	},
 );
 
+const emit = defineEmits<{
+	commit: [],
+}>()
+
 const resolvedPlaceholder = computed(() => props.placeholder ?? t("tickets.editor.answerPlaceholder"));
 
 const customHandlers = {} satisfies EditorCustomHandlers;
@@ -359,6 +363,7 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 		v-slot="{ editor, handlers }"
 		v-model="model"
 		content-type="markdown"
+		@blur="() => emit('commit')"
 		:extensions="[TextAlign.configure({ types: ['heading', 'paragraph'] })]"
 		:placeholder="resolvedPlaceholder"
 		:ui="{ base: ['w-full', editorClass] }"

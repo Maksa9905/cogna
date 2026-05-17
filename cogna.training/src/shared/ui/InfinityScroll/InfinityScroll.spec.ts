@@ -9,6 +9,8 @@ const { Mark, List, Wrapper } = {
 	List: InfinityScroll.List,
 };
 
+const Empty = InfinityScroll.Empty;
+
 describe("InfinityScroll", () => {
 	describe("InfinityScroll (Wrapper)", () => {
 		it("рендерит слот по умолчанию", () => {
@@ -79,6 +81,69 @@ describe("InfinityScroll", () => {
 			// Изначально items пустой — loadMore вызывается только когда Mark в viewport.
 			// Без Mark в разметке loadMore не вызывается, поэтому список пуст.
 			expect(screen.queryByText("A")).not.toBeInTheDocument();
+		});
+	});
+
+	describe("InfinityScroll.Empty", () => {
+		let mockObserverCallback: (entries: { isIntersecting: boolean }[]) => void;
+
+		beforeEach(() => {
+			vi.stubGlobal(
+				"IntersectionObserver",
+				class MockIntersectionObserver {
+					constructor(cb: (entries: { isIntersecting: boolean }[]) => void) {
+						mockObserverCallback = cb;
+					}
+					observe = vi.fn();
+					disconnect = vi.fn();
+					unobserve = vi.fn();
+					takeRecords = vi.fn(() => []);
+				},
+			);
+		});
+
+		it("показывает контент, когда первая страница вернула пустой массив", async () => {
+			const loadMore = vi.fn().mockResolvedValueOnce({ items: [], hasMore: false });
+
+			render(Wrapper, {
+				props: { loadMore, limit: 10 },
+				slots: {
+					default: () => [h(Empty, null, { default: () => "Ничего не найдено" }), h(Mark)],
+				},
+			});
+
+			expect(screen.queryByText("Ничего не найдено")).not.toBeInTheDocument();
+
+			mockObserverCallback([{ isIntersecting: true }]);
+
+			await vi.waitFor(() => {
+				expect(loadMore).toHaveBeenCalledWith({ offset: 0, limit: 10 });
+			});
+
+			await vi.waitFor(() => {
+				expect(screen.getByText("Ничего не найдено")).toBeInTheDocument();
+			});
+		});
+
+		it("не показывает контент, когда первая страница вернула элементы", async () => {
+			const loadMore = vi
+				.fn()
+				.mockResolvedValueOnce({ items: [{ id: "1", title: "Item" }], hasMore: false });
+
+			render(Wrapper, {
+				props: { loadMore, limit: 10 },
+				slots: {
+					default: () => [h(Empty, null, { default: () => "Ничего не найдено" }), h(Mark)],
+				},
+			});
+
+			mockObserverCallback([{ isIntersecting: true }]);
+
+			await vi.waitFor(() => {
+				expect(loadMore).toHaveBeenCalledTimes(1);
+			});
+
+			expect(screen.queryByText("Ничего не найдено")).not.toBeInTheDocument();
 		});
 	});
 

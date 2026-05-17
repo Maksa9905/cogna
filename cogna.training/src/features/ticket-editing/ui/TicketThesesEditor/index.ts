@@ -1,3 +1,3 @@
 import TicketThesesEditor from "./TicketThesesEditor.vue";
 
-export default TicketThesesEditor
+export default TicketThesesEditor;
