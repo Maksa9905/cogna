@@ -51,7 +51,6 @@ export interface BatchTicketProgressBySubjectsRequest {
 export interface FindDueTicketsProgressRequest {
   userId: string;
   subjectId: string;
-  ticketId: string;
   limit?: number | undefined;
   offset?: number | undefined;
 }

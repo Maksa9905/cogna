@@ -48,7 +48,6 @@ export class TicketProgressResolver {
     return this.ticketProgressService.findDueTicketsProgress({
       userId: req.user.sub,
       subjectId: data.subjectId,
-      ticketId: data.ticketId,
       limit: data.limit,
       offset: data.offset,
     });

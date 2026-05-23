@@ -9,9 +9,6 @@ export class FindDueTicketsProgressRequestGql implements Omit<
   @Field()
   subjectId: string;
 
-  @Field()
-  ticketId: string;
-
   @Field(() => Int, { nullable: true })
   limit?: number | undefined;
 

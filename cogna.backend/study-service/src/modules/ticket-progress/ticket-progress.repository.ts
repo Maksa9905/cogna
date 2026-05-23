@@ -59,7 +59,6 @@ export class TicketProgressRepository {
   public async findDueTicketsProgress(dto: {
     userId: string;
     subjectId: string;
-    ticketId: string;
     limit?: number;
     offset?: number;
   }) {
@@ -67,8 +66,6 @@ export class TicketProgressRepository {
       where: {
         userId: dto.userId,
         subjectId: dto.subjectId,
-        due: { lte: new Date() },
-        ticketId: dto.ticketId,
       },
       orderBy: { due: 'asc' },
       take: dto.limit,
