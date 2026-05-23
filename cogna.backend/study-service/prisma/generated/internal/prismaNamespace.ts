@@ -673,6 +673,16 @@ export const TicketAttemptScalarFieldEnum = {
   score: 'score',
   summary: 'summary',
   theses: 'theses',
+  rating: 'rating',
+  state: 'state',
+  due: 'due',
+  stability: 'stability',
+  difficulty: 'difficulty',
+  elapsedDays: 'elapsedDays',
+  lastElapsedDays: 'lastElapsedDays',
+  scheduledDays: 'scheduledDays',
+  learningSteps: 'learningSteps',
+  review: 'review',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -685,6 +695,16 @@ export const TicketProgressScalarFieldEnum = {
   ticketId: 'ticketId',
   userId: 'userId',
   subjectId: 'subjectId',
+  due: 'due',
+  stability: 'stability',
+  difficulty: 'difficulty',
+  elapsedDays: 'elapsedDays',
+  scheduleDays: 'scheduleDays',
+  learningSteps: 'learningSteps',
+  reps: 'reps',
+  lapses: 'lapses',
+  state: 'state',
+  lastReview: 'lastReview',
   totalCount: 'totalCount',
   bestScore: 'bestScore',
   lastScore: 'lastScore',
@@ -796,6 +816,34 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'Rating'
+ */
+export type EnumRatingFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Rating'>
+    
+
+
+/**
+ * Reference to a field of type 'Rating[]'
+ */
+export type ListEnumRatingFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Rating[]'>
+    
+
+
+/**
+ * Reference to a field of type 'State'
+ */
+export type EnumStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'State'>
+    
+
+
+/**
+ * Reference to a field of type 'State[]'
+ */
+export type ListEnumStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'State[]'>
     
 
 

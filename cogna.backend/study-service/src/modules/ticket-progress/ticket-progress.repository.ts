@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../infra/prisma/prisma.service';
-import { TicketProgress } from '../../../prisma/generated/client';
+import {
+  State as PrismaState,
+  TicketProgress,
+} from '../../../prisma/generated/client';
+import { Card, State as FsrsState } from 'ts-fsrs';
 
 /** Агрегаты для upsert после оценки попытки; всё кроме subjectId в create нужно в update. */
 export type UpsertAfterAttemptData = {
@@ -11,6 +15,14 @@ export type UpsertAfterAttemptData = {
   newTotalCount: number;
   newBestScore: number;
   newAverageScore: number;
+  card: Card;
+};
+
+const CARD_STATE_TO_PRISMA: Record<FsrsState, PrismaState> = {
+  [FsrsState.New]: PrismaState.NEW,
+  [FsrsState.Learning]: PrismaState.LEARNING,
+  [FsrsState.Review]: PrismaState.REVIEW,
+  [FsrsState.Relearning]: PrismaState.RELEANING,
 };
 
 @Injectable()
@@ -44,6 +56,23 @@ export class TicketProgressRepository {
     });
   }
 
+  public async findDueTicketsProgress(dto: {
+    userId: string;
+    subjectId?: string;
+    limit?: number;
+    offset?: number;
+  }) {
+    return this.prismaService.ticketProgress.findMany({
+      where: {
+        userId: dto.userId,
+        subjectId: dto.subjectId,
+      },
+      orderBy: { due: 'asc' },
+      take: dto.limit,
+      skip: dto.offset,
+    });
+  }
+
   public async upsertAfterAttemptScore(
     data: UpsertAfterAttemptData,
     tx?: Pick<PrismaService, 'ticketProgress'>,
@@ -61,12 +90,30 @@ export class TicketProgressRepository {
         bestScore: data.attemptScore,
         lastScore: data.attemptScore,
         averageScore: data.attemptScore,
+        due: data.card.due,
+        stability: data.card.stability,
+        difficulty: data.card.difficulty,
+        scheduleDays: data.card.scheduled_days,
+        learningSteps: data.card.learning_steps,
+        reps: data.card.reps,
+        lapses: data.card.lapses,
+        state: CARD_STATE_TO_PRISMA[data.card.state],
+        lastReview: data.card.last_review as Date,
       },
       update: {
         totalCount: data.newTotalCount,
         bestScore: data.newBestScore,
         lastScore: data.attemptScore,
         averageScore: data.newAverageScore,
+        due: data.card.due,
+        stability: data.card.stability,
+        difficulty: data.card.difficulty,
+        scheduleDays: data.card.scheduled_days,
+        learningSteps: data.card.learning_steps,
+        reps: data.card.reps,
+        lapses: data.card.lapses,
+        state: CARD_STATE_TO_PRISMA[data.card.state],
+        lastReview: data.card.last_review,
       },
     });
   }

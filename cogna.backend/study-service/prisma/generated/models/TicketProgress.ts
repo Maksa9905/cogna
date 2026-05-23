@@ -27,6 +27,13 @@ export type AggregateTicketProgress = {
 }
 
 export type TicketProgressAvgAggregateOutputType = {
+  stability: number | null
+  difficulty: number | null
+  elapsedDays: number | null
+  scheduleDays: number | null
+  learningSteps: number | null
+  reps: number | null
+  lapses: number | null
   totalCount: number | null
   bestScore: number | null
   lastScore: number | null
@@ -34,6 +41,13 @@ export type TicketProgressAvgAggregateOutputType = {
 }
 
 export type TicketProgressSumAggregateOutputType = {
+  stability: number | null
+  difficulty: number | null
+  elapsedDays: number | null
+  scheduleDays: number | null
+  learningSteps: number | null
+  reps: number | null
+  lapses: number | null
   totalCount: number | null
   bestScore: number | null
   lastScore: number | null
@@ -45,6 +59,16 @@ export type TicketProgressMinAggregateOutputType = {
   ticketId: string | null
   userId: string | null
   subjectId: string | null
+  due: Date | null
+  stability: number | null
+  difficulty: number | null
+  elapsedDays: number | null
+  scheduleDays: number | null
+  learningSteps: number | null
+  reps: number | null
+  lapses: number | null
+  state: $Enums.State | null
+  lastReview: Date | null
   totalCount: number | null
   bestScore: number | null
   lastScore: number | null
@@ -58,6 +82,16 @@ export type TicketProgressMaxAggregateOutputType = {
   ticketId: string | null
   userId: string | null
   subjectId: string | null
+  due: Date | null
+  stability: number | null
+  difficulty: number | null
+  elapsedDays: number | null
+  scheduleDays: number | null
+  learningSteps: number | null
+  reps: number | null
+  lapses: number | null
+  state: $Enums.State | null
+  lastReview: Date | null
   totalCount: number | null
   bestScore: number | null
   lastScore: number | null
@@ -71,6 +105,16 @@ export type TicketProgressCountAggregateOutputType = {
   ticketId: number
   userId: number
   subjectId: number
+  due: number
+  stability: number
+  difficulty: number
+  elapsedDays: number
+  scheduleDays: number
+  learningSteps: number
+  reps: number
+  lapses: number
+  state: number
+  lastReview: number
   totalCount: number
   bestScore: number
   lastScore: number
@@ -82,6 +126,13 @@ export type TicketProgressCountAggregateOutputType = {
 
 
 export type TicketProgressAvgAggregateInputType = {
+  stability?: true
+  difficulty?: true
+  elapsedDays?: true
+  scheduleDays?: true
+  learningSteps?: true
+  reps?: true
+  lapses?: true
   totalCount?: true
   bestScore?: true
   lastScore?: true
@@ -89,6 +140,13 @@ export type TicketProgressAvgAggregateInputType = {
 }
 
 export type TicketProgressSumAggregateInputType = {
+  stability?: true
+  difficulty?: true
+  elapsedDays?: true
+  scheduleDays?: true
+  learningSteps?: true
+  reps?: true
+  lapses?: true
   totalCount?: true
   bestScore?: true
   lastScore?: true
@@ -100,6 +158,16 @@ export type TicketProgressMinAggregateInputType = {
   ticketId?: true
   userId?: true
   subjectId?: true
+  due?: true
+  stability?: true
+  difficulty?: true
+  elapsedDays?: true
+  scheduleDays?: true
+  learningSteps?: true
+  reps?: true
+  lapses?: true
+  state?: true
+  lastReview?: true
   totalCount?: true
   bestScore?: true
   lastScore?: true
@@ -113,6 +181,16 @@ export type TicketProgressMaxAggregateInputType = {
   ticketId?: true
   userId?: true
   subjectId?: true
+  due?: true
+  stability?: true
+  difficulty?: true
+  elapsedDays?: true
+  scheduleDays?: true
+  learningSteps?: true
+  reps?: true
+  lapses?: true
+  state?: true
+  lastReview?: true
   totalCount?: true
   bestScore?: true
   lastScore?: true
@@ -126,6 +204,16 @@ export type TicketProgressCountAggregateInputType = {
   ticketId?: true
   userId?: true
   subjectId?: true
+  due?: true
+  stability?: true
+  difficulty?: true
+  elapsedDays?: true
+  scheduleDays?: true
+  learningSteps?: true
+  reps?: true
+  lapses?: true
+  state?: true
+  lastReview?: true
   totalCount?: true
   bestScore?: true
   lastScore?: true
@@ -226,6 +314,16 @@ export type TicketProgressGroupByOutputType = {
   ticketId: string
   userId: string
   subjectId: string
+  due: Date
+  stability: number
+  difficulty: number
+  elapsedDays: number
+  scheduleDays: number
+  learningSteps: number
+  reps: number
+  lapses: number
+  state: $Enums.State
+  lastReview: Date
   totalCount: number
   bestScore: number
   lastScore: number
@@ -262,6 +360,16 @@ export type TicketProgressWhereInput = {
   ticketId?: Prisma.StringFilter<"TicketProgress"> | string
   userId?: Prisma.StringFilter<"TicketProgress"> | string
   subjectId?: Prisma.StringFilter<"TicketProgress"> | string
+  due?: Prisma.DateTimeFilter<"TicketProgress"> | Date | string
+  stability?: Prisma.IntFilter<"TicketProgress"> | number
+  difficulty?: Prisma.IntFilter<"TicketProgress"> | number
+  elapsedDays?: Prisma.IntFilter<"TicketProgress"> | number
+  scheduleDays?: Prisma.IntFilter<"TicketProgress"> | number
+  learningSteps?: Prisma.IntFilter<"TicketProgress"> | number
+  reps?: Prisma.IntFilter<"TicketProgress"> | number
+  lapses?: Prisma.IntFilter<"TicketProgress"> | number
+  state?: Prisma.EnumStateFilter<"TicketProgress"> | $Enums.State
+  lastReview?: Prisma.DateTimeFilter<"TicketProgress"> | Date | string
   totalCount?: Prisma.IntFilter<"TicketProgress"> | number
   bestScore?: Prisma.FloatFilter<"TicketProgress"> | number
   lastScore?: Prisma.FloatFilter<"TicketProgress"> | number
@@ -277,6 +385,16 @@ export type TicketProgressOrderByWithRelationInput = {
   ticketId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
+  due?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  scheduleDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  reps?: Prisma.SortOrder
+  lapses?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  lastReview?: Prisma.SortOrder
   totalCount?: Prisma.SortOrder
   bestScore?: Prisma.SortOrder
   lastScore?: Prisma.SortOrder
@@ -296,6 +414,16 @@ export type TicketProgressWhereUniqueInput = Prisma.AtLeast<{
   ticketId?: Prisma.StringFilter<"TicketProgress"> | string
   userId?: Prisma.StringFilter<"TicketProgress"> | string
   subjectId?: Prisma.StringFilter<"TicketProgress"> | string
+  due?: Prisma.DateTimeFilter<"TicketProgress"> | Date | string
+  stability?: Prisma.IntFilter<"TicketProgress"> | number
+  difficulty?: Prisma.IntFilter<"TicketProgress"> | number
+  elapsedDays?: Prisma.IntFilter<"TicketProgress"> | number
+  scheduleDays?: Prisma.IntFilter<"TicketProgress"> | number
+  learningSteps?: Prisma.IntFilter<"TicketProgress"> | number
+  reps?: Prisma.IntFilter<"TicketProgress"> | number
+  lapses?: Prisma.IntFilter<"TicketProgress"> | number
+  state?: Prisma.EnumStateFilter<"TicketProgress"> | $Enums.State
+  lastReview?: Prisma.DateTimeFilter<"TicketProgress"> | Date | string
   totalCount?: Prisma.IntFilter<"TicketProgress"> | number
   bestScore?: Prisma.FloatFilter<"TicketProgress"> | number
   lastScore?: Prisma.FloatFilter<"TicketProgress"> | number
@@ -311,6 +439,16 @@ export type TicketProgressOrderByWithAggregationInput = {
   ticketId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
+  due?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  scheduleDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  reps?: Prisma.SortOrder
+  lapses?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  lastReview?: Prisma.SortOrder
   totalCount?: Prisma.SortOrder
   bestScore?: Prisma.SortOrder
   lastScore?: Prisma.SortOrder
@@ -332,6 +470,16 @@ export type TicketProgressScalarWhereWithAggregatesInput = {
   ticketId?: Prisma.StringWithAggregatesFilter<"TicketProgress"> | string
   userId?: Prisma.StringWithAggregatesFilter<"TicketProgress"> | string
   subjectId?: Prisma.StringWithAggregatesFilter<"TicketProgress"> | string
+  due?: Prisma.DateTimeWithAggregatesFilter<"TicketProgress"> | Date | string
+  stability?: Prisma.IntWithAggregatesFilter<"TicketProgress"> | number
+  difficulty?: Prisma.IntWithAggregatesFilter<"TicketProgress"> | number
+  elapsedDays?: Prisma.IntWithAggregatesFilter<"TicketProgress"> | number
+  scheduleDays?: Prisma.IntWithAggregatesFilter<"TicketProgress"> | number
+  learningSteps?: Prisma.IntWithAggregatesFilter<"TicketProgress"> | number
+  reps?: Prisma.IntWithAggregatesFilter<"TicketProgress"> | number
+  lapses?: Prisma.IntWithAggregatesFilter<"TicketProgress"> | number
+  state?: Prisma.EnumStateWithAggregatesFilter<"TicketProgress"> | $Enums.State
+  lastReview?: Prisma.DateTimeWithAggregatesFilter<"TicketProgress"> | Date | string
   totalCount?: Prisma.IntWithAggregatesFilter<"TicketProgress"> | number
   bestScore?: Prisma.FloatWithAggregatesFilter<"TicketProgress"> | number
   lastScore?: Prisma.FloatWithAggregatesFilter<"TicketProgress"> | number
@@ -343,6 +491,16 @@ export type TicketProgressScalarWhereWithAggregatesInput = {
 export type TicketProgressCreateInput = {
   id?: string
   ticketId: string
+  due: Date | string
+  stability: number
+  difficulty: number
+  elapsedDays?: number
+  scheduleDays: number
+  learningSteps: number
+  reps: number
+  lapses: number
+  state: $Enums.State
+  lastReview: Date | string
   totalCount?: number
   bestScore: number
   lastScore: number
@@ -358,6 +516,16 @@ export type TicketProgressUncheckedCreateInput = {
   ticketId: string
   userId: string
   subjectId: string
+  due: Date | string
+  stability: number
+  difficulty: number
+  elapsedDays?: number
+  scheduleDays: number
+  learningSteps: number
+  reps: number
+  lapses: number
+  state: $Enums.State
+  lastReview: Date | string
   totalCount?: number
   bestScore: number
   lastScore: number
@@ -370,6 +538,16 @@ export type TicketProgressUncheckedCreateInput = {
 export type TicketProgressUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduleDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  reps?: Prisma.IntFieldUpdateOperationsInput | number
+  lapses?: Prisma.IntFieldUpdateOperationsInput | number
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  lastReview?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalCount?: Prisma.IntFieldUpdateOperationsInput | number
   bestScore?: Prisma.FloatFieldUpdateOperationsInput | number
   lastScore?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -385,6 +563,16 @@ export type TicketProgressUncheckedUpdateInput = {
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduleDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  reps?: Prisma.IntFieldUpdateOperationsInput | number
+  lapses?: Prisma.IntFieldUpdateOperationsInput | number
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  lastReview?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalCount?: Prisma.IntFieldUpdateOperationsInput | number
   bestScore?: Prisma.FloatFieldUpdateOperationsInput | number
   lastScore?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -399,6 +587,16 @@ export type TicketProgressCreateManyInput = {
   ticketId: string
   userId: string
   subjectId: string
+  due: Date | string
+  stability: number
+  difficulty: number
+  elapsedDays?: number
+  scheduleDays: number
+  learningSteps: number
+  reps: number
+  lapses: number
+  state: $Enums.State
+  lastReview: Date | string
   totalCount?: number
   bestScore: number
   lastScore: number
@@ -410,6 +608,16 @@ export type TicketProgressCreateManyInput = {
 export type TicketProgressUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduleDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  reps?: Prisma.IntFieldUpdateOperationsInput | number
+  lapses?: Prisma.IntFieldUpdateOperationsInput | number
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  lastReview?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalCount?: Prisma.IntFieldUpdateOperationsInput | number
   bestScore?: Prisma.FloatFieldUpdateOperationsInput | number
   lastScore?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -423,6 +631,16 @@ export type TicketProgressUncheckedUpdateManyInput = {
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduleDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  reps?: Prisma.IntFieldUpdateOperationsInput | number
+  lapses?: Prisma.IntFieldUpdateOperationsInput | number
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  lastReview?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalCount?: Prisma.IntFieldUpdateOperationsInput | number
   bestScore?: Prisma.FloatFieldUpdateOperationsInput | number
   lastScore?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -446,6 +664,16 @@ export type TicketProgressCountOrderByAggregateInput = {
   ticketId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
+  due?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  scheduleDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  reps?: Prisma.SortOrder
+  lapses?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  lastReview?: Prisma.SortOrder
   totalCount?: Prisma.SortOrder
   bestScore?: Prisma.SortOrder
   lastScore?: Prisma.SortOrder
@@ -455,6 +683,13 @@ export type TicketProgressCountOrderByAggregateInput = {
 }
 
 export type TicketProgressAvgOrderByAggregateInput = {
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  scheduleDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  reps?: Prisma.SortOrder
+  lapses?: Prisma.SortOrder
   totalCount?: Prisma.SortOrder
   bestScore?: Prisma.SortOrder
   lastScore?: Prisma.SortOrder
@@ -466,6 +701,16 @@ export type TicketProgressMaxOrderByAggregateInput = {
   ticketId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
+  due?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  scheduleDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  reps?: Prisma.SortOrder
+  lapses?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  lastReview?: Prisma.SortOrder
   totalCount?: Prisma.SortOrder
   bestScore?: Prisma.SortOrder
   lastScore?: Prisma.SortOrder
@@ -479,6 +724,16 @@ export type TicketProgressMinOrderByAggregateInput = {
   ticketId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
+  due?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  scheduleDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  reps?: Prisma.SortOrder
+  lapses?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  lastReview?: Prisma.SortOrder
   totalCount?: Prisma.SortOrder
   bestScore?: Prisma.SortOrder
   lastScore?: Prisma.SortOrder
@@ -488,6 +743,13 @@ export type TicketProgressMinOrderByAggregateInput = {
 }
 
 export type TicketProgressSumOrderByAggregateInput = {
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  scheduleDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  reps?: Prisma.SortOrder
+  lapses?: Prisma.SortOrder
   totalCount?: Prisma.SortOrder
   bestScore?: Prisma.SortOrder
   lastScore?: Prisma.SortOrder
@@ -516,14 +778,6 @@ export type TicketProgressUpdateOneRequiredWithoutAttemptsNestedInput = {
   upsert?: Prisma.TicketProgressUpsertWithoutAttemptsInput
   connect?: Prisma.TicketProgressWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TicketProgressUpdateToOneWithWhereWithoutAttemptsInput, Prisma.TicketProgressUpdateWithoutAttemptsInput>, Prisma.TicketProgressUncheckedUpdateWithoutAttemptsInput>
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type TicketProgressCreateNestedManyWithoutSubjectProgressInput = {
@@ -571,6 +825,16 @@ export type TicketProgressUncheckedUpdateManyWithoutSubjectProgressNestedInput =
 export type TicketProgressCreateWithoutAttemptsInput = {
   id?: string
   ticketId: string
+  due: Date | string
+  stability: number
+  difficulty: number
+  elapsedDays?: number
+  scheduleDays: number
+  learningSteps: number
+  reps: number
+  lapses: number
+  state: $Enums.State
+  lastReview: Date | string
   totalCount?: number
   bestScore: number
   lastScore: number
@@ -585,6 +849,16 @@ export type TicketProgressUncheckedCreateWithoutAttemptsInput = {
   ticketId: string
   userId: string
   subjectId: string
+  due: Date | string
+  stability: number
+  difficulty: number
+  elapsedDays?: number
+  scheduleDays: number
+  learningSteps: number
+  reps: number
+  lapses: number
+  state: $Enums.State
+  lastReview: Date | string
   totalCount?: number
   bestScore: number
   lastScore: number
@@ -612,6 +886,16 @@ export type TicketProgressUpdateToOneWithWhereWithoutAttemptsInput = {
 export type TicketProgressUpdateWithoutAttemptsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduleDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  reps?: Prisma.IntFieldUpdateOperationsInput | number
+  lapses?: Prisma.IntFieldUpdateOperationsInput | number
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  lastReview?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalCount?: Prisma.IntFieldUpdateOperationsInput | number
   bestScore?: Prisma.FloatFieldUpdateOperationsInput | number
   lastScore?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -626,6 +910,16 @@ export type TicketProgressUncheckedUpdateWithoutAttemptsInput = {
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduleDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  reps?: Prisma.IntFieldUpdateOperationsInput | number
+  lapses?: Prisma.IntFieldUpdateOperationsInput | number
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  lastReview?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalCount?: Prisma.IntFieldUpdateOperationsInput | number
   bestScore?: Prisma.FloatFieldUpdateOperationsInput | number
   lastScore?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -637,6 +931,16 @@ export type TicketProgressUncheckedUpdateWithoutAttemptsInput = {
 export type TicketProgressCreateWithoutSubjectProgressInput = {
   id?: string
   ticketId: string
+  due: Date | string
+  stability: number
+  difficulty: number
+  elapsedDays?: number
+  scheduleDays: number
+  learningSteps: number
+  reps: number
+  lapses: number
+  state: $Enums.State
+  lastReview: Date | string
   totalCount?: number
   bestScore: number
   lastScore: number
@@ -649,6 +953,16 @@ export type TicketProgressCreateWithoutSubjectProgressInput = {
 export type TicketProgressUncheckedCreateWithoutSubjectProgressInput = {
   id?: string
   ticketId: string
+  due: Date | string
+  stability: number
+  difficulty: number
+  elapsedDays?: number
+  scheduleDays: number
+  learningSteps: number
+  reps: number
+  lapses: number
+  state: $Enums.State
+  lastReview: Date | string
   totalCount?: number
   bestScore: number
   lastScore: number
@@ -692,6 +1006,16 @@ export type TicketProgressScalarWhereInput = {
   ticketId?: Prisma.StringFilter<"TicketProgress"> | string
   userId?: Prisma.StringFilter<"TicketProgress"> | string
   subjectId?: Prisma.StringFilter<"TicketProgress"> | string
+  due?: Prisma.DateTimeFilter<"TicketProgress"> | Date | string
+  stability?: Prisma.IntFilter<"TicketProgress"> | number
+  difficulty?: Prisma.IntFilter<"TicketProgress"> | number
+  elapsedDays?: Prisma.IntFilter<"TicketProgress"> | number
+  scheduleDays?: Prisma.IntFilter<"TicketProgress"> | number
+  learningSteps?: Prisma.IntFilter<"TicketProgress"> | number
+  reps?: Prisma.IntFilter<"TicketProgress"> | number
+  lapses?: Prisma.IntFilter<"TicketProgress"> | number
+  state?: Prisma.EnumStateFilter<"TicketProgress"> | $Enums.State
+  lastReview?: Prisma.DateTimeFilter<"TicketProgress"> | Date | string
   totalCount?: Prisma.IntFilter<"TicketProgress"> | number
   bestScore?: Prisma.FloatFilter<"TicketProgress"> | number
   lastScore?: Prisma.FloatFilter<"TicketProgress"> | number
@@ -703,6 +1027,16 @@ export type TicketProgressScalarWhereInput = {
 export type TicketProgressCreateManySubjectProgressInput = {
   id?: string
   ticketId: string
+  due: Date | string
+  stability: number
+  difficulty: number
+  elapsedDays?: number
+  scheduleDays: number
+  learningSteps: number
+  reps: number
+  lapses: number
+  state: $Enums.State
+  lastReview: Date | string
   totalCount?: number
   bestScore: number
   lastScore: number
@@ -714,6 +1048,16 @@ export type TicketProgressCreateManySubjectProgressInput = {
 export type TicketProgressUpdateWithoutSubjectProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduleDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  reps?: Prisma.IntFieldUpdateOperationsInput | number
+  lapses?: Prisma.IntFieldUpdateOperationsInput | number
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  lastReview?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalCount?: Prisma.IntFieldUpdateOperationsInput | number
   bestScore?: Prisma.FloatFieldUpdateOperationsInput | number
   lastScore?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -726,6 +1070,16 @@ export type TicketProgressUpdateWithoutSubjectProgressInput = {
 export type TicketProgressUncheckedUpdateWithoutSubjectProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduleDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  reps?: Prisma.IntFieldUpdateOperationsInput | number
+  lapses?: Prisma.IntFieldUpdateOperationsInput | number
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  lastReview?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalCount?: Prisma.IntFieldUpdateOperationsInput | number
   bestScore?: Prisma.FloatFieldUpdateOperationsInput | number
   lastScore?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -738,6 +1092,16 @@ export type TicketProgressUncheckedUpdateWithoutSubjectProgressInput = {
 export type TicketProgressUncheckedUpdateManyWithoutSubjectProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ticketId?: Prisma.StringFieldUpdateOperationsInput | string
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduleDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  reps?: Prisma.IntFieldUpdateOperationsInput | number
+  lapses?: Prisma.IntFieldUpdateOperationsInput | number
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  lastReview?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalCount?: Prisma.IntFieldUpdateOperationsInput | number
   bestScore?: Prisma.FloatFieldUpdateOperationsInput | number
   lastScore?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -782,6 +1146,16 @@ export type TicketProgressSelect<ExtArgs extends runtime.Types.Extensions.Intern
   ticketId?: boolean
   userId?: boolean
   subjectId?: boolean
+  due?: boolean
+  stability?: boolean
+  difficulty?: boolean
+  elapsedDays?: boolean
+  scheduleDays?: boolean
+  learningSteps?: boolean
+  reps?: boolean
+  lapses?: boolean
+  state?: boolean
+  lastReview?: boolean
   totalCount?: boolean
   bestScore?: boolean
   lastScore?: boolean
@@ -798,6 +1172,16 @@ export type TicketProgressSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   ticketId?: boolean
   userId?: boolean
   subjectId?: boolean
+  due?: boolean
+  stability?: boolean
+  difficulty?: boolean
+  elapsedDays?: boolean
+  scheduleDays?: boolean
+  learningSteps?: boolean
+  reps?: boolean
+  lapses?: boolean
+  state?: boolean
+  lastReview?: boolean
   totalCount?: boolean
   bestScore?: boolean
   lastScore?: boolean
@@ -812,6 +1196,16 @@ export type TicketProgressSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   ticketId?: boolean
   userId?: boolean
   subjectId?: boolean
+  due?: boolean
+  stability?: boolean
+  difficulty?: boolean
+  elapsedDays?: boolean
+  scheduleDays?: boolean
+  learningSteps?: boolean
+  reps?: boolean
+  lapses?: boolean
+  state?: boolean
+  lastReview?: boolean
   totalCount?: boolean
   bestScore?: boolean
   lastScore?: boolean
@@ -826,6 +1220,16 @@ export type TicketProgressSelectScalar = {
   ticketId?: boolean
   userId?: boolean
   subjectId?: boolean
+  due?: boolean
+  stability?: boolean
+  difficulty?: boolean
+  elapsedDays?: boolean
+  scheduleDays?: boolean
+  learningSteps?: boolean
+  reps?: boolean
+  lapses?: boolean
+  state?: boolean
+  lastReview?: boolean
   totalCount?: boolean
   bestScore?: boolean
   lastScore?: boolean
@@ -834,7 +1238,7 @@ export type TicketProgressSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TicketProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ticketId" | "userId" | "subjectId" | "totalCount" | "bestScore" | "lastScore" | "averageScore" | "createdAt" | "updatedAt", ExtArgs["result"]["ticketProgress"]>
+export type TicketProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ticketId" | "userId" | "subjectId" | "due" | "stability" | "difficulty" | "elapsedDays" | "scheduleDays" | "learningSteps" | "reps" | "lapses" | "state" | "lastReview" | "totalCount" | "bestScore" | "lastScore" | "averageScore" | "createdAt" | "updatedAt", ExtArgs["result"]["ticketProgress"]>
 export type TicketProgressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subjectProgress?: boolean | Prisma.SubjectProgressDefaultArgs<ExtArgs>
   attempts?: boolean | Prisma.TicketProgress$attemptsArgs<ExtArgs>
@@ -858,6 +1262,16 @@ export type $TicketProgressPayload<ExtArgs extends runtime.Types.Extensions.Inte
     ticketId: string
     userId: string
     subjectId: string
+    due: Date
+    stability: number
+    difficulty: number
+    elapsedDays: number
+    scheduleDays: number
+    learningSteps: number
+    reps: number
+    lapses: number
+    state: $Enums.State
+    lastReview: Date
     totalCount: number
     bestScore: number
     lastScore: number
@@ -1293,6 +1707,16 @@ export interface TicketProgressFieldRefs {
   readonly ticketId: Prisma.FieldRef<"TicketProgress", 'String'>
   readonly userId: Prisma.FieldRef<"TicketProgress", 'String'>
   readonly subjectId: Prisma.FieldRef<"TicketProgress", 'String'>
+  readonly due: Prisma.FieldRef<"TicketProgress", 'DateTime'>
+  readonly stability: Prisma.FieldRef<"TicketProgress", 'Int'>
+  readonly difficulty: Prisma.FieldRef<"TicketProgress", 'Int'>
+  readonly elapsedDays: Prisma.FieldRef<"TicketProgress", 'Int'>
+  readonly scheduleDays: Prisma.FieldRef<"TicketProgress", 'Int'>
+  readonly learningSteps: Prisma.FieldRef<"TicketProgress", 'Int'>
+  readonly reps: Prisma.FieldRef<"TicketProgress", 'Int'>
+  readonly lapses: Prisma.FieldRef<"TicketProgress", 'Int'>
+  readonly state: Prisma.FieldRef<"TicketProgress", 'State'>
+  readonly lastReview: Prisma.FieldRef<"TicketProgress", 'DateTime'>
   readonly totalCount: Prisma.FieldRef<"TicketProgress", 'Int'>
   readonly bestScore: Prisma.FieldRef<"TicketProgress", 'Float'>
   readonly lastScore: Prisma.FieldRef<"TicketProgress", 'Float'>

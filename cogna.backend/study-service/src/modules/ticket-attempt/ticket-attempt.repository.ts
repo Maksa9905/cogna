@@ -3,6 +3,30 @@ import { PrismaService } from '../../infra/prisma/prisma.service';
 import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket-attempt';
 import { SubjectProgressRepository } from '../subject-progress/subject-progress.repository';
 import { TicketProgressService } from '../ticket-progress/ticket-progress.service';
+import {
+  RecordLogItem,
+  Rating as FsrsRating,
+  State as FsrsState,
+} from 'ts-fsrs';
+import {
+  Rating as PrismaRating,
+  State as PrismaState,
+} from '../../../prisma/generated/client';
+
+const LOG_RATING_TO_PRISMA: Record<FsrsRating, PrismaRating> = {
+  [FsrsRating.Manual]: PrismaRating.MANUAL,
+  [FsrsRating.Again]: PrismaRating.AGAIN,
+  [FsrsRating.Hard]: PrismaRating.HARD,
+  [FsrsRating.Good]: PrismaRating.GOOD,
+  [FsrsRating.Easy]: PrismaRating.EASY,
+};
+
+const LOG_STATE_TO_PRISMA: Record<FsrsState, PrismaState> = {
+  [FsrsState.New]: PrismaState.NEW,
+  [FsrsState.Learning]: PrismaState.LEARNING,
+  [FsrsState.Review]: PrismaState.REVIEW,
+  [FsrsState.Relearning]: PrismaState.RELEANING,
+};
 
 @Injectable()
 export class TicketAttemptRepository {
@@ -12,7 +36,12 @@ export class TicketAttemptRepository {
     private readonly subjectProgressRepository: SubjectProgressRepository,
   ) {}
 
-  public async createTicketAttemptWithProgress(dto: TicketAttemptRequest) {
+  public async createTicketAttemptWithProgress(data: {
+    dto: TicketAttemptRequest;
+    record: RecordLogItem;
+  }) {
+    const { dto, record } = data;
+    const { card, log } = record;
     return this.prismaService.$transaction(async (tx) => {
       await this.subjectProgressRepository.ensureExists(
         dto.userId,
@@ -27,6 +56,7 @@ export class TicketAttemptRepository {
             userId: dto.userId,
             subjectId: dto.subjectId,
             score: dto.score,
+            card: card,
           },
           tx,
         );
@@ -40,6 +70,14 @@ export class TicketAttemptRepository {
             thesis,
             assessment,
           })),
+          rating: LOG_RATING_TO_PRISMA[log.rating],
+          state: LOG_STATE_TO_PRISMA[log.state],
+          due: log.due,
+          stability: log.stability,
+          difficulty: log.difficulty,
+          scheduledDays: log.scheduled_days,
+          learningSteps: log.learning_steps,
+          review: log.review,
         },
       });
 

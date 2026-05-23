@@ -31,11 +31,21 @@ message ThesisAssessment {
 message TicketAttempt {
   string id = 1;
   string ticket_progress_id = 2;
+  int32 rating = 3;
+  int32 state = 4;
+  google.protobuf.Timestamp due = 5;
   float score = 6;
   string summary = 7;
   repeated ThesisAssessment theses = 8;
   google.protobuf.Timestamp created_at = 9;
   google.protobuf.Timestamp updated_at = 10;
+  float stability = 11;
+  float difficulty = 12;
+  int32 elapsed_days = 13;
+  int32 last_elapsed_days = 14;
+  int32 scheduled_days = 15;
+  int32 learning_steps = 16;
+  google.protobuf.Timestamp review = 17;
 }
 
 message FindOneTicketAttemptRequest {

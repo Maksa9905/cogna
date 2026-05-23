@@ -8,6 +8,7 @@ import {
   FindAllTicketsAttemptsResponse,
 } from '@cogna-edu/contracts/gen/study/ticket-attempt';
 import { StudyTicketAttemptServiceControllerMethods } from '@cogna-edu/contracts/dist/study/ticket-attempt';
+import { TicketProgressService } from '../ticket-progress/ticket-progress.service';
 
 @StudyTicketAttemptServiceControllerMethods()
 @Controller('ticket-attempt')

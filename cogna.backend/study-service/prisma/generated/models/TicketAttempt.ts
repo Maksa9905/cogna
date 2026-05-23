@@ -28,10 +28,22 @@ export type AggregateTicketAttempt = {
 
 export type TicketAttemptAvgAggregateOutputType = {
   score: number | null
+  stability: number | null
+  difficulty: number | null
+  elapsedDays: number | null
+  lastElapsedDays: number | null
+  scheduledDays: number | null
+  learningSteps: number | null
 }
 
 export type TicketAttemptSumAggregateOutputType = {
   score: number | null
+  stability: number | null
+  difficulty: number | null
+  elapsedDays: number | null
+  lastElapsedDays: number | null
+  scheduledDays: number | null
+  learningSteps: number | null
 }
 
 export type TicketAttemptMinAggregateOutputType = {
@@ -39,6 +51,16 @@ export type TicketAttemptMinAggregateOutputType = {
   ticketProgressId: string | null
   score: number | null
   summary: string | null
+  rating: $Enums.Rating | null
+  state: $Enums.State | null
+  due: Date | null
+  stability: number | null
+  difficulty: number | null
+  elapsedDays: number | null
+  lastElapsedDays: number | null
+  scheduledDays: number | null
+  learningSteps: number | null
+  review: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +70,16 @@ export type TicketAttemptMaxAggregateOutputType = {
   ticketProgressId: string | null
   score: number | null
   summary: string | null
+  rating: $Enums.Rating | null
+  state: $Enums.State | null
+  due: Date | null
+  stability: number | null
+  difficulty: number | null
+  elapsedDays: number | null
+  lastElapsedDays: number | null
+  scheduledDays: number | null
+  learningSteps: number | null
+  review: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -58,6 +90,16 @@ export type TicketAttemptCountAggregateOutputType = {
   score: number
   summary: number
   theses: number
+  rating: number
+  state: number
+  due: number
+  stability: number
+  difficulty: number
+  elapsedDays: number
+  lastElapsedDays: number
+  scheduledDays: number
+  learningSteps: number
+  review: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -66,10 +108,22 @@ export type TicketAttemptCountAggregateOutputType = {
 
 export type TicketAttemptAvgAggregateInputType = {
   score?: true
+  stability?: true
+  difficulty?: true
+  elapsedDays?: true
+  lastElapsedDays?: true
+  scheduledDays?: true
+  learningSteps?: true
 }
 
 export type TicketAttemptSumAggregateInputType = {
   score?: true
+  stability?: true
+  difficulty?: true
+  elapsedDays?: true
+  lastElapsedDays?: true
+  scheduledDays?: true
+  learningSteps?: true
 }
 
 export type TicketAttemptMinAggregateInputType = {
@@ -77,6 +131,16 @@ export type TicketAttemptMinAggregateInputType = {
   ticketProgressId?: true
   score?: true
   summary?: true
+  rating?: true
+  state?: true
+  due?: true
+  stability?: true
+  difficulty?: true
+  elapsedDays?: true
+  lastElapsedDays?: true
+  scheduledDays?: true
+  learningSteps?: true
+  review?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -86,6 +150,16 @@ export type TicketAttemptMaxAggregateInputType = {
   ticketProgressId?: true
   score?: true
   summary?: true
+  rating?: true
+  state?: true
+  due?: true
+  stability?: true
+  difficulty?: true
+  elapsedDays?: true
+  lastElapsedDays?: true
+  scheduledDays?: true
+  learningSteps?: true
+  review?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -96,6 +170,16 @@ export type TicketAttemptCountAggregateInputType = {
   score?: true
   summary?: true
   theses?: true
+  rating?: true
+  state?: true
+  due?: true
+  stability?: true
+  difficulty?: true
+  elapsedDays?: true
+  lastElapsedDays?: true
+  scheduledDays?: true
+  learningSteps?: true
+  review?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -193,6 +277,16 @@ export type TicketAttemptGroupByOutputType = {
   score: number
   summary: string | null
   theses: runtime.JsonValue | null
+  rating: $Enums.Rating
+  state: $Enums.State
+  due: Date
+  stability: number
+  difficulty: number
+  elapsedDays: number
+  lastElapsedDays: number
+  scheduledDays: number
+  learningSteps: number
+  review: Date
   createdAt: Date
   updatedAt: Date
   _count: TicketAttemptCountAggregateOutputType | null
@@ -226,6 +320,16 @@ export type TicketAttemptWhereInput = {
   score?: Prisma.FloatFilter<"TicketAttempt"> | number
   summary?: Prisma.StringNullableFilter<"TicketAttempt"> | string | null
   theses?: Prisma.JsonNullableFilter<"TicketAttempt">
+  rating?: Prisma.EnumRatingFilter<"TicketAttempt"> | $Enums.Rating
+  state?: Prisma.EnumStateFilter<"TicketAttempt"> | $Enums.State
+  due?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
+  stability?: Prisma.IntFilter<"TicketAttempt"> | number
+  difficulty?: Prisma.IntFilter<"TicketAttempt"> | number
+  elapsedDays?: Prisma.IntFilter<"TicketAttempt"> | number
+  lastElapsedDays?: Prisma.IntFilter<"TicketAttempt"> | number
+  scheduledDays?: Prisma.IntFilter<"TicketAttempt"> | number
+  learningSteps?: Prisma.IntFilter<"TicketAttempt"> | number
+  review?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
   ticketProgress?: Prisma.XOR<Prisma.TicketProgressScalarRelationFilter, Prisma.TicketProgressWhereInput>
@@ -237,6 +341,16 @@ export type TicketAttemptOrderByWithRelationInput = {
   score?: Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
   theses?: Prisma.SortOrderInput | Prisma.SortOrder
+  rating?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  due?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  lastElapsedDays?: Prisma.SortOrder
+  scheduledDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  review?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ticketProgress?: Prisma.TicketProgressOrderByWithRelationInput
@@ -251,6 +365,16 @@ export type TicketAttemptWhereUniqueInput = Prisma.AtLeast<{
   score?: Prisma.FloatFilter<"TicketAttempt"> | number
   summary?: Prisma.StringNullableFilter<"TicketAttempt"> | string | null
   theses?: Prisma.JsonNullableFilter<"TicketAttempt">
+  rating?: Prisma.EnumRatingFilter<"TicketAttempt"> | $Enums.Rating
+  state?: Prisma.EnumStateFilter<"TicketAttempt"> | $Enums.State
+  due?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
+  stability?: Prisma.IntFilter<"TicketAttempt"> | number
+  difficulty?: Prisma.IntFilter<"TicketAttempt"> | number
+  elapsedDays?: Prisma.IntFilter<"TicketAttempt"> | number
+  lastElapsedDays?: Prisma.IntFilter<"TicketAttempt"> | number
+  scheduledDays?: Prisma.IntFilter<"TicketAttempt"> | number
+  learningSteps?: Prisma.IntFilter<"TicketAttempt"> | number
+  review?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
   ticketProgress?: Prisma.XOR<Prisma.TicketProgressScalarRelationFilter, Prisma.TicketProgressWhereInput>
@@ -262,6 +386,16 @@ export type TicketAttemptOrderByWithAggregationInput = {
   score?: Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
   theses?: Prisma.SortOrderInput | Prisma.SortOrder
+  rating?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  due?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  lastElapsedDays?: Prisma.SortOrder
+  scheduledDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  review?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TicketAttemptCountOrderByAggregateInput
@@ -280,6 +414,16 @@ export type TicketAttemptScalarWhereWithAggregatesInput = {
   score?: Prisma.FloatWithAggregatesFilter<"TicketAttempt"> | number
   summary?: Prisma.StringNullableWithAggregatesFilter<"TicketAttempt"> | string | null
   theses?: Prisma.JsonNullableWithAggregatesFilter<"TicketAttempt">
+  rating?: Prisma.EnumRatingWithAggregatesFilter<"TicketAttempt"> | $Enums.Rating
+  state?: Prisma.EnumStateWithAggregatesFilter<"TicketAttempt"> | $Enums.State
+  due?: Prisma.DateTimeWithAggregatesFilter<"TicketAttempt"> | Date | string
+  stability?: Prisma.IntWithAggregatesFilter<"TicketAttempt"> | number
+  difficulty?: Prisma.IntWithAggregatesFilter<"TicketAttempt"> | number
+  elapsedDays?: Prisma.IntWithAggregatesFilter<"TicketAttempt"> | number
+  lastElapsedDays?: Prisma.IntWithAggregatesFilter<"TicketAttempt"> | number
+  scheduledDays?: Prisma.IntWithAggregatesFilter<"TicketAttempt"> | number
+  learningSteps?: Prisma.IntWithAggregatesFilter<"TicketAttempt"> | number
+  review?: Prisma.DateTimeWithAggregatesFilter<"TicketAttempt"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TicketAttempt"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TicketAttempt"> | Date | string
 }
@@ -289,6 +433,16 @@ export type TicketAttemptCreateInput = {
   score: number
   summary?: string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: $Enums.Rating
+  state?: $Enums.State
+  due?: Date | string
+  stability?: number
+  difficulty?: number
+  elapsedDays?: number
+  lastElapsedDays?: number
+  scheduledDays?: number
+  learningSteps?: number
+  review?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   ticketProgress: Prisma.TicketProgressCreateNestedOneWithoutAttemptsInput
@@ -300,6 +454,16 @@ export type TicketAttemptUncheckedCreateInput = {
   score: number
   summary?: string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: $Enums.Rating
+  state?: $Enums.State
+  due?: Date | string
+  stability?: number
+  difficulty?: number
+  elapsedDays?: number
+  lastElapsedDays?: number
+  scheduledDays?: number
+  learningSteps?: number
+  review?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -309,6 +473,16 @@ export type TicketAttemptUpdateInput = {
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: Prisma.EnumRatingFieldUpdateOperationsInput | $Enums.Rating
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastElapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduledDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  review?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ticketProgress?: Prisma.TicketProgressUpdateOneRequiredWithoutAttemptsNestedInput
@@ -320,6 +494,16 @@ export type TicketAttemptUncheckedUpdateInput = {
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: Prisma.EnumRatingFieldUpdateOperationsInput | $Enums.Rating
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastElapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduledDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  review?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -330,6 +514,16 @@ export type TicketAttemptCreateManyInput = {
   score: number
   summary?: string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: $Enums.Rating
+  state?: $Enums.State
+  due?: Date | string
+  stability?: number
+  difficulty?: number
+  elapsedDays?: number
+  lastElapsedDays?: number
+  scheduledDays?: number
+  learningSteps?: number
+  review?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -339,6 +533,16 @@ export type TicketAttemptUpdateManyMutationInput = {
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: Prisma.EnumRatingFieldUpdateOperationsInput | $Enums.Rating
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastElapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduledDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  review?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -349,6 +553,16 @@ export type TicketAttemptUncheckedUpdateManyInput = {
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: Prisma.EnumRatingFieldUpdateOperationsInput | $Enums.Rating
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastElapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduledDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  review?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -359,12 +573,28 @@ export type TicketAttemptCountOrderByAggregateInput = {
   score?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   theses?: Prisma.SortOrder
+  rating?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  due?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  lastElapsedDays?: Prisma.SortOrder
+  scheduledDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  review?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TicketAttemptAvgOrderByAggregateInput = {
   score?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  lastElapsedDays?: Prisma.SortOrder
+  scheduledDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
 }
 
 export type TicketAttemptMaxOrderByAggregateInput = {
@@ -372,6 +602,16 @@ export type TicketAttemptMaxOrderByAggregateInput = {
   ticketProgressId?: Prisma.SortOrder
   score?: Prisma.SortOrder
   summary?: Prisma.SortOrder
+  rating?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  due?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  lastElapsedDays?: Prisma.SortOrder
+  scheduledDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  review?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -381,12 +621,28 @@ export type TicketAttemptMinOrderByAggregateInput = {
   ticketProgressId?: Prisma.SortOrder
   score?: Prisma.SortOrder
   summary?: Prisma.SortOrder
+  rating?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  due?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  lastElapsedDays?: Prisma.SortOrder
+  scheduledDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
+  review?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TicketAttemptSumOrderByAggregateInput = {
   score?: Prisma.SortOrder
+  stability?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
+  elapsedDays?: Prisma.SortOrder
+  lastElapsedDays?: Prisma.SortOrder
+  scheduledDays?: Prisma.SortOrder
+  learningSteps?: Prisma.SortOrder
 }
 
 export type TicketAttemptListRelationFilter = {
@@ -415,8 +671,24 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type EnumRatingFieldUpdateOperationsInput = {
+  set?: $Enums.Rating
+}
+
+export type EnumStateFieldUpdateOperationsInput = {
+  set?: $Enums.State
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type TicketAttemptCreateNestedManyWithoutTicketProgressInput = {
@@ -466,6 +738,16 @@ export type TicketAttemptCreateWithoutTicketProgressInput = {
   score: number
   summary?: string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: $Enums.Rating
+  state?: $Enums.State
+  due?: Date | string
+  stability?: number
+  difficulty?: number
+  elapsedDays?: number
+  lastElapsedDays?: number
+  scheduledDays?: number
+  learningSteps?: number
+  review?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -475,6 +757,16 @@ export type TicketAttemptUncheckedCreateWithoutTicketProgressInput = {
   score: number
   summary?: string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: $Enums.Rating
+  state?: $Enums.State
+  due?: Date | string
+  stability?: number
+  difficulty?: number
+  elapsedDays?: number
+  lastElapsedDays?: number
+  scheduledDays?: number
+  learningSteps?: number
+  review?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -514,6 +806,16 @@ export type TicketAttemptScalarWhereInput = {
   score?: Prisma.FloatFilter<"TicketAttempt"> | number
   summary?: Prisma.StringNullableFilter<"TicketAttempt"> | string | null
   theses?: Prisma.JsonNullableFilter<"TicketAttempt">
+  rating?: Prisma.EnumRatingFilter<"TicketAttempt"> | $Enums.Rating
+  state?: Prisma.EnumStateFilter<"TicketAttempt"> | $Enums.State
+  due?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
+  stability?: Prisma.IntFilter<"TicketAttempt"> | number
+  difficulty?: Prisma.IntFilter<"TicketAttempt"> | number
+  elapsedDays?: Prisma.IntFilter<"TicketAttempt"> | number
+  lastElapsedDays?: Prisma.IntFilter<"TicketAttempt"> | number
+  scheduledDays?: Prisma.IntFilter<"TicketAttempt"> | number
+  learningSteps?: Prisma.IntFilter<"TicketAttempt"> | number
+  review?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TicketAttempt"> | Date | string
 }
@@ -523,6 +825,16 @@ export type TicketAttemptCreateManyTicketProgressInput = {
   score: number
   summary?: string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: $Enums.Rating
+  state?: $Enums.State
+  due?: Date | string
+  stability?: number
+  difficulty?: number
+  elapsedDays?: number
+  lastElapsedDays?: number
+  scheduledDays?: number
+  learningSteps?: number
+  review?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -532,6 +844,16 @@ export type TicketAttemptUpdateWithoutTicketProgressInput = {
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: Prisma.EnumRatingFieldUpdateOperationsInput | $Enums.Rating
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastElapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduledDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  review?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -541,6 +863,16 @@ export type TicketAttemptUncheckedUpdateWithoutTicketProgressInput = {
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: Prisma.EnumRatingFieldUpdateOperationsInput | $Enums.Rating
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastElapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduledDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  review?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -550,6 +882,16 @@ export type TicketAttemptUncheckedUpdateManyWithoutTicketProgressInput = {
   score?: Prisma.FloatFieldUpdateOperationsInput | number
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   theses?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  rating?: Prisma.EnumRatingFieldUpdateOperationsInput | $Enums.Rating
+  state?: Prisma.EnumStateFieldUpdateOperationsInput | $Enums.State
+  due?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stability?: Prisma.IntFieldUpdateOperationsInput | number
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  elapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastElapsedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  scheduledDays?: Prisma.IntFieldUpdateOperationsInput | number
+  learningSteps?: Prisma.IntFieldUpdateOperationsInput | number
+  review?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -562,6 +904,16 @@ export type TicketAttemptSelect<ExtArgs extends runtime.Types.Extensions.Interna
   score?: boolean
   summary?: boolean
   theses?: boolean
+  rating?: boolean
+  state?: boolean
+  due?: boolean
+  stability?: boolean
+  difficulty?: boolean
+  elapsedDays?: boolean
+  lastElapsedDays?: boolean
+  scheduledDays?: boolean
+  learningSteps?: boolean
+  review?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ticketProgress?: boolean | Prisma.TicketProgressDefaultArgs<ExtArgs>
@@ -573,6 +925,16 @@ export type TicketAttemptSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   score?: boolean
   summary?: boolean
   theses?: boolean
+  rating?: boolean
+  state?: boolean
+  due?: boolean
+  stability?: boolean
+  difficulty?: boolean
+  elapsedDays?: boolean
+  lastElapsedDays?: boolean
+  scheduledDays?: boolean
+  learningSteps?: boolean
+  review?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ticketProgress?: boolean | Prisma.TicketProgressDefaultArgs<ExtArgs>
@@ -584,6 +946,16 @@ export type TicketAttemptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   score?: boolean
   summary?: boolean
   theses?: boolean
+  rating?: boolean
+  state?: boolean
+  due?: boolean
+  stability?: boolean
+  difficulty?: boolean
+  elapsedDays?: boolean
+  lastElapsedDays?: boolean
+  scheduledDays?: boolean
+  learningSteps?: boolean
+  review?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ticketProgress?: boolean | Prisma.TicketProgressDefaultArgs<ExtArgs>
@@ -595,11 +967,21 @@ export type TicketAttemptSelectScalar = {
   score?: boolean
   summary?: boolean
   theses?: boolean
+  rating?: boolean
+  state?: boolean
+  due?: boolean
+  stability?: boolean
+  difficulty?: boolean
+  elapsedDays?: boolean
+  lastElapsedDays?: boolean
+  scheduledDays?: boolean
+  learningSteps?: boolean
+  review?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TicketAttemptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ticketProgressId" | "score" | "summary" | "theses" | "createdAt" | "updatedAt", ExtArgs["result"]["ticketAttempt"]>
+export type TicketAttemptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ticketProgressId" | "score" | "summary" | "theses" | "rating" | "state" | "due" | "stability" | "difficulty" | "elapsedDays" | "lastElapsedDays" | "scheduledDays" | "learningSteps" | "review" | "createdAt" | "updatedAt", ExtArgs["result"]["ticketAttempt"]>
 export type TicketAttemptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ticketProgress?: boolean | Prisma.TicketProgressDefaultArgs<ExtArgs>
 }
@@ -621,6 +1003,16 @@ export type $TicketAttemptPayload<ExtArgs extends runtime.Types.Extensions.Inter
     score: number
     summary: string | null
     theses: runtime.JsonValue | null
+    rating: $Enums.Rating
+    state: $Enums.State
+    due: Date
+    stability: number
+    difficulty: number
+    elapsedDays: number
+    lastElapsedDays: number
+    scheduledDays: number
+    learningSteps: number
+    review: Date
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["ticketAttempt"]>
@@ -1052,6 +1444,16 @@ export interface TicketAttemptFieldRefs {
   readonly score: Prisma.FieldRef<"TicketAttempt", 'Float'>
   readonly summary: Prisma.FieldRef<"TicketAttempt", 'String'>
   readonly theses: Prisma.FieldRef<"TicketAttempt", 'Json'>
+  readonly rating: Prisma.FieldRef<"TicketAttempt", 'Rating'>
+  readonly state: Prisma.FieldRef<"TicketAttempt", 'State'>
+  readonly due: Prisma.FieldRef<"TicketAttempt", 'DateTime'>
+  readonly stability: Prisma.FieldRef<"TicketAttempt", 'Int'>
+  readonly difficulty: Prisma.FieldRef<"TicketAttempt", 'Int'>
+  readonly elapsedDays: Prisma.FieldRef<"TicketAttempt", 'Int'>
+  readonly lastElapsedDays: Prisma.FieldRef<"TicketAttempt", 'Int'>
+  readonly scheduledDays: Prisma.FieldRef<"TicketAttempt", 'Int'>
+  readonly learningSteps: Prisma.FieldRef<"TicketAttempt", 'Int'>
+  readonly review: Prisma.FieldRef<"TicketAttempt", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"TicketAttempt", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TicketAttempt", 'DateTime'>
 }

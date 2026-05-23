@@ -8,6 +8,7 @@ service StudyTicketProgressService {
   rpc FindOneTicketProgress(FindOneTicketProgressRequest) returns (FindOneTicketProgressResponse);
   rpc FindAllTicketProgress(FindAllTicketsProgressRequest) returns (FindAllTicketsProgressResponse);
   rpc BatchTicketProgressBySubjects(BatchTicketProgressBySubjectsRequest) returns (FindAllTicketsProgressResponse);
+  rpc FindDueTicketsProgress(FindDueTicketsProgressRequest) returns (FindDueTicketsProgressResponse);
 }
 
 message TicketProgress {
@@ -21,6 +22,16 @@ message TicketProgress {
   float average_score = 8;
   google.protobuf.Timestamp created_at = 9;
   google.protobuf.Timestamp updated_at = 10;
+  google.protobuf.Timestamp due = 11;
+  float stability = 12;
+  float difficulty = 13;
+  int32 elapsed_days = 14;
+  int32 schedule_days = 15;
+  int32 learning_steps = 16;
+  int32 reps = 17;
+  int32 lapses = 18;
+  int32 state = 19;
+  google.protobuf.Timestamp last_review = 20;
 }
 
 message FindOneTicketProgressRequest {
@@ -43,4 +54,15 @@ message FindAllTicketsProgressResponse {
 message BatchTicketProgressBySubjectsRequest {
   string user_id = 1;
   repeated string subject_ids = 2;
+}
+
+message FindDueTicketsProgressRequest {
+  string user_id = 1;
+  string subject_id = 2;
+  optional int32 limit = 3;
+  optional int32 offset = 4;
+}
+
+message FindDueTicketsProgressResponse {
+  repeated TicketProgress ticket_progress = 1;
 }

@@ -6,6 +6,8 @@ import { Request } from 'express';
 import {
   FindAllTicketsProgressRequestGql,
   FindAllTicketsProgressResponseGql,
+  FindDueTicketsProgressRequestGql,
+  FindDueTicketsProgressResponseGql,
   FindOneTicketProgressRequestGql,
   FindOneTicketProgressResponseGql,
 } from '../dto';
@@ -35,6 +37,19 @@ export class TicketProgressResolver {
     return this.ticketProgressService.findAll({
       userId: req.user.sub,
       subjectId: data.subjectId,
+    });
+  }
+
+  @Query(() => FindDueTicketsProgressResponseGql)
+  public ticketProgressFindDue(
+    @Context('req') req: Request,
+    @Args('data') data: FindDueTicketsProgressRequestGql,
+  ) {
+    return this.ticketProgressService.findDueTicketsProgress({
+      userId: req.user.sub,
+      subjectId: data.subjectId,
+      limit: data.limit,
+      offset: data.offset,
     });
   }
 }

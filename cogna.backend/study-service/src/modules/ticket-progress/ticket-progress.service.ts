@@ -4,14 +4,20 @@ import {
   BatchTicketProgressBySubjectsRequest,
   FindAllTicketsProgressRequest,
   FindAllTicketsProgressResponse,
+  FindDueTicketsProgressRequest,
+  FindDueTicketsProgressResponse,
   FindOneTicketProgressRequest,
   FindOneTicketProgressResponse,
   TicketProgress as TicketProgressGrpc,
 } from '@cogna-edu/contracts/gen/study/ticket-progress';
 import { RpcException } from '@nestjs/microservices';
-import { TicketProgress as TicketProgressPrisma } from '../../../prisma/generated/client';
+import {
+  State as PrismaState,
+  TicketProgress as TicketProgressPrisma,
+} from '../../../prisma/generated/client';
 import { LogExecutionTime } from '@cogna-edu/corn';
 import { PrismaService } from '../../infra/prisma/prisma.service';
+import { Card } from 'ts-fsrs';
 
 /** Событие: новая оценка по билету (например из Kafka ticket-attempt). */
 export type TicketProgressAfterAttemptInput = {
@@ -19,6 +25,7 @@ export type TicketProgressAfterAttemptInput = {
   userId: string;
   subjectId: string;
   score: number;
+  card: Card;
 };
 
 @Injectable()
@@ -78,6 +85,18 @@ export class TicketProgressService {
     };
   }
 
+  public async findDueTicketsProgress(
+    dto: FindDueTicketsProgressRequest,
+  ): Promise<FindDueTicketsProgressResponse> {
+    const tickets = await this.ticketProgressRepository.findDueTicketsProgress({
+      ...dto,
+    });
+
+    return {
+      ticketProgress: tickets.map((t) => this.mapPrismaToGrpc(t)),
+    };
+  }
+
   /**
    * Пересчёт агрегатов прогресса по билету после оценки попытки
    * (gRPC-методы выше сюда не заходят).
@@ -101,7 +120,7 @@ export class TicketProgressService {
     const newBestScore = existing
       ? Math.max(existing.bestScore, dto.score)
       : dto.score;
-    const wasStudied = (existing?.bestScore ?? 0) >= 5;
+    const wasStudied = (existing?.bestScore ?? 0) >= 6;
     const isNowStudied = newBestScore >= 5;
     const newlyStudied = !wasStudied && isNowStudied;
 
@@ -115,6 +134,7 @@ export class TicketProgressService {
           newTotalCount,
           newBestScore,
           newAverageScore,
+          card: dto.card,
         },
         tx,
       );
@@ -134,8 +154,25 @@ export class TicketProgressService {
       bestScore: ticketProgress.bestScore,
       lastScore: ticketProgress.lastScore,
       averageScore: ticketProgress.averageScore,
+      due: ticketProgress.due,
+      stability: ticketProgress.stability,
+      difficulty: ticketProgress.difficulty,
+      elapsedDays: ticketProgress.elapsedDays,
+      scheduleDays: ticketProgress.scheduleDays,
+      learningSteps: ticketProgress.learningSteps,
+      reps: ticketProgress.reps,
+      lapses: ticketProgress.lapses,
+      state: this.prismaStateToNumber[ticketProgress.state],
+      lastReview: ticketProgress.lastReview,
       createdAt: ticketProgress.createdAt,
       updatedAt: ticketProgress.updatedAt,
     };
   }
+
+  protected prismaStateToNumber: Record<PrismaState, number> = {
+    [PrismaState.NEW]: 0,
+    [PrismaState.LEARNING]: 1,
+    [PrismaState.REVIEW]: 2,
+    [PrismaState.RELEANING]: 3,
+  };
 }
