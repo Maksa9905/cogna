@@ -1,6 +1,7 @@
 import {
   BatchTicketProgressBySubjectsRequest,
   FindAllTicketsProgressRequest,
+  FindDueTicketsProgressRequest,
   FindOneTicketProgressRequest,
   StudyTicketProgressServiceClient,
 } from '@cogna-edu/contracts/gen/study/ticket-progress';
@@ -30,5 +31,9 @@ export class TicketProgressService {
 
   public batchBySubjects(dto: BatchTicketProgressBySubjectsRequest) {
     return this.ticketProgressClient.batchTicketProgressBySubjects(dto);
+  }
+
+  public findDueTicketsProgress(dto: FindDueTicketsProgressRequest) {
+    return this.ticketProgressClient.findDueTicketsProgress(dto);
   }
 }

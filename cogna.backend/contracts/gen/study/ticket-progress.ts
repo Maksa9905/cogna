@@ -48,6 +48,18 @@ export interface BatchTicketProgressBySubjectsRequest {
   subjectIds: string[];
 }
 
+export interface FindDueTicketsProgressRequest {
+  userId: string;
+  subjectId: string;
+  ticketId: string;
+  limit?: number | undefined;
+  offset?: number | undefined;
+}
+
+export interface FindDueTicketsProgressResponse {
+  ticketProgress: TicketProgress[];
+}
+
 export const STUDY_TICKET_PROGRESS_V1_PACKAGE_NAME = "study.ticket.progress.v1";
 
 wrappers[".google.protobuf.Timestamp"] = {
@@ -67,6 +79,8 @@ export interface StudyTicketProgressServiceClient {
   batchTicketProgressBySubjects(
     request: BatchTicketProgressBySubjectsRequest,
   ): Observable<FindAllTicketsProgressResponse>;
+
+  findDueTicketsProgress(request: FindDueTicketsProgressRequest): Observable<FindDueTicketsProgressResponse>;
 }
 
 export interface StudyTicketProgressServiceController {
@@ -87,11 +101,23 @@ export interface StudyTicketProgressServiceController {
     | Promise<FindAllTicketsProgressResponse>
     | Observable<FindAllTicketsProgressResponse>
     | FindAllTicketsProgressResponse;
+
+  findDueTicketsProgress(
+    request: FindDueTicketsProgressRequest,
+  ):
+    | Promise<FindDueTicketsProgressResponse>
+    | Observable<FindDueTicketsProgressResponse>
+    | FindDueTicketsProgressResponse;
 }
 
 export function StudyTicketProgressServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findOneTicketProgress", "findAllTicketProgress", "batchTicketProgressBySubjects"];
+    const grpcMethods: string[] = [
+      "findOneTicketProgress",
+      "findAllTicketProgress",
+      "batchTicketProgressBySubjects",
+      "findDueTicketsProgress",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("StudyTicketProgressService", method)(constructor.prototype[method], method, descriptor);

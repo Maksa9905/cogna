@@ -4,6 +4,8 @@ import {
   BatchTicketProgressBySubjectsRequest,
   FindAllTicketsProgressRequest,
   FindAllTicketsProgressResponse,
+  FindDueTicketsProgressRequest,
+  FindDueTicketsProgressResponse,
   FindOneTicketProgressRequest,
   FindOneTicketProgressResponse,
   StudyTicketProgressServiceController,
@@ -31,5 +33,11 @@ export class TicketProgressController implements StudyTicketProgressServiceContr
     request: BatchTicketProgressBySubjectsRequest,
   ): Promise<FindAllTicketsProgressResponse> {
     return this.ticketProgressService.batchTicketsBySubjects(request);
+  }
+
+  findDueTicketsProgress(
+    request: FindDueTicketsProgressRequest,
+  ): Promise<FindDueTicketsProgressResponse> {
+    return this.ticketProgressService.findDueTicketsProgress(request);
   }
 }

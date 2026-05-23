@@ -8,6 +8,7 @@ service StudyTicketProgressService {
   rpc FindOneTicketProgress(FindOneTicketProgressRequest) returns (FindOneTicketProgressResponse);
   rpc FindAllTicketProgress(FindAllTicketsProgressRequest) returns (FindAllTicketsProgressResponse);
   rpc BatchTicketProgressBySubjects(BatchTicketProgressBySubjectsRequest) returns (FindAllTicketsProgressResponse);
+  rpc FindDueTicketsProgress(FindDueTicketsProgressRequest) returns (FindDueTicketsProgressResponse);
 }
 
 message TicketProgress {
@@ -43,4 +44,16 @@ message FindAllTicketsProgressResponse {
 message BatchTicketProgressBySubjectsRequest {
   string user_id = 1;
   repeated string subject_ids = 2;
+}
+
+message FindDueTicketsProgressRequest {
+  string user_id = 1;
+  string subject_id = 2;
+  string ticket_id = 3;
+  optional int32 limit = 4;
+  optional int32 offset = 5;
+}
+
+message FindDueTicketsProgressResponse {
+  repeated TicketProgress ticket_progress = 1;
 }

@@ -7,15 +7,13 @@ import { Thesis } from '@cogna-edu/contracts/gen/content/ticket';
 import { QuiteGroqErrorFilter } from '../common/filters/quite-groq-error.filter';
 import { RpcException } from '@nestjs/microservices';
 
-
-
 export interface GroqAssumeResponse {
   theses: {
-    thesis: string
-    assessment: string
-  }[],
-  summary: string
-  score: number
+    thesis: string;
+    assessment: string;
+  }[];
+  summary: string;
+  score: number;
 }
 
 @UseFilters(new QuiteGroqErrorFilter())
@@ -34,9 +32,14 @@ export class GroqChatCompletionService {
     });
   }
 
-  public async assume(answer: string, question: string, referenceAnswer: string, thesis: Thesis[]) {
+  public async assume(
+    answer: string,
+    question: string,
+    referenceAnswer: string,
+    thesis: Thesis[],
+  ) {
     console.log('start assume');
-    const ths = thesis.map(t => t.value);
+    const ths = thesis.map((t) => t.value);
 
     const systemPrompt =
       `Пользователь даёт ответ на вопрос: "${question}". ` +
@@ -47,7 +50,7 @@ export class GroqChatCompletionService {
       `    { "thesis": string, "assessment": "отлично" | "хорошо" | "удовлетворительно" | "плохо" }\n` +
       `  ],\n` +
       `  "summary": string,\n` +
-      `  "score": number от 1 до 10\n` +
+      `  "score": float от 1 до 10, с округлением до 1 знака после запятой\n` +
       `}\n` +
       `Все три поля (theses, summary, score) ОБЯЗАТЕЛЬНЫ. Никакого текста вне JSON.`;
 
@@ -85,7 +88,12 @@ export class GroqChatCompletionService {
                       thesis: { type: 'string' },
                       assessment: {
                         type: 'string',
-                        enum: ['отлично', 'хорошо', 'удовлетворительно', 'плохо'],
+                        enum: [
+                          'отлично',
+                          'хорошо',
+                          'удовлетворительно',
+                          'плохо',
+                        ],
                       },
                     },
                     required: ['thesis', 'assessment'],
@@ -104,9 +112,9 @@ export class GroqChatCompletionService {
       console.log('end assume');
       console.log('res:', response);
       console.log('message:', response.choices[0].message);
-      const content = response.choices[0].message.content
-      if (!content) throw new RpcException({})
-      return JSON.parse(content) as GroqAssumeResponse
+      const content = response.choices[0].message.content;
+      if (!content) throw new RpcException({});
+      return JSON.parse(content) as GroqAssumeResponse;
     } catch (error: any) {
       console.error('Groq assume error:', {
         message: error?.message,

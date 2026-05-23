@@ -18,6 +18,18 @@ model TicketAttempt {
   summary String? // краткий анализ ответа
   theses  Json?   @map("theses_assessment") // хранится структура {thsis: string, assessment: string}
 
+  // FSRS log
+  rating          Rating   @default(MANUAL)
+  state           State    @default(NEW)
+  due             DateTime @default(now())
+  stability       Int      @default(0)
+  difficulty      Int      @default(0)
+  elapsedDays     Int      @default(0) @map("elapsed_days") // will be deprecate
+  lastElapsedDays Int      @default(0) @map("last_elapsed_days") // will be deprecate
+  scheduledDays   Int      @default(0) @map("scheduled_days")
+  learningSteps   Int      @default(0) @map("learningSteps")
+  review          DateTime @default(now())
+
   // Дополнительные полезные поля
   // timeSpent Int? @map("time_spent") // время в секундах
 
@@ -39,6 +51,18 @@ model TicketProgress {
 
   subjectProgress SubjectProgress @relation(fields: [userId, subjectId], references: [userId, subjectId], onDelete: Cascade)
 
+  // FSRS Card
+  due           DateTime
+  stability     Int
+  difficulty    Int
+  elapsedDays   Int      @default(0) @map("elapsed_days") // will be deprecate
+  scheduleDays  Int      @map("schedule_days")
+  learningSteps Int      @map("learning_steps")
+  reps          Int
+  lapses        Int
+  state         State
+  lastReview    DateTime @map("last_review")
+
   totalCount   Int   @default(0) @map("total_attempts") // общее количество попыток
   bestScore    Float @map("best_score") // лучший результат
   lastScore    Float @map("last_score") // последний результат
@@ -49,15 +73,14 @@ model TicketProgress {
   // status     TicketStatus    @default(NOT_STARTED)
   // confidence ConfidenceLevel @default(MEDIUM)
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  createdAt DateTime        @default(now()) @map("created_at")
+  updatedAt DateTime        @updatedAt() @map("updated_at")
+  // @@index([status])
+  attempts  TicketAttempt[]
 
   @@unique([userId, ticketId])
   @@index([userId])
   @@index([subjectId])
-  // @@index([status])
-  attempts TicketAttempt[]
-
   @@map("ticket_progress")
 }
 
@@ -152,3 +175,18 @@ model SubjectProgress {
 //   REVIEW
 //   TIMED
 // }
+
+enum State {
+  NEW
+  LEARNING
+  REVIEW
+  RELEANING
+}
+
+enum Rating {
+  MANUAL
+  AGAIN
+  HARD
+  GOOD
+  EASY
+}
