@@ -8,6 +8,7 @@ import {
 } from '@cogna-edu/contracts/gen/study/ticket-attempt';
 import { LogExecutionTime } from '@cogna-edu/corn';
 import {
+  Rating as PrismaRating,
   State as PrismaState,
   TicketAttempt as TicketAttemptPrisma,
   TicketProgress,
@@ -71,11 +72,21 @@ export class TicketAttemptService {
     return {
       id: attempt.id,
       ticketProgressId: attempt.ticketProgressId,
+      rating: this.prismaRatingToNumber[attempt.rating],
+      state: this.prismaStateToNumber[attempt.state],
+      due: attempt.due,
       score: attempt.score,
       summary: attempt.summary ?? '',
       theses: (attempt.theses ?? []) as unknown as ThesisAssessment[],
       createdAt: attempt.createdAt,
       updatedAt: attempt.updatedAt,
+      stability: attempt.stability,
+      difficulty: attempt.difficulty,
+      elapsedDays: attempt.elapsedDays,
+      lastElapsedDays: attempt.lastElapsedDays,
+      scheduledDays: attempt.scheduledDays,
+      learningSteps: attempt.learningSteps,
+      review: attempt.review,
     };
   }
 
@@ -89,16 +100,24 @@ export class TicketAttemptService {
       learning_steps: progress.learningSteps,
       reps: progress.reps,
       lapses: progress.lapses,
-      state: this.prismaToFsrsState[progress.state],
+      state: this.prismaStateToNumber[progress.state],
       last_review: progress.lastReview,
     };
   }
 
-  protected prismaToFsrsState: Record<PrismaState, FsrsState> = {
-    [PrismaState.NEW]: FsrsState.New,
-    [PrismaState.LEARNING]: FsrsState.Learning,
-    [PrismaState.REVIEW]: FsrsState.Review,
-    [PrismaState.RELEANING]: FsrsState.Relearning,
+  protected prismaStateToNumber: Record<PrismaState, number> = {
+    [PrismaState.NEW]: 0,
+    [PrismaState.LEARNING]: 1,
+    [PrismaState.REVIEW]: 2,
+    [PrismaState.RELEANING]: 3,
+  };
+
+  protected prismaRatingToNumber: Record<PrismaRating, number> = {
+    [PrismaRating.MANUAL]: 0,
+    [PrismaRating.AGAIN]: 1,
+    [PrismaRating.HARD]: 2,
+    [PrismaRating.GOOD]: 3,
+    [PrismaRating.EASY]: 4,
   };
 
   protected scoreToFsrsGrade(score: number): Grade {

@@ -32,11 +32,21 @@ export interface ThesisAssessment {
 export interface TicketAttempt {
   id: string;
   ticketProgressId: string;
+  rating: number;
+  state: number;
+  due: Date | undefined;
   score: number;
   summary: string;
   theses: ThesisAssessment[];
   createdAt: Date | undefined;
   updatedAt: Date | undefined;
+  stability: number;
+  difficulty: number;
+  elapsedDays: number;
+  lastElapsedDays: number;
+  scheduledDays: number;
+  learningSteps: number;
+  review: Date | undefined;
 }
 
 export interface FindOneTicketAttemptRequest {

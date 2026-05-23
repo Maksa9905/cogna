@@ -58,7 +58,7 @@ export class TicketProgressRepository {
 
   public async findDueTicketsProgress(dto: {
     userId: string;
-    subjectId: string;
+    subjectId?: string;
     limit?: number;
     offset?: number;
   }) {

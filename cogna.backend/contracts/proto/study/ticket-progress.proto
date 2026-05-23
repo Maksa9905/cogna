@@ -22,6 +22,16 @@ message TicketProgress {
   float average_score = 8;
   google.protobuf.Timestamp created_at = 9;
   google.protobuf.Timestamp updated_at = 10;
+  google.protobuf.Timestamp due = 11;
+  float stability = 12;
+  float difficulty = 13;
+  int32 elapsed_days = 14;
+  int32 schedule_days = 15;
+  int32 learning_steps = 16;
+  int32 reps = 17;
+  int32 lapses = 18;
+  int32 state = 19;
+  google.protobuf.Timestamp last_review = 20;
 }
 
 message FindOneTicketProgressRequest {
