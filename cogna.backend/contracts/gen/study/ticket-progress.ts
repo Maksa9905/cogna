@@ -5,11 +5,11 @@
 // source: study/ticket-progress.proto
 
 /* eslint-disable */
-import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
-import { wrappers } from 'protobufjs';
-import { Observable } from 'rxjs';
+import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
+import { wrappers } from "protobufjs";
+import { Observable } from "rxjs";
 
-export const protobufPackage = 'study.ticket.progress.v1';
+export const protobufPackage = "study.ticket.progress.v1";
 
 export interface TicketProgress {
   id: string;
@@ -60,7 +60,7 @@ export interface BatchTicketProgressBySubjectsRequest {
 
 export interface FindDueTicketsProgressRequest {
   userId: string;
-  subjectId?: string | undefined;
+  subjectId: string;
   limit?: number | undefined;
   offset?: number | undefined;
 }
@@ -69,14 +69,11 @@ export interface FindDueTicketsProgressResponse {
   ticketProgress: TicketProgress[];
 }
 
-export const STUDY_TICKET_PROGRESS_V1_PACKAGE_NAME = 'study.ticket.progress.v1';
+export const STUDY_TICKET_PROGRESS_V1_PACKAGE_NAME = "study.ticket.progress.v1";
 
-wrappers['.google.protobuf.Timestamp'] = {
+wrappers[".google.protobuf.Timestamp"] = {
   fromObject(value: Date) {
-    return {
-      seconds: value.getTime() / 1000,
-      nanos: (value.getTime() % 1000) * 1e6,
-    };
+    return { seconds: value.getTime() / 1000, nanos: (value.getTime() % 1000) * 1e6 };
   },
   toObject(message: { seconds: number; nanos: number }) {
     return new Date(message.seconds * 1000 + message.nanos / 1e6);
@@ -84,30 +81,21 @@ wrappers['.google.protobuf.Timestamp'] = {
 } as any;
 
 export interface StudyTicketProgressServiceClient {
-  findOneTicketProgress(
-    request: FindOneTicketProgressRequest,
-  ): Observable<FindOneTicketProgressResponse>;
+  findOneTicketProgress(request: FindOneTicketProgressRequest): Observable<FindOneTicketProgressResponse>;
 
-  findAllTicketProgress(
-    request: FindAllTicketsProgressRequest,
-  ): Observable<FindAllTicketsProgressResponse>;
+  findAllTicketProgress(request: FindAllTicketsProgressRequest): Observable<FindAllTicketsProgressResponse>;
 
   batchTicketProgressBySubjects(
     request: BatchTicketProgressBySubjectsRequest,
   ): Observable<FindAllTicketsProgressResponse>;
 
-  findDueTicketsProgress(
-    request: FindDueTicketsProgressRequest,
-  ): Observable<FindDueTicketsProgressResponse>;
+  findDueTicketsProgress(request: FindDueTicketsProgressRequest): Observable<FindDueTicketsProgressResponse>;
 }
 
 export interface StudyTicketProgressServiceController {
   findOneTicketProgress(
     request: FindOneTicketProgressRequest,
-  ):
-    | Promise<FindOneTicketProgressResponse>
-    | Observable<FindOneTicketProgressResponse>
-    | FindOneTicketProgressResponse;
+  ): Promise<FindOneTicketProgressResponse> | Observable<FindOneTicketProgressResponse> | FindOneTicketProgressResponse;
 
   findAllTicketProgress(
     request: FindAllTicketsProgressRequest,
@@ -134,35 +122,21 @@ export interface StudyTicketProgressServiceController {
 export function StudyTicketProgressServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
-      'findOneTicketProgress',
-      'findAllTicketProgress',
-      'batchTicketProgressBySubjects',
-      'findDueTicketsProgress',
+      "findOneTicketProgress",
+      "findAllTicketProgress",
+      "batchTicketProgressBySubjects",
+      "findDueTicketsProgress",
     ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(
-        constructor.prototype,
-        method,
-      );
-      GrpcMethod('StudyTicketProgressService', method)(
-        constructor.prototype[method],
-        method,
-        descriptor,
-      );
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcMethod("StudyTicketProgressService", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(
-        constructor.prototype,
-        method,
-      );
-      GrpcStreamMethod('StudyTicketProgressService', method)(
-        constructor.prototype[method],
-        method,
-        descriptor,
-      );
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcStreamMethod("StudyTicketProgressService", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const STUDY_TICKET_PROGRESS_SERVICE_NAME = 'StudyTicketProgressService';
+export const STUDY_TICKET_PROGRESS_SERVICE_NAME = "StudyTicketProgressService";

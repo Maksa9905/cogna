@@ -15,7 +15,7 @@ import {
   State as PrismaState,
   TicketProgress as TicketProgressPrisma,
 } from '../../../prisma/generated/client';
-import { LogExecutionTime } from '@cogna-edu/corn';
+import { LogExecutionTime, toTimestamp } from '@cogna-edu/corn';
 import { PrismaService } from '../../infra/prisma/prisma.service';
 import { Card } from 'ts-fsrs';
 
@@ -154,7 +154,7 @@ export class TicketProgressService {
       bestScore: ticketProgress.bestScore,
       lastScore: ticketProgress.lastScore,
       averageScore: ticketProgress.averageScore,
-      due: ticketProgress.due,
+      due: toTimestamp(ticketProgress.due) as unknown as Date,
       stability: ticketProgress.stability,
       difficulty: ticketProgress.difficulty,
       elapsedDays: ticketProgress.elapsedDays,
@@ -163,9 +163,9 @@ export class TicketProgressService {
       reps: ticketProgress.reps,
       lapses: ticketProgress.lapses,
       state: this.prismaStateToNumber[ticketProgress.state],
-      lastReview: ticketProgress.lastReview,
-      createdAt: ticketProgress.createdAt,
-      updatedAt: ticketProgress.updatedAt,
+      lastReview: toTimestamp(ticketProgress.lastReview) as unknown as Date,
+      createdAt: toTimestamp(ticketProgress.createdAt) as unknown as Date,
+      updatedAt: toTimestamp(ticketProgress.updatedAt) as unknown as Date,
     };
   }
 

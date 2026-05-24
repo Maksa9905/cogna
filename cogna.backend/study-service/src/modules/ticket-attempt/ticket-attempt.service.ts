@@ -6,7 +6,7 @@ import {
   TicketAttempt as TicketAttemptGrpc,
   TicketAttemptRequest,
 } from '@cogna-edu/contracts/gen/study/ticket-attempt';
-import { LogExecutionTime } from '@cogna-edu/corn';
+import { LogExecutionTime, toTimestamp } from '@cogna-edu/corn';
 import {
   Rating as PrismaRating,
   State as PrismaState,
@@ -74,12 +74,12 @@ export class TicketAttemptService {
       ticketProgressId: attempt.ticketProgressId,
       rating: this.prismaRatingToNumber[attempt.rating],
       state: this.prismaStateToNumber[attempt.state],
-      due: attempt.due,
+      due: toTimestamp(attempt.due) as unknown as Date,
       score: attempt.score,
       summary: attempt.summary ?? '',
       theses: (attempt.theses ?? []) as unknown as ThesisAssessment[],
-      createdAt: attempt.createdAt,
-      updatedAt: attempt.updatedAt,
+      createdAt: toTimestamp(attempt.createdAt) as unknown as Date,
+      updatedAt: toTimestamp(attempt.updatedAt) as unknown as Date,
       stability: attempt.stability,
       difficulty: attempt.difficulty,
       elapsedDays: attempt.elapsedDays,
