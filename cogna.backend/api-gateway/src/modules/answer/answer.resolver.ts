@@ -45,7 +45,7 @@ export class AnswerResolver {
   public async submitVoiceAnswer(
     @Context('req') req: Request,
     @Args('data') dto: SubmitVoiceAnswerRequestGql,
-  ): Promise<string> {
+  ): Promise<boolean> {
     const { audioContent, attemptId, chunkIndex, isLast, ticketId } = dto;
     const file = await audioContent[0];
     const readStream = file.createReadStream();
@@ -79,7 +79,7 @@ export class AnswerResolver {
     return new Promise((resolve) => {
       readStream.on('end', () => {
         stream.complete();
-        resolve('final');
+        resolve(true);
       });
     });
   }
