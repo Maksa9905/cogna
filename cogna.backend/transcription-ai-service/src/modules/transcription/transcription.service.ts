@@ -79,11 +79,11 @@ export class TranscriptionService {
                 );
                 console.log('text:', finalText);
                 console.log('ticketId', lastMetadata.ticketId);
-                await this.assessmentClient.assessment({
-                  answer: finalText,
-                  userId: lastMetadata.userId,
-                  ticketId: lastMetadata.ticketId,
-                });
+                // await this.assessmentClient.assessment({
+                //   answer: finalText,
+                //   userId: lastMetadata.userId,
+                //   ticketId: lastMetadata.ticketId,
+                // });
                 observer.next({
                   attemptId: lastMetadata.attemptId,
                   chunkIndex: lastMetadata.chunkIndex,

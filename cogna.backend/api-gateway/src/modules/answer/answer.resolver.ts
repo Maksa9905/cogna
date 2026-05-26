@@ -13,6 +13,7 @@ import {
 import {
   AssessmentCompletedResponseGql,
   SubmitAnswerResponseGql,
+  FinalTranscriptionResponseGql,
 } from './dto/responses';
 import { ReplaySubject } from 'rxjs';
 import { TranscriptionRequest } from '@cogna-edu/contracts/dist/transcription/transcription';
@@ -27,6 +28,10 @@ export function AssessmentCompletedChannel(userId: string) {
   return `ASSESSMENT_EVENT:${userId}`;
 }
 
+export function TranscriptionFinalChannel(userId: string) {
+  return `TRANSCRIPTION_FINAL:${userId}`;
+}
+
 @Protected(UserRole.USER)
 @Resolver()
 export class AnswerResolver {
@@ -35,21 +40,27 @@ export class AnswerResolver {
     @Inject('PUB_SUB') private readonly pubSub: RedisPubSub,
   ) {}
 
-  @Mutation(() => Boolean)
+  //Пользователь отправлет чанки с голосом, мы их транкрибируем, накапливаем, возращаем финальный текст. Пользователь его проверяет, если надо редактирует, и затем сам отправляет на оценку в assessment (вызывает ручку ниже, submitTextAnswer)
+  @Mutation(() => String)
   public async submitVoiceAnswer(
     @Context('req') req: Request,
     @Args('data') dto: SubmitVoiceAnswerRequestGql,
   ): Promise<boolean> {
     const { audioContent, attemptId, chunkIndex, isLast, ticketId } = dto;
-    const file = await audioContent;
-    const { createReadStream } = file;
-    const readStream = createReadStream();
+    const file = await audioContent[0];
+    const readStream = file.createReadStream();
     const userId = req.user.sub;
 
     const stream = new ReplaySubject<TranscriptionRequest>();
     this.answerService.transcribeVoiceChunk(stream).subscribe({
       next: (res) => {
         console.log('Транскрипция получена:', res);
+        if (res.isFinal) {
+          console.log('Получили последний чанк');
+          void this.pubSub.publish(TranscriptionFinalChannel(req.user.sub), {
+            onTranscriptionFinalText: { text: res.text },
+          });
+        }
       },
       error: (err) => console.error('Ошибка транскрибации:', err),
     });
@@ -92,5 +103,13 @@ export class AnswerResolver {
   })
   onAssessmentCompleted(@Context('req') req: Request) {
     return this.pubSub.asyncIterator(AssessmentCompletedChannel(req.user.sub));
+  }
+
+  @Subscription(() => FinalTranscriptionResponseGql, {
+    resolve: (payload: { onTranscriptionFinalText: { text: string } }) =>
+      payload.onTranscriptionFinalText,
+  })
+  onTranscriptionFinalText(@Context('req') req: Request) {
+    return this.pubSub.asyncIterator(TranscriptionFinalChannel(req.user.sub));
   }
 }
