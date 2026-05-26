@@ -40,6 +40,7 @@ export class AnswerResolver {
     @Inject('PUB_SUB') private readonly pubSub: RedisPubSub,
   ) {}
 
+  //Пользователь отправлет чанки с голосом, мы их транкрибируем, накапливаем, возращаем финальный текст. Пользователь его проверяет, если надо редактирует, и затем сам отправляет на оценку в assessment (вызывает ручку ниже, submitTextAnswer)
   @Mutation(() => String)
   public async submitVoiceAnswer(
     @Context('req') req: Request,
