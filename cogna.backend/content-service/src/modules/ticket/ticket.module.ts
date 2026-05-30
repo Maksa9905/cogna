@@ -3,7 +3,7 @@ import { TicketService } from './ticket.service';
 import { TicketController } from './ticket.controller';
 import { ClientsModule } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { getThesisClientConfig } from './clients/thesis-ai.grpc.client';
+import { getThesisClientConfig } from './clients/thesis.grpc.client';
 
 @Module({
   imports: [
