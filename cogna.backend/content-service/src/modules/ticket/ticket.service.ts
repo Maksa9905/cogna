@@ -15,6 +15,8 @@ import {
   GenerateThesesRequest,
 } from '@cogna-edu/contracts/dist/content/ticket';
 import {
+  GenerateAnswerRequest,
+  GenerateAnswerResponse,
   GenerateThesesRequest as GenThesesRequest,
   GenerateThesesResponse,
 } from '@cogna-edu/contracts/dist/thesis/thesis';
@@ -188,5 +190,11 @@ export class TicketService {
     });
     if (!ticket) throw new RpcException({});
     return { ticket: ticket as Ticket };
+  }
+
+  public async generateAnswer(
+    dto: GenerateAnswerRequest,
+  ): Promise<GenerateAnswerResponse> {
+    return firstValueFrom(this.thesisClient.generateAnswer(dto));
   }
 }
