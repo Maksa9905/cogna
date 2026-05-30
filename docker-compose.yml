@@ -145,7 +145,7 @@ services:
       - KAFKA_BROKERS=kafka:9092
       - STUDY_GRPC_URL=study-service:50051
       - PROXY_URL=http://WvtxPQ:qkMNQ8@45.91.209.139:13671
-      - GROQ_API_KEY=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
+      - GROQ_API_KEY=${GROQ_API_KEY}
       - CONTENT_GRPC_URL=content-service:50051
       - THESES_GRPC_URL=0.0.0.0:50051
     networks:
@@ -164,7 +164,7 @@ services:
       - STUDY_GRPC_URL=study-service:50051
       - CONTENT_GRPC_URL=content-service:50051
       - PROXY_URL=http://WvtxPQ:qkMNQ8@45.91.209.139:13671
-      - GROQ_API_KEY=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
+      - GROQ_API_KEY=${GROQ_API_KEY}
     networks:
       - cogna-network
 
@@ -180,7 +180,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - PROXY_URL=http://WvtxPQ:qkMNQ8@45.91.209.139:13671
-      - GROQ_API_KEY=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
+      - GROQ_API_KEY=${GROQ_API_KEY}
       - TRANSCRIPTION_GRPC_URL=0.0.0.0:50051
     networks:
       - cogna-network
