@@ -179,7 +179,7 @@ services:
       - KAFKA_BROKERS=kafka:9092
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - PROXY_URL=http://vLwsdQ:uN3KVj@196.18.11.251:8000
+      - PROXY_URL=http://WvtxPQ:qkMNQ8@45.91.209.139:13671
       - GROQ_API_KEY=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
       - TRANSCRIPTION_GRPC_URL=0.0.0.0:50051
     networks:
