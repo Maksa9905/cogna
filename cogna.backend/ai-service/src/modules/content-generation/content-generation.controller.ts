@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { ThesisService } from './thesis.service';
+import { ContentGenerationService } from './content-generation.service';
 import {
   ThesisServiceController,
   ThesisServiceControllerMethods,
@@ -11,14 +11,14 @@ import {
 
 @Controller('thesis')
 @ThesisServiceControllerMethods()
-export class ThesisController implements ThesisServiceController {
-  constructor(private readonly thesisService: ThesisService) {}
+export class ContentGenerationController implements ThesisServiceController {
+  constructor(private readonly service: ContentGenerationService) {}
 
   public createThesis(request: GenerateThesesRequest) {
-    return this.thesisService.generateThesis(request);
+    return this.service.generateThesis(request);
   }
 
   public generateAnswer(request: GenerateAnswerRequest) {
-    return this.thesisService.generateAnswer(request);
+    return this.service.generateAnswer(request);
   }
 }

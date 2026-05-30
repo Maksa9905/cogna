@@ -9,10 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ThesisService = void 0;
+exports.ContentGenerationService = void 0;
 const common_1 = require("@nestjs/common");
 const groq_service_1 = require("../../groq/groq.service");
-let ThesisService = class ThesisService {
+let ContentGenerationService = class ContentGenerationService {
     groqService;
     constructor(groqService) {
         this.groqService = groqService;
@@ -87,9 +87,9 @@ let ThesisService = class ThesisService {
         return { answer };
     }
 };
-exports.ThesisService = ThesisService;
-exports.ThesisService = ThesisService = __decorate([
+exports.ContentGenerationService = ContentGenerationService;
+exports.ContentGenerationService = ContentGenerationService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [groq_service_1.GroqService])
-], ThesisService);
-//# sourceMappingURL=thesis.service.js.map
+], ContentGenerationService);
+//# sourceMappingURL=content-generation.service.js.map

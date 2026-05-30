@@ -11,7 +11,7 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const groq_module_1 = require("./groq/groq.module");
 const kafka_module_1 = require("./kafka/kafka.module");
-const thesis_module_1 = require("./modules/thesis/thesis.module");
+const content_generation_module_1 = require("./modules/content-generation/content-generation.module");
 const assessment_module_1 = require("./modules/assessment/assessment.module");
 const transcription_module_1 = require("./modules/transcription/transcription.module");
 let AppModule = class AppModule {
@@ -23,7 +23,7 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             groq_module_1.GroqModule,
             kafka_module_1.KafkaModule,
-            thesis_module_1.ThesisModule,
+            content_generation_module_1.ContentGenerationModule,
             assessment_module_1.AssessmentModule,
             transcription_module_1.TranscriptionModule,
         ],

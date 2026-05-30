@@ -6,17 +6,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ThesisModule = void 0;
+exports.ContentGenerationModule = void 0;
 const common_1 = require("@nestjs/common");
-const thesis_service_1 = require("./thesis.service");
-const thesis_controller_1 = require("./thesis.controller");
-let ThesisModule = class ThesisModule {
+const content_generation_service_1 = require("./content-generation.service");
+const content_generation_controller_1 = require("./content-generation.controller");
+let ContentGenerationModule = class ContentGenerationModule {
 };
-exports.ThesisModule = ThesisModule;
-exports.ThesisModule = ThesisModule = __decorate([
+exports.ContentGenerationModule = ContentGenerationModule;
+exports.ContentGenerationModule = ContentGenerationModule = __decorate([
     (0, common_1.Module)({
-        controllers: [thesis_controller_1.ThesisController],
-        providers: [thesis_service_1.ThesisService],
+        controllers: [content_generation_controller_1.ContentGenerationController],
+        providers: [content_generation_service_1.ContentGenerationService],
     })
-], ThesisModule);
-//# sourceMappingURL=thesis.module.js.map
+], ContentGenerationModule);
+//# sourceMappingURL=content-generation.module.js.map

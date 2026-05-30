@@ -9,26 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ThesisController = void 0;
+exports.ContentGenerationController = void 0;
 const common_1 = require("@nestjs/common");
-const thesis_service_1 = require("./thesis.service");
+const content_generation_service_1 = require("./content-generation.service");
 const thesis_1 = require("@cogna-edu/contracts/dist/thesis/thesis");
-let ThesisController = class ThesisController {
-    thesisService;
-    constructor(thesisService) {
-        this.thesisService = thesisService;
+let ContentGenerationController = class ContentGenerationController {
+    service;
+    constructor(service) {
+        this.service = service;
     }
     createThesis(request) {
-        return this.thesisService.generateThesis(request);
+        return this.service.generateThesis(request);
     }
     generateAnswer(request) {
-        return this.thesisService.generateAnswer(request);
+        return this.service.generateAnswer(request);
     }
 };
-exports.ThesisController = ThesisController;
-exports.ThesisController = ThesisController = __decorate([
+exports.ContentGenerationController = ContentGenerationController;
+exports.ContentGenerationController = ContentGenerationController = __decorate([
     (0, common_1.Controller)('thesis'),
     (0, thesis_1.ThesisServiceControllerMethods)(),
-    __metadata("design:paramtypes", [thesis_service_1.ThesisService])
-], ThesisController);
-//# sourceMappingURL=thesis.controller.js.map
+    __metadata("design:paramtypes", [content_generation_service_1.ContentGenerationService])
+], ContentGenerationController);
+//# sourceMappingURL=content-generation.controller.js.map

@@ -8,7 +8,7 @@ import {
 import { GroqService } from '../../groq/groq.service';
 
 @Injectable()
-export class ThesisService {
+export class ContentGenerationService {
   constructor(private readonly groqService: GroqService) {}
 
   public async generateThesis(
