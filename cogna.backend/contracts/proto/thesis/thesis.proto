@@ -4,6 +4,7 @@ package thesis.v1;
 
 service ThesisService {
   rpc CreateThesis(GenerateThesesRequest) returns (GenerateThesesResponse);
+  rpc GenerateAnswer(GenerateAnswerRequest) returns (GenerateAnswerResponse);
 }
 
 message Thesis{
@@ -16,11 +17,14 @@ message GenerateThesesRequest {
   string answer = 2;
 }
 
-//message ThesisStreamChunk {
-//  string content = 1;
-//  string done = 2;
-//}
-
 message GenerateThesesResponse {
   repeated Thesis theses = 1;
+}
+
+message GenerateAnswerRequest {
+  string question = 1;
+}
+
+message GenerateAnswerResponse {
+  string answer = 1;
 }

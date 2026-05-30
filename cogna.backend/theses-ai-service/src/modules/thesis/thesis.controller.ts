@@ -5,6 +5,7 @@ import {
   ThesisServiceControllerMethods,
 } from '@cogna-edu/contracts/dist/thesis/thesis';
 import {
+  GenerateAnswerRequest,
   GenerateThesesRequest,
 } from '@cogna-edu/contracts/gen/thesis/thesis';
 
@@ -16,5 +17,9 @@ export class ThesisController implements ThesisServiceController {
   public createThesis(request: GenerateThesesRequest) {
     console.log('!!!');
     return this.thesisService.generateThesis(request);
+  }
+
+  public generateAnswer(request: GenerateAnswerRequest) {
+    return this.thesisService.generateAnswer(request);
   }
 }

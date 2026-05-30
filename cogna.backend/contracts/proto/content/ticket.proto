@@ -14,6 +14,9 @@ service TicketService {
 
   // Метод для (пере)генерации тезисов через ИИ
   rpc GenerateTheses(GenerateThesesRequest) returns (TicketResponse);
+
+  // Метод для генерации ответа на вопрос через ИИ
+  rpc GenerateAnswer(GenerateAnswerRequest) returns (GenerateAnswerResponse);
 }
 
 // Сущность тезиса для использования в ответах
@@ -97,4 +100,13 @@ message GenerateThesesRequest {
   string ticket_id = 1;
   string question = 2;
   string answer = 3;
+}
+
+// Генерация ответа на вопрос
+message GenerateAnswerRequest {
+  string question = 1;
+}
+
+message GenerateAnswerResponse {
+  string answer = 1;
 }

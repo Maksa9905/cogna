@@ -4,6 +4,8 @@ import {
   DeleteTicketRequest,
   FindAllTicketsRequest,
   FindOneTicketRequest,
+  GenerateAnswerRequest,
+  GenerateAnswerResponse,
   GenerateThesesRequest,
   TicketServiceClient,
   PatchTicketRequest,
@@ -41,5 +43,9 @@ export class TicketService {
 
   public async generateTheses(dto: GenerateThesesRequest) {
     return await firstValueFrom(this.ticketClient.generateTheses(dto));
+  }
+
+  public async generateAnswer(dto: GenerateAnswerRequest): Promise<GenerateAnswerResponse> {
+    return await firstValueFrom(this.ticketClient.generateAnswer(dto));
   }
 }

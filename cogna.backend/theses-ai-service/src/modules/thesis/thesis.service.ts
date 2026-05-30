@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
+  GenerateAnswerRequest,
+  GenerateAnswerResponse,
   GenerateThesesRequest,
   GenerateThesesResponse,
 } from '@cogna-edu/contracts/gen/thesis/thesis';
@@ -71,5 +73,29 @@ export class ThesisService {
     });
     const content = response.choices[0].message.content ?? '';
     return JSON.parse(content) as GenerateThesesResponse;
+  }
+
+  public async generateAnswer(
+    dto: GenerateAnswerRequest,
+  ): Promise<GenerateAnswerResponse> {
+    const response = await this.groq.chat.completions.create({
+      model: 'openai/gpt-oss-20b',
+      messages: [
+        {
+          role: 'system',
+          content:
+            'Ты преподаватель высшего учебного заведения. Тебе задают экзаменационный вопрос — напиши на него развёрнутый, структурированный и точный ответ. Отвечай строго на русском языке. Пиши по существу, без воды, но достаточно подробно, чтобы ответ покрывал все ключевые аспекты вопроса.',
+        },
+        {
+          role: 'user',
+          content: `Вопрос: ${dto.question}`,
+        },
+      ],
+      max_completion_tokens: 4096,
+      temperature: 0.7,
+      n: 1,
+    });
+    const answer = response.choices[0].message.content ?? '';
+    return { answer };
   }
 }

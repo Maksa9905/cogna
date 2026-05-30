@@ -6,6 +6,8 @@ import {
   FindAllTicketsRequest,
   FindAllTicketsResponse,
   FindOneTicketRequest,
+  GenerateAnswerRequest,
+  GenerateAnswerResponse,
   GenerateThesesRequest,
   TicketResponse,
   TicketServiceControllerMethods,
@@ -39,6 +41,10 @@ export class TicketController implements TicketServiceController {
 
   generateTheses(request: GenerateThesesRequest): Promise<TicketResponse> {
     return this.ticketService.generateThesis(request);
+  }
+
+  generateAnswer(request: GenerateAnswerRequest): Promise<GenerateAnswerResponse> {
+    return this.ticketService.generateAnswer(request);
   }
 
   patchTicket(request: PatchTicketRequest): Promise<TicketResponse> {

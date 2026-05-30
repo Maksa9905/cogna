@@ -12,6 +12,8 @@ import {
   FindAllTicketsRequestGql,
   FindAllTicketsResponseGql,
   FindOneTicketRequestGql,
+  GenerateAnswerRequestGql,
+  GenerateAnswerResponseGql,
   GenerateThesesRequestGql,
   SuccessResponseContentGql,
   TicketResponseGql,
@@ -36,7 +38,6 @@ const pubSub = new PubSub();
 export class TicketResolver {
   constructor(private readonly ticketService: TicketService) {}
 
-  //todo подумать о том что пользователь сразу сам сможет написать тезисы и тогда их надо сохранить вмесет с новым обькектом
   @Mutation(() => TicketResponseGql)
   public async ticketCreateTicket(@Args('data') dto: CreateTicketRequestGql) {
     return await this.ticketService.createTicket(dto);
@@ -53,7 +54,6 @@ export class TicketResolver {
     });
   }
 
-  //todo передавать еще userId
   @Query(() => FindAllTicketsResponseGql)
   public async ticketFindAllTickets(
     @Args('data') dto: FindAllTicketsRequestGql,
@@ -61,7 +61,6 @@ export class TicketResolver {
     return await this.ticketService.findAllTickets(dto);
   }
 
-  //todo подумать о patch и Сохранение новых тезисов
   @Mutation(() => TicketResponseGql)
   public async ticketPatchTicket(
     @Context('req') req: Request,
@@ -90,6 +89,13 @@ export class TicketResolver {
     @Args('data') dto: GenerateThesesRequestGql,
   ) {
     return await this.ticketService.generateTheses(dto);
+  }
+
+  @Mutation(() => GenerateAnswerResponseGql)
+  public async ticketGenerateAnswer(
+    @Args('data') dto: GenerateAnswerRequestGql,
+  ) {
+    return await this.ticketService.generateAnswer(dto);
   }
 
   @Subscription(() => String, {})
