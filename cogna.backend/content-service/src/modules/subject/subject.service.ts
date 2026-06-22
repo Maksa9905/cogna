@@ -10,6 +10,7 @@ import {
   UpdateSubjectRequest,
 } from '@cogna-edu/contracts/gen/content/subject';
 import { RpcException } from '@nestjs/microservices';
+import { RpcStatus } from '@cogna-edu/corn';
 import { SuccessResponse } from '@cogna-edu/contracts/gen/content/common';
 import { KafkaStudyClient } from '../../infra/kafka/clients/kafka-study.client';
 
@@ -42,8 +43,18 @@ export class SubjectService {
       where: { id },
     });
 
-    if (!subject) throw new RpcException({});
-    if (subject.userId !== userId) throw new RpcException({});
+    if (!subject) {
+      throw new RpcException({
+        code: RpcStatus.NOT_FOUND,
+        message: 'subject not found',
+      });
+    }
+    if (subject.userId !== userId) {
+      throw new RpcException({
+        code: RpcStatus.PERMISSION_DENIED,
+        message: 'access to subject denied',
+      });
+    }
 
     return { subject: subject };
   }

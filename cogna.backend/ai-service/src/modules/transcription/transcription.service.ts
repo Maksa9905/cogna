@@ -6,6 +6,7 @@ import {
 import { Observable } from 'rxjs';
 import { TranscriptionCacheService } from './transcription-cache.service';
 import { RpcException } from '@nestjs/microservices';
+import { RpcStatus } from '@cogna-edu/corn';
 import { GroqService } from '../../groq/groq.service';
 import Groq from 'groq-sdk';
 
@@ -88,7 +89,10 @@ export class TranscriptionService {
       return response.text;
     } catch (e) {
       this.logger.error('Ошибка при отправке groq api', e);
-      throw new RpcException({});
+      throw new RpcException({
+        code: RpcStatus.UNAVAILABLE,
+        message: 'transcription service unavailable',
+      });
     }
   }
 }
