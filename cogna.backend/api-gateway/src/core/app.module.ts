@@ -35,7 +35,7 @@ import { StudyModule } from '../modules/study/study.module';
       formatError: (error) => {
         return {
           message: error.message,
-          details: (error.extensions?.message ||
+          details: (error.extensions?.details ||
             'Internal server error') as string,
           status: error.extensions?.status || '500',
         };

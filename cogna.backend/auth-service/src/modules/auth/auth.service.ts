@@ -18,7 +18,6 @@ import { ConfigService } from '@nestjs/config';
 import * as ms from 'ms';
 import { StringValue } from 'ms';
 import { randomUUID } from 'node:crypto';
-import { status } from '@grpc/grpc-js';
 import { RpcStatus } from '@cogna-edu/corn';
 
 @Injectable()
@@ -80,7 +79,7 @@ export class AuthService {
     const redisData = await this.authRegisterCache.get(email);
     if (!redisData) {
       throw new RpcException({
-        code: 404,
+        code: RpcStatus.NOT_FOUND,
         message: 'redis data not found',
       });
     }
@@ -89,7 +88,7 @@ export class AuthService {
     const isValidOtp = otp === redisData.otp;
     if (!isValidOtp) {
       throw new RpcException({
-        code: 409,
+        code: RpcStatus.INVALID_ARGUMENT,
         message: 'invalid otp',
       });
     }
@@ -120,7 +119,7 @@ export class AuthService {
     const user = await this.authRepository.findOneByEmail(email);
     if (!user) {
       throw new RpcException({
-        code: 404,
+        code: RpcStatus.NOT_FOUND,
         message: 'user not found',
       });
     }
@@ -128,7 +127,7 @@ export class AuthService {
     const isValidPassword = await verify(user.passwordHash, password);
     if (!isValidPassword) {
       throw new RpcException({
-        code: 409,
+        code: RpcStatus.PERMISSION_DENIED,
         message: 'password not valid',
       });
     }
@@ -158,14 +157,14 @@ export class AuthService {
     const token = await this.authRepository.findRefreshToken(refreshTokenId);
     if (!token) {
       throw new RpcException({
-        code: 404,
+        code: RpcStatus.NOT_FOUND,
         message: 'refresh token not found',
       });
     }
 
     if (sub != token.userId) {
       throw new RpcException({
-        code: 409,
+        code: RpcStatus.PERMISSION_DENIED,
         message: 'the token belongs another user',
       });
     }
@@ -173,7 +172,7 @@ export class AuthService {
     const user = await this.authRepository.findOne(sub);
     if (!user) {
       throw new RpcException({
-        code: 404,
+        code: RpcStatus.NOT_FOUND,
         message: 'user not found',
       });
     }
@@ -189,12 +188,12 @@ export class AuthService {
       await this.authRepository.findRefreshToken(refreshTokenId);
     if (!isExistRefresh)
       throw new RpcException({
-        code: 404,
+        code: RpcStatus.NOT_FOUND,
         message: 'refresh token not found',
       });
     if (userId !== isExistRefresh.userId) {
       throw new RpcException({
-        code: 409,
+        code: RpcStatus.PERMISSION_DENIED,
         message: 'user does not belong refresh token',
       });
     }
