@@ -7,7 +7,7 @@ service AuthService {
   rpc ConfirmRegister(ConfirmRegisterRequest) returns (JwtResponse);
   rpc Login(LoginRequest) returns (JwtResponse);
   rpc Logout(JwtPayload) returns(SuccessResponse);
-  rpc RefreshTokens(JwtPayload) returns(JwtResponse);
+  rpc RefreshTokens(RefreshTokenRequest) returns(JwtResponse);
   rpc ValidateToken(JwtPayload) returns (SuccessResponse);
 }
 
@@ -15,6 +15,10 @@ service AuthService {
 message JwtPayload {
   string sub = 1;
   string refreshTokenId = 2;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
 }
 
 message JwtResponse {

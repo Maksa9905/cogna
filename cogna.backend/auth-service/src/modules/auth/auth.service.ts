@@ -5,6 +5,7 @@ import {
   JwtPayload,
   JwtResponse,
   LoginRequest,
+  RefreshTokenRequest,
   RegisterRequest,
   SuccessResponse,
 } from '@cogna-edu/contracts/gen/auth/auth';
@@ -152,20 +153,54 @@ export class AuthService {
     return { ok: true };
   }
 
-  public async refresh(dto: JwtPayload): Promise<JwtResponse> {
-    const { sub, refreshTokenId } = dto;
-    const token = await this.authRepository.findRefreshToken(refreshTokenId);
-    if (!token) {
+  public async refresh(dto: RefreshTokenRequest): Promise<JwtResponse> {
+    const { refreshToken } = dto;
+    if (!refreshToken) {
+      throw new RpcException({
+        code: RpcStatus.INVALID_ARGUMENT,
+        message: 'refresh token is required',
+      });
+    }
+
+    let payload: JwtPayload;
+    try {
+      payload = await this.jwtService.verifyAsync<JwtPayload>(refreshToken);
+    } catch {
+      throw new RpcException({
+        code: RpcStatus.UNAUTHENTICATED,
+        message: 'invalid refresh token',
+      });
+    }
+
+    const { sub, refreshTokenId } = payload;
+    const stored = await this.authRepository.findRefreshToken(refreshTokenId);
+    if (!stored) {
       throw new RpcException({
         code: RpcStatus.NOT_FOUND,
         message: 'refresh token not found',
       });
     }
 
-    if (sub != token.userId) {
+    if (sub !== stored.userId) {
       throw new RpcException({
         code: RpcStatus.PERMISSION_DENIED,
-        message: 'the token belongs another user',
+        message: 'user does not belong refresh token',
+      });
+    }
+
+    if (stored.expiredAt < new Date()) {
+      await this.authRepository.deleteRefreshToken(refreshTokenId);
+      throw new RpcException({
+        code: RpcStatus.UNAUTHENTICATED,
+        message: 'refresh token expired',
+      });
+    }
+
+    const isValidHash = await verify(stored.tokenHash, refreshToken);
+    if (!isValidHash) {
+      throw new RpcException({
+        code: RpcStatus.UNAUTHENTICATED,
+        message: 'invalid refresh token',
       });
     }
 
@@ -177,8 +212,19 @@ export class AuthService {
       });
     }
 
-    const { accessToken, refreshToken } = await this.generateTokens(user);
-    return { accessToken, refreshToken };
+    await this.authRepository.deleteRefreshToken(refreshTokenId);
+
+    const { accessToken, refreshToken: newRefreshToken, refreshTTL, refreshId } =
+      await this.generateTokens(user);
+    const hashRefresh = await hash(newRefreshToken);
+    await this.authRepository.createRefreshToken({
+      id: refreshId,
+      tokenHash: hashRefresh,
+      expiredAt: refreshTTL,
+      userId: user.id,
+    });
+
+    return { accessToken, refreshToken: newRefreshToken };
   }
 
   public async validateToken(data: JwtPayload): Promise<SuccessResponse> {
