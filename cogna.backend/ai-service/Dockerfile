@@ -8,6 +8,14 @@ RUN npm install
 RUN npm run generate
 RUN npx tsc -p .
 
+# @cogna-edu/corn: file:../corn → каталог /corn
+WORKDIR /corn
+COPY ./corn/package*.json ./
+RUN --mount=type=cache,target=/root/.npm \
+    npm install
+COPY ./corn ./
+RUN npm run build
+
 WORKDIR /app
 COPY ./ai-service/package*.json .
 RUN --mount=type=cache,target=/root/.npm \

@@ -8,6 +8,7 @@ import { Thesis } from '@cogna-edu/contracts/gen/content/ticket';
 import { GroqService } from '../../groq/groq.service';
 import { StudyClient } from '../../kafka/clients/study.client';
 import { ApiGatewayClient } from '../../kafka/clients/api-gateway.client';
+import { RpcStatus } from '@cogna-edu/corn';
 
 interface GroqAssumeResponse {
   theses: {
@@ -37,7 +38,12 @@ export class AssessmentService {
     const { ticket } = await firstValueFrom(
       this.contentTicketClient.findOneTicket({ id: ticketId, userId }),
     );
-    if (!ticket) throw new RpcException({});
+    if (!ticket) {
+      throw new RpcException({
+        code: RpcStatus.NOT_FOUND,
+        message: 'ticket not found',
+      });
+    }
     const res = await this.assume(
       answer,
       ticket.question,
@@ -127,7 +133,12 @@ export class AssessmentService {
       });
       console.log('end assume');
       const content = response.choices[0].message.content;
-      if (!content) throw new RpcException({});
+      if (!content) {
+        throw new RpcException({
+          code: RpcStatus.INTERNAL,
+          message: 'empty assessment response from model',
+        });
+      }
       return JSON.parse(content) as GroqAssumeResponse;
     } catch (error: any) {
       console.error('Groq assume error:', {
@@ -137,7 +148,10 @@ export class AssessmentService {
         validationMessage: error?.error?.error?.message,
         failedGeneration: error?.error?.error?.failed_generation,
       });
-      throw new RpcException({});
+      throw new RpcException({
+        code: RpcStatus.INTERNAL,
+        message: 'assessment failed',
+      });
     }
   }
 }

@@ -13,6 +13,7 @@ import { Request } from 'express';
 import { GqlArgumentsHost } from '@nestjs/graphql';
 import { GraphQLError } from 'graphql/error';
 import { RpcToHttpMap } from '@cogna-edu/corn';
+import { log } from 'console';
 
 interface RpcExceptionI {
   code: number;
@@ -27,18 +28,21 @@ export class GeneralExceptionFilter implements ExceptionFilter {
       console.log('exp:', exception);
       return new GraphQLError('http exception', {
         extensions: {
-          code: exception.getStatus(),
-          message: exception.message,
+          status: exception.getStatus(),
+          details: exception.message
         },
       });
     }
 
     if (this.isRpcException(exception)) {
+      
       const e = exception as RpcExceptionI;
+      console.log(`это grpc ошибка: ${JSON.stringify(e)}`);
+      console.log(`это grpc ошибка: ${e.code}, ${e.details}`);
       return new GraphQLError('rpc exception', {
         extensions: {
           status: RpcToHttpMap[e.code],
-          message: e.details,
+          details: e.details,
         },
       });
     }

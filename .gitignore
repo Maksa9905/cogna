@@ -11,3 +11,4 @@ nginx/certs/*.crt
 !nginx/certs/.gitkeep
 !nginx/certs/README.md
 .env
+.DS_Store

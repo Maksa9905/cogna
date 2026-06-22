@@ -15,7 +15,7 @@ import {
   State as PrismaState,
   TicketProgress as TicketProgressPrisma,
 } from '../../../prisma/generated/client';
-import { LogExecutionTime, toTimestamp } from '@cogna-edu/corn';
+import { LogExecutionTime, RpcStatus, toTimestamp } from '@cogna-edu/corn';
 import { PrismaService } from '../../infra/prisma/prisma.service';
 import { Card } from 'ts-fsrs';
 
@@ -46,7 +46,12 @@ export class TicketProgressService {
       dto.userId,
       dto.ticketId,
     );
-    if (!ticketProgress) throw new RpcException({});
+    if (!ticketProgress) {
+      throw new RpcException({
+        code: RpcStatus.NOT_FOUND,
+        message: 'ticket progress not found',
+      });
+    }
 
     return {
       ticketProgress: this.mapPrismaToGrpc(ticketProgress),

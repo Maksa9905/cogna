@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@cogna-edu/contracts": "file:../contracts",
+    "@cogna-edu/corn": "file:../corn",
     "@grpc/grpc-js": "^1.14.3",
     "@liaoliaots/nestjs-redis": "^10.0.0",
     "@nestjs/common": "^11.0.1",

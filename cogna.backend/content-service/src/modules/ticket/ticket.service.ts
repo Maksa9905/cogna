@@ -21,6 +21,7 @@ import {
   GenerateThesesResponse,
 } from '@cogna-edu/contracts/dist/thesis/thesis';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
+import { RpcStatus } from '@cogna-edu/corn';
 import { SuccessResponse } from '@cogna-edu/contracts/gen/content/common';
 import { ThesisServiceClient } from '@cogna-edu/contracts/gen/thesis/thesis';
 import { firstValueFrom } from 'rxjs';
@@ -75,7 +76,12 @@ export class TicketService {
         theses: true,
       },
     });
-    if (!ticket) throw new RpcException({});
+    if (!ticket) {
+      throw new RpcException({
+        code: RpcStatus.NOT_FOUND,
+        message: 'ticket not found',
+      });
+    }
     return { ticket: ticket as Ticket };
   }
 
@@ -144,8 +150,8 @@ export class TicketService {
     } catch (e) {
       console.error(e);
       throw new RpcException({
-        code: 5,
-        message: 'Билет не найден или доступ запрещен',
+        code: RpcStatus.NOT_FOUND,
+        message: 'ticket not found or access denied',
       });
     }
   }
@@ -162,7 +168,12 @@ export class TicketService {
         },
       },
     });
-    if (result.count === 0) throw new RpcException({});
+    if (result.count === 0) {
+      throw new RpcException({
+        code: RpcStatus.NOT_FOUND,
+        message: 'ticket not found or access denied',
+      });
+    }
     return { ok: true };
   }
 
@@ -188,7 +199,12 @@ export class TicketService {
       },
       include: { theses: true },
     });
-    if (!ticket) throw new RpcException({});
+    if (!ticket) {
+      throw new RpcException({
+        code: RpcStatus.NOT_FOUND,
+        message: 'ticket not found',
+      });
+    }
     return { ticket: ticket as Ticket };
   }
 
