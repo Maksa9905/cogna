@@ -16,6 +16,10 @@ export interface JwtPayload {
   refreshTokenId: string;
 }
 
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
 export interface JwtResponse {
   accessToken: string;
   refreshToken: string;
@@ -55,7 +59,7 @@ export interface AuthServiceClient {
 
   logout(request: JwtPayload): Observable<SuccessResponse>;
 
-  refreshTokens(request: JwtPayload): Observable<JwtResponse>;
+  refreshTokens(request: RefreshTokenRequest): Observable<JwtResponse>;
 
   validateToken(request: JwtPayload): Observable<SuccessResponse>;
 }
@@ -69,7 +73,7 @@ export interface AuthServiceController {
 
   logout(request: JwtPayload): Promise<SuccessResponse> | Observable<SuccessResponse> | SuccessResponse;
 
-  refreshTokens(request: JwtPayload): Promise<JwtResponse> | Observable<JwtResponse> | JwtResponse;
+  refreshTokens(request: RefreshTokenRequest): Promise<JwtResponse> | Observable<JwtResponse> | JwtResponse;
 
   validateToken(request: JwtPayload): Promise<SuccessResponse> | Observable<SuccessResponse> | SuccessResponse;
 }

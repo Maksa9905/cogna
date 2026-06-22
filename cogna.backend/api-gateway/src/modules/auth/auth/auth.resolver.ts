@@ -4,7 +4,7 @@ import { JwtResponseGql, SuccessResponseGql } from './dto/responses';
 import { ConfirmRegisterRequestGql, RegisterRequestGql } from './dto/requests';
 import { Request, Response } from 'express';
 import { LoginRequestGql } from './dto/requests/login.request';
-import { NotFoundException, UseGuards } from '@nestjs/common';
+import { NotFoundException, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { JwtGuard } from '../../../common/guards';
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn/dist/enum/user-role.enum';
@@ -13,6 +13,13 @@ import { UserRole } from '@cogna-edu/corn/dist/enum/user-role.enum';
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
+
+  private setRefreshCookie(res: Response, refreshToken: string) {
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+    });
+  }
 
   // @Roles(ROLES_ENUM.USER, ROLES_ENUM.ADMIN)
   // @UseGuards(JwtGuard)
@@ -47,7 +54,7 @@ export class AuthResolver {
     // можно брать user-agent, ip и т.д. из req
     const { accessToken, refreshToken } =
       await this.authService.confirmRegister(data);
-    res.cookie('refreshToken', refreshToken);
+    this.setRefreshCookie(res, refreshToken);
     return { accessToken, refreshToken };
   }
 
@@ -57,7 +64,7 @@ export class AuthResolver {
     @Context('res') res: Response,
   ) {
     const response = await this.authService.login(dto);
-    res.cookie('refreshToken', response.refreshToken);
+    this.setRefreshCookie(res, response.refreshToken);
     return response;
   }
 
@@ -75,18 +82,18 @@ export class AuthResolver {
     return response;
   }
 
-  @UseGuards(JwtGuard)
   @Mutation(() => JwtResponseGql)
   public async refreshTokens(
     @Context('req') req: Request,
     @Context('res') res: Response,
   ) {
-    const { sub, refreshTokenId } = req.user;
-    const response = await this.authService.refreshTokens({
-      refreshTokenId: refreshTokenId,
-      sub,
-    });
-    res.cookie('refreshToken', response.refreshToken);
+    const refreshToken = req.cookies?.refreshToken as string | undefined;
+    if (!refreshToken) {
+      throw new UnauthorizedException('refresh token is required');
+    }
+
+    const response = await this.authService.refreshTokens({ refreshToken });
+    this.setRefreshCookie(res, response.refreshToken);
     return response;
   }
 }

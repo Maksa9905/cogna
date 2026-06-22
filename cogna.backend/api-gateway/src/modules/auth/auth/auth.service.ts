@@ -6,6 +6,7 @@ import {
   ConfirmRegisterRequest,
   LoginRequest,
   JwtPayload,
+  RefreshTokenRequest,
 } from '@cogna-edu/contracts/gen/auth/auth';
 import { firstValueFrom } from 'rxjs';
 
@@ -33,7 +34,7 @@ export class AuthService {
     return await firstValueFrom(this.authClient.logout(dto));
   }
 
-  public async refreshTokens(dto: JwtPayload) {
+  public async refreshTokens(dto: RefreshTokenRequest) {
     return await firstValueFrom(this.authClient.refreshTokens(dto));
   }
 

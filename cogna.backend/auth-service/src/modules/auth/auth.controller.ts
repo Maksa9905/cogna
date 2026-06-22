@@ -4,6 +4,7 @@ import {
   ConfirmRegisterRequest,
   JwtPayload,
   LoginRequest,
+  RefreshTokenRequest,
   RegisterRequest,
 } from '@cogna-edu/contracts/gen/auth/auth';
 
@@ -32,7 +33,7 @@ export class AuthController {
   }
 
   @GrpcMethod('AuthService', 'RefreshTokens')
-  async refresh(data: JwtPayload) {
+  async refresh(data: RefreshTokenRequest) {
     return await this.authService.refresh(data);
   }
 
