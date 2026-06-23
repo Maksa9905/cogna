@@ -77,7 +77,7 @@ export class AssessmentService {
       `ТЫ ДОЛЖЕН ВЕРНУТЬ СТРОГО JSON, КОТОРЫЙ УДОВЛЕТВОРЯЕТ СХЕМЕ:\n` +
       `{\n` +
       `  "theses": [\n` +
-      `    { "thesis": string, "assessment": "отлично" | "хорошо" | "удовлетворительно" | "плохо" }\n` +
+      `    { "thesis": string, "assessment": "bad" | "satisfies" | "good" | "perfect" }\n` +
       `  ],\n` +
       `  "summary": string,\n` +
       `  "score": float от 1 до 10, с округлением до 1 знака после запятой\n` +
@@ -110,12 +110,7 @@ export class AssessmentService {
                       thesis: { type: 'string' },
                       assessment: {
                         type: 'string',
-                        enum: [
-                          'отлично',
-                          'хорошо',
-                          'удовлетворительно',
-                          'плохо',
-                        ],
+                        enum: ['bad', 'satisfies', 'good', 'perfect'],
                       },
                     },
                     required: ['thesis', 'assessment'],
