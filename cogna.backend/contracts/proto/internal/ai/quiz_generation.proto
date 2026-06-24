@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package internal.ai.quiz.v1;
+
+import "shared/quiz.proto";
+
+service QuizGenerationService {
+  rpc GenerateQuiz(GenerateQuizRequest) returns (GenerateQuizResponse);
+}
+
+message GenerateQuizRequest {
+  string thesis_value = 1;
+  string ticket_question = 2;
+}
+
+message GenerateQuizResponse {
+  string question = 1;
+  repeated shared.quiz.v1.AnswerOptionInput answer_options = 2;
+}

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package shared.quiz.v1;
+
+message AnswerOptionInput {
+  string text = 1;
+  bool is_correct = 2;
+}

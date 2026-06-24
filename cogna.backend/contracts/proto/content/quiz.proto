@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package content.quiz.v1;
+
+import "content/common.proto";
+import "google/protobuf/timestamp.proto";
+
+service QuizService {
+  rpc CreateQuiz(CreateQuizRequest) returns (CreateQuizResponse);
+  rpc GetQuiz(GetQuizRequest) returns (QuizResponse);
+  rpc PatchQuiz(PatchQuizRequest) returns (QuizResponse);
+  rpc DeleteQuiz(DeleteQuizRequest) returns (common.content.v1.SuccessResponse);
+  rpc FindAllQuizzesByTicketId(FindAllQuizzesByTicketIdRequest)
+      returns (FindAllQuizzesByTicketIdResponse);
+}
+
+message Quiz {
+  string id = 1;
+  string thesis_id = 2;
+  string ticket_id = 3;
+  string question = 4;
+  repeated AnswerOption answer_options = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message AnswerOption {
+  string id = 1;
+  string text = 2;
+  bool is_correct = 3;
+}
+
+message QuizResponse {
+  Quiz quiz = 1;
+}
+
+message CreateQuizRequest {
+  string ticket_id = 1;
+  repeated string thesis_ids = 2;
+}
+
+message CreateQuizResponse {
+  repeated Quiz quizzes = 1;
+}
+
+message GetQuizRequest {
+  string id = 1;
+}
+
+message AnswerOptionInput {
+  string text = 1;
+  bool is_correct = 2;
+  optional string id = 3;
+}
+
+message AnswerOptionInputList {
+  repeated AnswerOptionInput items = 1;
+}
+
+message PatchQuizRequest {
+  string id = 1;
+  optional string question = 2;
+  optional AnswerOptionInputList answer_options = 3;
+}
+
+message DeleteQuizRequest {
+  string id = 1;
+}
+
+message FindAllQuizzesByTicketIdRequest {
+  string ticket_id = 1;
+}
+
+message FindAllQuizzesByTicketIdResponse {
+  repeated Quiz quizzes = 1;
+  int32 total_count = 2;
+}
