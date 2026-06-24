@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Request } from 'express';
 
-interface GqlContext {
+export interface GqlContext {
   req: Request;
 }
 
