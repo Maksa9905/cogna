@@ -25,8 +25,7 @@ message Subject {
 
 // 1. Создание
 message CreateSubjectRequest {
-  string user_id = 1;
-  string title = 2;
+  string title = 1;
 }
 
 // 2. Общий ответ для одного предмета
@@ -42,26 +41,22 @@ message FindAllSubjectsResponse {
 
 // 4. Обновление
 message UpdateSubjectRequest {
-  string id = 1;        // Что обновляем
-  string user_id = 2;
-  string title = 3;     // Новое название
+  string id = 1;
+  string title = 2;
 }
 
 // 5. Удаление
 message DeleteSubjectRequest {
   string id = 1;
-  string user_id = 2;
 }
 
 // 6. Поиск одного
 message FindOneSubjectRequest {
   string id = 1;
-  string user_id = 2;
 }
 
 // 7. Поиск всех
 message FindAllSubjectRequest {
-  string user_id = 1;
-  optional int32 limit = 2;
-  optional int32 offset = 3;
+  optional int32 limit = 1;
+  optional int32 offset = 2;
 }

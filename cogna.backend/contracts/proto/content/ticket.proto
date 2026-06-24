@@ -76,7 +76,6 @@ message FindAllTicketsResponse {
 
 message FindOneTicketRequest {
   string id = 1;
-  string user_id = 2;
 }
 
 message ThesisInputList {
@@ -84,15 +83,13 @@ message ThesisInputList {
 }
 message PatchTicketRequest {
   string id = 1;
-  string user_id = 2;
-  optional string question = 3;
-  optional string answer = 4;
-  optional ThesisInputList theses = 5;
+  optional string question = 2;
+  optional string answer = 3;
+  optional ThesisInputList theses = 4;
 }
 
 message DeleteTicketRequest {
   string id = 1;
-  string user_id = 2;
 }
 
 // Запрос на генерацию тезисов

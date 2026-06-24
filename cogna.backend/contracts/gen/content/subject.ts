@@ -23,7 +23,6 @@ export interface Subject {
 
 /** 1. Создание */
 export interface CreateSubjectRequest {
-  userId: string;
   title: string;
 }
 
@@ -41,28 +40,22 @@ export interface FindAllSubjectsResponse {
 
 /** 4. Обновление */
 export interface UpdateSubjectRequest {
-  /** Что обновляем */
   id: string;
-  userId: string;
-  /** Новое название */
   title: string;
 }
 
 /** 5. Удаление */
 export interface DeleteSubjectRequest {
   id: string;
-  userId: string;
 }
 
 /** 6. Поиск одного */
 export interface FindOneSubjectRequest {
   id: string;
-  userId: string;
 }
 
 /** 7. Поиск всех */
 export interface FindAllSubjectRequest {
-  userId: string;
   limit?: number | undefined;
   offset?: number | undefined;
 }
