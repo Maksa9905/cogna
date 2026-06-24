@@ -5,16 +5,16 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import {Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Request } from 'express';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { GqlContext } from '../guards';
 
 type UserStore = { userId: string };
 
 @Injectable()
-export class UserIdMetadataInterceptor implements NestInterceptor {
+export class MetadataInterceptor implements NestInterceptor {
   constructor(
     @Inject('ALS')
     private readonly als: AsyncLocalStorage<UserStore>,

@@ -6,7 +6,7 @@ import { GrpcDateInterceptor } from './common/interceptors/grpc-date.interceptor
 import { graphqlUploadExpress } from 'graphql-upload-ts';
 import { ConfigService } from '@nestjs/config';
 import { KafkaOptions, Transport } from '@nestjs/microservices';
-import { UserIdMetadataInterceptor } from './common/interceptors/user-id-metadata.interceptor';
+import { MetadataInterceptor } from './common/interceptors/metadata.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,7 +15,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(
     new GrpcDateInterceptor(),
-    new UserIdMetadataInterceptor(app.get('ALS')),
+    new MetadataInterceptor(app.get('ALS')),
   );
 
   const config = app.get(ConfigService);
