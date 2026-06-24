@@ -53,7 +53,9 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Subject: 'Subject',
   Ticket: 'Ticket',
-  Thesis: 'Thesis'
+  Thesis: 'Thesis',
+  Quiz: 'Quiz',
+  AnswerOption: 'AnswerOption'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -105,6 +107,30 @@ export const ThesisScalarFieldEnum = {
 } as const
 
 export type ThesisScalarFieldEnum = (typeof ThesisScalarFieldEnum)[keyof typeof ThesisScalarFieldEnum]
+
+
+export const QuizScalarFieldEnum = {
+  id: 'id',
+  thesisId: 'thesisId',
+  ticketId: 'ticketId',
+  question: 'question',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuizScalarFieldEnum = (typeof QuizScalarFieldEnum)[keyof typeof QuizScalarFieldEnum]
+
+
+export const AnswerOptionScalarFieldEnum = {
+  id: 'id',
+  quizId: 'quizId',
+  text: 'text',
+  isCorrect: 'isCorrect',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnswerOptionScalarFieldEnum = (typeof AnswerOptionScalarFieldEnum)[keyof typeof AnswerOptionScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -8,17 +8,21 @@ async function bootstrap() {
 
   const config = app.get(ConfigService);
 
+  const rootProtoDir = 'node_modules/@cogna-edu/contracts/proto';
+
   app.connectMicroservice<GrpcOptions>({
     transport: Transport.GRPC,
     options: {
-      package: ['thesis.v1', 'transcription.v1'],
+      package: ['thesis.v1', 'transcription.v1', 'internal.ai.quiz.v1', 'shared.quiz.v1'],
       protoPath: [
-        'node_modules/@cogna-edu/contracts/proto/thesis/thesis.proto',
-        'node_modules/@cogna-edu/contracts/proto/transcription/transcription.proto',
+        'thesis/thesis.proto',
+        'transcription/transcription.proto',
+        'internal/ai/quiz_generation.proto',
+        'shared/quiz.proto',
       ],
       url: config.getOrThrow('AI_GRPC_URL', '0.0.0.0:50051'),
       loader: {
-        includeDirs: ['node_modules/@cogna-edu/contracts/proto'],
+        includeDirs: [rootProtoDir],
       },
     },
   });

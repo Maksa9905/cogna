@@ -28,6 +28,7 @@ model Ticket {
   question  String
   answer    String
   theses    Thesis[]
+  quizzes   Quiz[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
@@ -56,7 +57,41 @@ model Thesis {
   updatedAt DateTime @updatedAt() @map("updated_at")
 
   ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  quiz   Quiz?
 
   @@index([ticketId])
   @@map("theses")
+}
+
+model Quiz {
+  id       String @id @default(uuid())
+  thesisId String @unique @map("thesis_id")
+  ticketId String @map("ticket_id")
+  question String
+
+  answerOptions AnswerOption[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  thesis Thesis @relation(fields: [thesisId], references: [id], onDelete: Cascade)
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+  @@map("quizzes")
+}
+
+model AnswerOption {
+  id        String  @id @default(uuid())
+  quizId    String  @map("quiz_id")
+  text      String
+  isCorrect Boolean @map("is_correct")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@index([quizId])
+  @@map("answer_options")
 }

@@ -115,6 +115,7 @@ services:
       - DATABASE_URL=postgresql://cogna:cogna_dev_password@postgres:5432/content_db
       - CONTENT_GRPC_URL=0.0.0.0:50051
       - THESES_GRPC_URL=ai-service:50051
+      - AI_GRPC_URL=ai-service:50051
     networks:
       - cogna-network
 
