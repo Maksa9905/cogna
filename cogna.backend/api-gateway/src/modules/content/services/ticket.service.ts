@@ -10,42 +10,55 @@ import {
   TicketServiceClient,
   PatchTicketRequest,
 } from '@cogna-edu/contracts/dist/content/ticket';
-import { firstValueFrom } from 'rxjs';
 import { ClientGrpc } from '@nestjs/microservices';
+import { AsyncLocalStorage } from 'node:async_hooks';
+import {
+  createGrpcClientWithMetadata,
+  UserContextStore,
+  WithGrpcMetadata,
+} from '../../../common/utils/grpc-with-metadata.util';
 
 @Injectable()
 export class TicketService {
-  private ticketClient: TicketServiceClient;
+  private readonly ticketClient: WithGrpcMetadata<TicketServiceClient>;
 
-  constructor(@Inject('CONTENT_GRPC') private readonly client: ClientGrpc) {
-    this.ticketClient = client.getService<TicketServiceClient>('TicketService');
+  constructor(
+    @Inject('CONTENT_GRPC') client: ClientGrpc,
+    @Inject('ALS') als: AsyncLocalStorage<UserContextStore>,
+  ) {
+    this.ticketClient = createGrpcClientWithMetadata(
+      client.getService<TicketServiceClient>('TicketService'),
+      als,
+    );
   }
 
-  public async createTicket(dto: CreateTicketRequest) {
-    return await firstValueFrom(this.ticketClient.createTicket(dto));
+  public createTicket(dto: CreateTicketRequest) {
+    return this.ticketClient.createTicket(dto);
   }
 
-  public async findOneTicket(dto: FindOneTicketRequest) {
-    return await firstValueFrom(this.ticketClient.findOneTicket(dto));
+  public findOneTicket(dto: FindOneTicketRequest) {
+    return this.ticketClient.findOneTicket(dto);
   }
 
-  public async findAllTickets(dto: FindAllTicketsRequest) {
-    return await firstValueFrom(this.ticketClient.findAllTickets(dto));
+  public findAllTickets(dto: FindAllTicketsRequest) {
+    return this.ticketClient.findAllTickets(dto);
   }
 
-  public async patchTicket(dto: PatchTicketRequest) {
-    return await firstValueFrom(this.ticketClient.patchTicket(dto));
+  public patchTicket(dto: PatchTicketRequest) {
+    return this.ticketClient.patchTicket(dto);
   }
 
-  public async deleteTicket(dto: DeleteTicketRequest) {
-    return await firstValueFrom(this.ticketClient.deleteTicket(dto));
+  public deleteTicket(dto: DeleteTicketRequest) {
+    return this.ticketClient.deleteTicket(dto);
   }
 
-  public async generateTheses(dto: GenerateThesesRequest) {
-    return await firstValueFrom(this.ticketClient.generateTheses(dto));
+  public generateTheses(dto: GenerateThesesRequest) {
+    return this.ticketClient.generateTheses(dto);
   }
 
-  public async generateAnswer(dto: GenerateAnswerRequest): Promise<GenerateAnswerResponse> {
-    return await firstValueFrom(this.ticketClient.generateAnswer(dto));
+  public generateAnswer(
+    dto: GenerateAnswerRequest,
+  ): Promise<GenerateAnswerResponse> {
+    return this.ticketClient.generateAnswer(dto);
   }
 }

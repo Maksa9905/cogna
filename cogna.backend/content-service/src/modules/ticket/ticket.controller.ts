@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseInterceptors } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import {
   CreateTicketRequest,
@@ -15,8 +15,10 @@ import {
   TicketServiceController
 } from '@cogna-edu/contracts/dist/content/ticket';
 import { SuccessResponse } from '@cogna-edu/contracts/gen/content/common';
+import { MetadataInterceptor } from '../../common/interseptors/metadata.interceptor';
 
-@Controller('ticket')
+@Controller()
+@UseInterceptors(MetadataInterceptor)
 @TicketServiceControllerMethods()
 export class TicketController implements TicketServiceController {
   constructor(private readonly ticketService: TicketService) {}

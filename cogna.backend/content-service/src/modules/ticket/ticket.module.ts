@@ -4,6 +4,7 @@ import { TicketController } from './ticket.controller';
 import { ClientsModule } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getThesisClientConfig } from './clients/thesis.grpc.client';
+import { MetadataInterceptor } from '../../common/interseptors/metadata.interceptor';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { getThesisClientConfig } from './clients/thesis.grpc.client';
     ]),
   ],
   controllers: [TicketController],
-  providers: [TicketService],
+  providers: [TicketService, MetadataInterceptor],
 })
 export class TicketModule {}

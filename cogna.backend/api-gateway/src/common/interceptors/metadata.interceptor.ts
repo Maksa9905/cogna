@@ -25,16 +25,10 @@ export class MetadataInterceptor implements NestInterceptor {
   ): Observable<any> {
     const ctx = GqlExecutionContext.create(context);
     const req: Request = ctx.getContext<GqlContext>().req;
-    const userId = req.user.sub ?? null;
-    if (!userId) return next.handle();
-    return new Observable((subscriber) => {
-      this.als.run({ userId }, () => {
-        next.handle().subscribe({
-          next: (value) => subscriber.next(value),
-          error: (value) => subscriber.error(value),
-          complete: () => subscriber.complete(),
-        });
-      });
-    });
+    const userId = req.user?.sub;
+    if (userId) {
+      this.als.enterWith({ userId });
+    }
+    return next.handle();
   }
 }
