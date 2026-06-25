@@ -12,17 +12,6 @@ service StudyTicketAttemptService {
   rpc BatchTicketAttemptsByTicketProgress(BatchTicketAttemptsRequest) returns (FindAllTicketsAttemptsResponse);
 }
 
-// Kafka. Assessment-service -> Study-service
-//Ticket Attempt
-message TicketAttemptRequest {
-  string ticketId = 1;
-  string userId = 2;
-  string subjectId = 3;
-  int64 score = 4;
-  repeated ThesisAssessment theses = 5;
-  string summary = 6;
-}
-
 message ThesisAssessment {
   string thesis = 1;
   string assessment = 2;

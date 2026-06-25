@@ -7,42 +7,23 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
+import { AssessmentProcessEvent } from "../events/assessment/assessment";
 
 export const protobufPackage = "assessment.v1";
-
-export interface ProcessRequest {
-  answer: string;
-  userId: string;
-  ticketId: string;
-}
 
 export interface ProcessResponse {
   success: boolean;
 }
 
-export interface AssessmentCompletedResponse {
-  ticketId: string;
-  userId: string;
-  subjectId: string;
-  score: number;
-  theses: ThesisAssessment[];
-  summary: string;
-}
-
-export interface ThesisAssessment {
-  thesis: string;
-  assessment: string;
-}
-
 export const ASSESSMENT_V1_PACKAGE_NAME = "assessment.v1";
 
 export interface AssessmentServiceClient {
-  processTranscription(request: ProcessRequest): Observable<ProcessResponse>;
+  processTranscription(request: AssessmentProcessEvent): Observable<ProcessResponse>;
 }
 
 export interface AssessmentServiceController {
   processTranscription(
-    request: ProcessRequest,
+    request: AssessmentProcessEvent,
   ): Promise<ProcessResponse> | Observable<ProcessResponse> | ProcessResponse;
 }
 

@@ -11,19 +11,6 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "study.ticket.attempt.v1";
 
-/**
- * Kafka. Assessment-service -> Study-service
- * Ticket Attempt
- */
-export interface TicketAttemptRequest {
-  ticketId: string;
-  userId: string;
-  subjectId: string;
-  score: number;
-  theses: ThesisAssessment[];
-  summary: string;
-}
-
 export interface ThesisAssessment {
   thesis: string;
   assessment: string;

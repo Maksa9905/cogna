@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package events.study.v1;
+
+// Topic: study.delete.subject.progress
+// Producer: content-service -> Consumer: study-service
+message DeleteSubjectProgressEvent {
+  string subject_id = 1;
+  string user_id = 2;
+}
