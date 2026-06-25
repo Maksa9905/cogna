@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MailService } from '../mail-service/mail.service';
-import { SendOtpRequest } from '@cogna-edu/contracts/gen/notification/notification';
+import { SendOtpEvent } from '@cogna-edu/contracts/gen/events/notification/send_otp';
 
 @Injectable()
 export class NotificationService {
@@ -8,7 +8,7 @@ export class NotificationService {
 
   constructor(private readonly mailService: MailService) {}
 
-  public async sendOtp(data: SendOtpRequest) {
+  public async sendOtp(data: SendOtpEvent) {
     const { email } = data;
     await this.mailService.sendOtp(data);
     this.logger.log('send otp', { email });

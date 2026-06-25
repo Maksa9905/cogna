@@ -1,9 +1,9 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ThesisAssessmentGql } from '../../../study/dto/entities/ticket-attempt.entity';
-import { AssessmentCompletedResponse } from '@cogna-edu/contracts/gen/assessment/assessment';
+import { AssessmentCompletedEvent } from '@cogna-edu/contracts/gen/events/assessment/assessment';
 
 @ObjectType()
-export class AssessmentCompletedResponseGql implements AssessmentCompletedResponse {
+export class AssessmentCompletedResponseGql implements AssessmentCompletedEvent {
   @Field(() => String)
   ticketId: string;
 

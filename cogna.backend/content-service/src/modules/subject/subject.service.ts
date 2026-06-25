@@ -99,7 +99,7 @@ export class SubjectService {
       where: { id: dto.id, userId },
     });
     await this.studyKafkaClient.deleteSubjectProgress({
-      id: dto.id,
+      subjectId: dto.id,
       userId,
     });
     return { ok: true };

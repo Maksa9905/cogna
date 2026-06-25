@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../infra/prisma/prisma.service';
-import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket-attempt';
+import { TicketAttemptEvent } from '@cogna-edu/contracts/gen/events/study/ticket_attempt';
 import { SubjectProgressRepository } from '../subject-progress/subject-progress.repository';
 import { TicketProgressService } from '../ticket-progress/ticket-progress.service';
 import {
@@ -37,7 +37,7 @@ export class TicketAttemptRepository {
   ) {}
 
   public async createTicketAttemptWithProgress(data: {
-    dto: TicketAttemptRequest;
+    dto: TicketAttemptEvent;
     record: RecordLogItem;
   }) {
     const { dto, record } = data;

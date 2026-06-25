@@ -1,8 +1,8 @@
 import { KafkaBaseClient } from './kafka-base.client';
-import { SendOtpRequest } from '@cogna-edu/contracts/gen/notification/notification';
+import { SendOtpEvent } from '@cogna-edu/contracts/gen/events/notification/send_otp';
 
 export class KafkaNotificationClient extends KafkaBaseClient {
-  public async sendOtp(data: SendOtpRequest) {
+  public async sendOtp(data: SendOtpEvent) {
     return this.emit('notification.send.otp', data);
   }
 }

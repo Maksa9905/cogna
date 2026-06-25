@@ -1,9 +1,5 @@
 import { KafkaBaseClient } from './kafka-base.client';
-
-export type DeleteSubjectProgressEvent = {
-  id: string;
-  userId: string;
-};
+import { DeleteSubjectProgressEvent } from '@cogna-edu/contracts/gen/events/study/subject_progress';
 
 export class KafkaStudyClient extends KafkaBaseClient {
   public async deleteSubjectProgress(dto: DeleteSubjectProgressEvent) {

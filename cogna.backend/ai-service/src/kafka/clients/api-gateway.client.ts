@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { AssessmentCompletedEvent } from '@cogna-edu/contracts/gen/events/assessment/assessment';
 
 @Injectable()
 export class ApiGatewayClient implements OnModuleInit {
@@ -15,7 +16,7 @@ export class ApiGatewayClient implements OnModuleInit {
     this.logger.log('API Gateway Kafka producer connected');
   }
 
-  async emitAssessmentCompleted(data: any) {
+  async emitAssessmentCompleted(data: AssessmentCompletedEvent) {
     await firstValueFrom(this.client.emit('assessment.completed', data));
   }
 }

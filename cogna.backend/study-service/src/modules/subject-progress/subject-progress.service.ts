@@ -8,7 +8,7 @@ import {
   SubjectProgress,
 } from '@cogna-edu/contracts/gen/study/subject-progress';
 import { LogExecutionTime } from '@cogna-edu/corn';
-import { DeleteSubjectProgressEvent } from './delete-subject-progress.event';
+import { DeleteSubjectProgressEvent } from '@cogna-edu/contracts/gen/events/study/subject_progress';
 
 @Injectable()
 export class SubjectProgressService {
@@ -80,6 +80,6 @@ export class SubjectProgressService {
 
   @LogExecutionTime()
   public async delete(dto: DeleteSubjectProgressEvent) {
-    await this.subjectProgressRepository.delete(dto.userId, dto.id);
+    await this.subjectProgressRepository.delete(dto.userId, dto.subjectId);
   }
 }

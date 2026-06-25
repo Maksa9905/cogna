@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
-import { TicketServiceClient } from '@cogna-edu/contracts/gen/content/ticket';
+import { TicketServiceClient, Thesis } from '@cogna-edu/contracts/gen/content/ticket';
+import { AssessmentProcessEvent, AssessmentCompletedEvent } from '@cogna-edu/contracts/gen/events/assessment/assessment';
+import { TicketAttemptEvent } from '@cogna-edu/contracts/gen/events/study/ticket_attempt';
 import { firstValueFrom } from 'rxjs';
-import { ProcessRequest } from '@cogna-edu/contracts/gen/assessment/assessment';
-import { TicketAttemptRequest } from '@cogna-edu/contracts/gen/study/ticket-attempt';
-import { Thesis } from '@cogna-edu/contracts/gen/content/ticket';
 import { GroqService } from '../../groq/groq.service';
 import { StudyClient } from '../../kafka/clients/study.client';
 import { ApiGatewayClient } from '../../kafka/clients/api-gateway.client';
@@ -33,10 +32,10 @@ export class AssessmentService {
       clientContent.getService<TicketServiceClient>('TicketService');
   }
 
-  public async processTranscription(data: ProcessRequest) {
+  public async processTranscription(data: AssessmentProcessEvent) {
     const { answer, ticketId, userId } = data;
     const { ticket } = await firstValueFrom(
-      this.contentTicketClient.findOneTicket({ id: ticketId, userId }),
+      this.contentTicketClient.findOneTicket({ id: ticketId }),
     );
     if (!ticket) {
       throw new RpcException({
@@ -51,7 +50,7 @@ export class AssessmentService {
       ticket.theses,
     );
     console.log(res);
-    const payload: TicketAttemptRequest = {
+    const payload: TicketAttemptEvent = {
       ticketId,
       userId,
       subjectId: ticket.subjectId,
@@ -60,7 +59,9 @@ export class AssessmentService {
       theses: res.theses,
     };
     this.studyClient.emitTicketAttempt('study.ticket-attempt', payload);
-    this.apiGatewayClient.emitAssessmentCompleted(payload);
+    this.apiGatewayClient.emitAssessmentCompleted({
+      ...payload,
+    } satisfies AssessmentCompletedEvent);
   }
 
   private async assume(

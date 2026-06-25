@@ -10,7 +10,7 @@ import {
 
 import { StudySubjectProgressServiceControllerMethods } from '@cogna-edu/contracts/dist/study/subject-progress';
 import { EventPattern } from '@nestjs/microservices';
-import { DeleteSubjectProgressEvent } from './delete-subject-progress.event';
+import { DeleteSubjectProgressEvent } from '@cogna-edu/contracts/gen/events/study/subject_progress';
 
 @Controller('subject-progress')
 @StudySubjectProgressServiceControllerMethods()
