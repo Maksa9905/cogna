@@ -3,9 +3,10 @@ import { PatchQuizRequest } from '@cogna-edu/contracts/gen/content/quiz';
 import { AnswerOptionInputGql } from '../../entities';
 
 @InputType()
-export class PatchQuizRequestGql
-  implements Omit<PatchQuizRequest, 'answerOptions'>
-{
+export class PatchQuizRequestGql implements Omit<
+  PatchQuizRequest,
+  'answerOptions'
+> {
   @Field()
   id: string;
 

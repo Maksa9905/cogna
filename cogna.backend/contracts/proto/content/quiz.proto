@@ -54,7 +54,7 @@ message CreateQuizResponse {
 
 message GenerateQuizRequest {
   string subject_id = 1;
-  optional string ticket_id = 2;
+  repeated string ticket_ids = 2;
   bool should_link_with_ticket = 5;
   shared.quiz.v1.QuestionType type = 3;
   optional int32 count = 4;

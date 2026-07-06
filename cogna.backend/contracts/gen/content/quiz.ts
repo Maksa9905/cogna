@@ -51,7 +51,7 @@ export interface CreateQuizResponse {
 
 export interface GenerateQuizRequest {
   subjectId: string;
-  ticketId?: string | undefined;
+  ticketIds: string[];
   shouldLinkWithTicket: boolean;
   type: QuestionType;
   count?: number | undefined;

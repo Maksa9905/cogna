@@ -7,8 +7,8 @@ export class GenerateQuizRequestGql implements GenerateQuizRequest {
   @Field()
   subjectId: string;
 
-  @Field({ nullable: true })
-  ticketId?: string;
+  @Field(() => [String], { defaultValue: [] })
+  ticketIds: string[];
 
   @Field(() => Boolean, { defaultValue: false })
   shouldLinkWithTicket: boolean;
