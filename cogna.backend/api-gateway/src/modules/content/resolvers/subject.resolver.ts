@@ -12,12 +12,14 @@ import {
   FindAllSubjectsRequestGql,
   FindAllSubjectsResponseGql,
   FindOneSubjectRequestGql,
+  QuizGql,
   SubjectGql,
   SubjectResponseGql,
   SuccessResponseContentGql,
   TicketGql,
   UpdateSubjectRequestGql,
 } from '../dto';
+import { QuizService } from '../services/quiz.service';
 import { SubjectService } from '../services/subject.service';
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn';
@@ -33,6 +35,7 @@ export class SubjectResolver {
     private readonly subjectService: SubjectService,
     private readonly ticketService: TicketService,
     private readonly subjectProgressService: SubjectProgressService,
+    private readonly quizService: QuizService,
   ) {}
 
   @Mutation(() => SubjectResponseGql)
@@ -66,6 +69,14 @@ export class SubjectResolver {
       subjectId: subject.id,
     });
     return response.tickets;
+  }
+
+  @ResolveField(() => [QuizGql])
+  public async quizzes(@Parent() subject: SubjectGql) {
+    const response = await this.quizService.findAllQuizzesBySubjectId({
+      subjectId: subject.id,
+    });
+    return response.quizzes;
   }
 
   @ResolveField(() => SubjectProgressGql, { nullable: true })

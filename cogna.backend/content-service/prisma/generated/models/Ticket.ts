@@ -358,6 +358,11 @@ export type TicketScalarRelationFilter = {
   isNot?: Prisma.TicketWhereInput
 }
 
+export type TicketNullableScalarRelationFilter = {
+  is?: Prisma.TicketWhereInput | null
+  isNot?: Prisma.TicketWhereInput | null
+}
+
 export type TicketCreateNestedManyWithoutSubjectInput = {
   create?: Prisma.XOR<Prisma.TicketCreateWithoutSubjectInput, Prisma.TicketUncheckedCreateWithoutSubjectInput> | Prisma.TicketCreateWithoutSubjectInput[] | Prisma.TicketUncheckedCreateWithoutSubjectInput[]
   connectOrCreate?: Prisma.TicketCreateOrConnectWithoutSubjectInput | Prisma.TicketCreateOrConnectWithoutSubjectInput[]
@@ -420,10 +425,12 @@ export type TicketCreateNestedOneWithoutQuizzesInput = {
   connect?: Prisma.TicketWhereUniqueInput
 }
 
-export type TicketUpdateOneRequiredWithoutQuizzesNestedInput = {
+export type TicketUpdateOneWithoutQuizzesNestedInput = {
   create?: Prisma.XOR<Prisma.TicketCreateWithoutQuizzesInput, Prisma.TicketUncheckedCreateWithoutQuizzesInput>
   connectOrCreate?: Prisma.TicketCreateOrConnectWithoutQuizzesInput
   upsert?: Prisma.TicketUpsertWithoutQuizzesInput
+  disconnect?: Prisma.TicketWhereInput | boolean
+  delete?: Prisma.TicketWhereInput | boolean
   connect?: Prisma.TicketWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TicketUpdateToOneWithWhereWithoutQuizzesInput, Prisma.TicketUpdateWithoutQuizzesInput>, Prisma.TicketUncheckedUpdateWithoutQuizzesInput>
 }

@@ -1,9 +1,18 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import {
-  AnswerOption,
+  Field,
+  InputType,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
+import { AnswerOption, Quiz } from '@cogna-edu/contracts/gen/content/quiz';
+import {
   AnswerOptionInput,
-  Quiz,
-} from '@cogna-edu/contracts/dist/content/quiz';
+  QuestionType,
+} from '@cogna-edu/contracts/dist/shared/quiz';
+
+registerEnumType(QuestionType, {
+  name: 'QuestionType',
+});
 
 @ObjectType()
 export class AnswerOptionGql implements AnswerOption {
@@ -23,13 +32,19 @@ export class QuizGql implements Quiz {
   id: string;
 
   @Field()
-  question: string;
-
-  @Field()
-  thesisId: string;
+  subjectId: string;
 
   @Field()
   ticketId: string;
+
+  @Field(() => QuestionType)
+  type: QuestionType;
+
+  @Field()
+  question: string;
+
+  @Field({ nullable: true })
+  referenceAnswer?: string;
 
   @Field(() => [AnswerOptionGql])
   answerOptions: AnswerOptionGql[];

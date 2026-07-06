@@ -183,6 +183,7 @@ export type SubjectWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   Ticket?: Prisma.TicketListRelationFilter
+  Quiz?: Prisma.QuizListRelationFilter
 }
 
 export type SubjectOrderByWithRelationInput = {
@@ -192,6 +193,7 @@ export type SubjectOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   Ticket?: Prisma.TicketOrderByRelationAggregateInput
+  Quiz?: Prisma.QuizOrderByRelationAggregateInput
 }
 
 export type SubjectWhereUniqueInput = Prisma.AtLeast<{
@@ -204,6 +206,7 @@ export type SubjectWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   Ticket?: Prisma.TicketListRelationFilter
+  Quiz?: Prisma.QuizListRelationFilter
 }, "id">
 
 export type SubjectOrderByWithAggregationInput = {
@@ -235,6 +238,7 @@ export type SubjectCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   Ticket?: Prisma.TicketCreateNestedManyWithoutSubjectInput
+  Quiz?: Prisma.QuizCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUncheckedCreateInput = {
@@ -244,6 +248,7 @@ export type SubjectUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   Ticket?: Prisma.TicketUncheckedCreateNestedManyWithoutSubjectInput
+  Quiz?: Prisma.QuizUncheckedCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUpdateInput = {
@@ -253,6 +258,7 @@ export type SubjectUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Ticket?: Prisma.TicketUpdateManyWithoutSubjectNestedInput
+  Quiz?: Prisma.QuizUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateInput = {
@@ -262,6 +268,7 @@ export type SubjectUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Ticket?: Prisma.TicketUncheckedUpdateManyWithoutSubjectNestedInput
+  Quiz?: Prisma.QuizUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectCreateManyInput = {
@@ -339,12 +346,27 @@ export type SubjectUpdateOneRequiredWithoutTicketNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubjectUpdateToOneWithWhereWithoutTicketInput, Prisma.SubjectUpdateWithoutTicketInput>, Prisma.SubjectUncheckedUpdateWithoutTicketInput>
 }
 
+export type SubjectCreateNestedOneWithoutQuizInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutQuizInput, Prisma.SubjectUncheckedCreateWithoutQuizInput>
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutQuizInput
+  connect?: Prisma.SubjectWhereUniqueInput
+}
+
+export type SubjectUpdateOneRequiredWithoutQuizNestedInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutQuizInput, Prisma.SubjectUncheckedCreateWithoutQuizInput>
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutQuizInput
+  upsert?: Prisma.SubjectUpsertWithoutQuizInput
+  connect?: Prisma.SubjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubjectUpdateToOneWithWhereWithoutQuizInput, Prisma.SubjectUpdateWithoutQuizInput>, Prisma.SubjectUncheckedUpdateWithoutQuizInput>
+}
+
 export type SubjectCreateWithoutTicketInput = {
   id?: string
   userId: string
   title: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  Quiz?: Prisma.QuizCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUncheckedCreateWithoutTicketInput = {
@@ -353,6 +375,7 @@ export type SubjectUncheckedCreateWithoutTicketInput = {
   title: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  Quiz?: Prisma.QuizUncheckedCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectCreateOrConnectWithoutTicketInput = {
@@ -377,6 +400,7 @@ export type SubjectUpdateWithoutTicketInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Quiz?: Prisma.QuizUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateWithoutTicketInput = {
@@ -385,6 +409,59 @@ export type SubjectUncheckedUpdateWithoutTicketInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Quiz?: Prisma.QuizUncheckedUpdateManyWithoutSubjectNestedInput
+}
+
+export type SubjectCreateWithoutQuizInput = {
+  id?: string
+  userId: string
+  title: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  Ticket?: Prisma.TicketCreateNestedManyWithoutSubjectInput
+}
+
+export type SubjectUncheckedCreateWithoutQuizInput = {
+  id?: string
+  userId: string
+  title: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  Ticket?: Prisma.TicketUncheckedCreateNestedManyWithoutSubjectInput
+}
+
+export type SubjectCreateOrConnectWithoutQuizInput = {
+  where: Prisma.SubjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutQuizInput, Prisma.SubjectUncheckedCreateWithoutQuizInput>
+}
+
+export type SubjectUpsertWithoutQuizInput = {
+  update: Prisma.XOR<Prisma.SubjectUpdateWithoutQuizInput, Prisma.SubjectUncheckedUpdateWithoutQuizInput>
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutQuizInput, Prisma.SubjectUncheckedCreateWithoutQuizInput>
+  where?: Prisma.SubjectWhereInput
+}
+
+export type SubjectUpdateToOneWithWhereWithoutQuizInput = {
+  where?: Prisma.SubjectWhereInput
+  data: Prisma.XOR<Prisma.SubjectUpdateWithoutQuizInput, Prisma.SubjectUncheckedUpdateWithoutQuizInput>
+}
+
+export type SubjectUpdateWithoutQuizInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Ticket?: Prisma.TicketUpdateManyWithoutSubjectNestedInput
+}
+
+export type SubjectUncheckedUpdateWithoutQuizInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Ticket?: Prisma.TicketUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 
@@ -394,10 +471,12 @@ export type SubjectUncheckedUpdateWithoutTicketInput = {
 
 export type SubjectCountOutputType = {
   Ticket: number
+  Quiz: number
 }
 
 export type SubjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Ticket?: boolean | SubjectCountOutputTypeCountTicketArgs
+  Quiz?: boolean | SubjectCountOutputTypeCountQuizArgs
 }
 
 /**
@@ -417,6 +496,13 @@ export type SubjectCountOutputTypeCountTicketArgs<ExtArgs extends runtime.Types.
   where?: Prisma.TicketWhereInput
 }
 
+/**
+ * SubjectCountOutputType without action
+ */
+export type SubjectCountOutputTypeCountQuizArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QuizWhereInput
+}
+
 
 export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -425,6 +511,7 @@ export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   Ticket?: boolean | Prisma.Subject$TicketArgs<ExtArgs>
+  Quiz?: boolean | Prisma.Subject$QuizArgs<ExtArgs>
   _count?: boolean | Prisma.SubjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subject"]>
 
@@ -455,6 +542,7 @@ export type SubjectSelectScalar = {
 export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
 export type SubjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Ticket?: boolean | Prisma.Subject$TicketArgs<ExtArgs>
+  Quiz?: boolean | Prisma.Subject$QuizArgs<ExtArgs>
   _count?: boolean | Prisma.SubjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SubjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -464,6 +552,7 @@ export type $SubjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Subject"
   objects: {
     Ticket: Prisma.$TicketPayload<ExtArgs>[]
+    Quiz: Prisma.$QuizPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -866,6 +955,7 @@ readonly fields: SubjectFieldRefs;
 export interface Prisma__SubjectClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   Ticket<T extends Prisma.Subject$TicketArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$TicketArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Quiz<T extends Prisma.Subject$QuizArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$QuizArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuizPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1309,6 +1399,30 @@ export type Subject$TicketArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.TicketScalarFieldEnum | Prisma.TicketScalarFieldEnum[]
+}
+
+/**
+ * Subject.Quiz
+ */
+export type Subject$QuizArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Quiz
+   */
+  select?: Prisma.QuizSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Quiz
+   */
+  omit?: Prisma.QuizOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuizInclude<ExtArgs> | null
+  where?: Prisma.QuizWhereInput
+  orderBy?: Prisma.QuizOrderByWithRelationInput | Prisma.QuizOrderByWithRelationInput[]
+  cursor?: Prisma.QuizWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.QuizScalarFieldEnum | Prisma.QuizScalarFieldEnum[]
 }
 
 /**

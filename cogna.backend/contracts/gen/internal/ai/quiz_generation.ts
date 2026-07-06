@@ -7,17 +7,20 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-import { AnswerOptionInput } from "../../shared/quiz";
+import { AnswerOptionInput, QuestionType } from "../../shared/quiz";
 
 export const protobufPackage = "internal.ai.quiz.v1";
 
 export interface GenerateQuizRequest {
-  thesisValue: string;
-  ticketQuestion: string;
+  ticketQuestion?: string | undefined;
+  ticketAnswer?: string | undefined;
+  subjectTitle?: string | undefined;
+  type: QuestionType;
 }
 
 export interface GenerateQuizResponse {
   question: string;
+  referenceAnswer?: string | undefined;
   answerOptions: AnswerOptionInput[];
 }
 

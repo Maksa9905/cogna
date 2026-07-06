@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Subject } from '@cogna-edu/contracts/gen/content/subject';
+import { QuizGql } from './quiz.entity';
 import { TicketGql } from './ticket.entity';
 import { SubjectProgressGql } from '../../../study/dto';
 
@@ -22,6 +23,9 @@ export class SubjectGql implements Subject {
 
   @Field(() => [TicketGql])
   tickets: TicketGql[];
+
+  @Field(() => [QuizGql])
+  quizzes: QuizGql[];
 
   @Field(() => SubjectProgressGql, { nullable: true })
   subjectProgress?: SubjectProgressGql;

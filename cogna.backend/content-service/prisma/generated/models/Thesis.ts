@@ -191,7 +191,6 @@ export type ThesisWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
   ticket?: Prisma.XOR<Prisma.TicketScalarRelationFilter, Prisma.TicketWhereInput>
-  quiz?: Prisma.XOR<Prisma.QuizNullableScalarRelationFilter, Prisma.QuizWhereInput> | null
 }
 
 export type ThesisOrderByWithRelationInput = {
@@ -202,7 +201,6 @@ export type ThesisOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ticket?: Prisma.TicketOrderByWithRelationInput
-  quiz?: Prisma.QuizOrderByWithRelationInput
 }
 
 export type ThesisWhereUniqueInput = Prisma.AtLeast<{
@@ -216,7 +214,6 @@ export type ThesisWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
   ticket?: Prisma.XOR<Prisma.TicketScalarRelationFilter, Prisma.TicketWhereInput>
-  quiz?: Prisma.XOR<Prisma.QuizNullableScalarRelationFilter, Prisma.QuizWhereInput> | null
 }, "id">
 
 export type ThesisOrderByWithAggregationInput = {
@@ -250,7 +247,6 @@ export type ThesisCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   ticket: Prisma.TicketCreateNestedOneWithoutThesesInput
-  quiz?: Prisma.QuizCreateNestedOneWithoutThesisInput
 }
 
 export type ThesisUncheckedCreateInput = {
@@ -260,7 +256,6 @@ export type ThesisUncheckedCreateInput = {
   importance: $Enums.Importance
   createdAt?: Date | string
   updatedAt?: Date | string
-  quiz?: Prisma.QuizUncheckedCreateNestedOneWithoutThesisInput
 }
 
 export type ThesisUpdateInput = {
@@ -270,7 +265,6 @@ export type ThesisUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ticket?: Prisma.TicketUpdateOneRequiredWithoutThesesNestedInput
-  quiz?: Prisma.QuizUpdateOneWithoutThesisNestedInput
 }
 
 export type ThesisUncheckedUpdateInput = {
@@ -280,7 +274,6 @@ export type ThesisUncheckedUpdateInput = {
   importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  quiz?: Prisma.QuizUncheckedUpdateOneWithoutThesisNestedInput
 }
 
 export type ThesisCreateManyInput = {
@@ -346,11 +339,6 @@ export type ThesisMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type ThesisScalarRelationFilter = {
-  is?: Prisma.ThesisWhereInput
-  isNot?: Prisma.ThesisWhereInput
-}
-
 export type ThesisCreateNestedManyWithoutTicketInput = {
   create?: Prisma.XOR<Prisma.ThesisCreateWithoutTicketInput, Prisma.ThesisUncheckedCreateWithoutTicketInput> | Prisma.ThesisCreateWithoutTicketInput[] | Prisma.ThesisUncheckedCreateWithoutTicketInput[]
   connectOrCreate?: Prisma.ThesisCreateOrConnectWithoutTicketInput | Prisma.ThesisCreateOrConnectWithoutTicketInput[]
@@ -397,27 +385,12 @@ export type EnumImportanceFieldUpdateOperationsInput = {
   set?: $Enums.Importance
 }
 
-export type ThesisCreateNestedOneWithoutQuizInput = {
-  create?: Prisma.XOR<Prisma.ThesisCreateWithoutQuizInput, Prisma.ThesisUncheckedCreateWithoutQuizInput>
-  connectOrCreate?: Prisma.ThesisCreateOrConnectWithoutQuizInput
-  connect?: Prisma.ThesisWhereUniqueInput
-}
-
-export type ThesisUpdateOneRequiredWithoutQuizNestedInput = {
-  create?: Prisma.XOR<Prisma.ThesisCreateWithoutQuizInput, Prisma.ThesisUncheckedCreateWithoutQuizInput>
-  connectOrCreate?: Prisma.ThesisCreateOrConnectWithoutQuizInput
-  upsert?: Prisma.ThesisUpsertWithoutQuizInput
-  connect?: Prisma.ThesisWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ThesisUpdateToOneWithWhereWithoutQuizInput, Prisma.ThesisUpdateWithoutQuizInput>, Prisma.ThesisUncheckedUpdateWithoutQuizInput>
-}
-
 export type ThesisCreateWithoutTicketInput = {
   id?: string
   value: string
   importance: $Enums.Importance
   createdAt?: Date | string
   updatedAt?: Date | string
-  quiz?: Prisma.QuizCreateNestedOneWithoutThesisInput
 }
 
 export type ThesisUncheckedCreateWithoutTicketInput = {
@@ -426,7 +399,6 @@ export type ThesisUncheckedCreateWithoutTicketInput = {
   importance: $Enums.Importance
   createdAt?: Date | string
   updatedAt?: Date | string
-  quiz?: Prisma.QuizUncheckedCreateNestedOneWithoutThesisInput
 }
 
 export type ThesisCreateOrConnectWithoutTicketInput = {
@@ -467,58 +439,6 @@ export type ThesisScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Thesis"> | Date | string
 }
 
-export type ThesisCreateWithoutQuizInput = {
-  id?: string
-  value: string
-  importance: $Enums.Importance
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  ticket: Prisma.TicketCreateNestedOneWithoutThesesInput
-}
-
-export type ThesisUncheckedCreateWithoutQuizInput = {
-  id?: string
-  ticketId: string
-  value: string
-  importance: $Enums.Importance
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type ThesisCreateOrConnectWithoutQuizInput = {
-  where: Prisma.ThesisWhereUniqueInput
-  create: Prisma.XOR<Prisma.ThesisCreateWithoutQuizInput, Prisma.ThesisUncheckedCreateWithoutQuizInput>
-}
-
-export type ThesisUpsertWithoutQuizInput = {
-  update: Prisma.XOR<Prisma.ThesisUpdateWithoutQuizInput, Prisma.ThesisUncheckedUpdateWithoutQuizInput>
-  create: Prisma.XOR<Prisma.ThesisCreateWithoutQuizInput, Prisma.ThesisUncheckedCreateWithoutQuizInput>
-  where?: Prisma.ThesisWhereInput
-}
-
-export type ThesisUpdateToOneWithWhereWithoutQuizInput = {
-  where?: Prisma.ThesisWhereInput
-  data: Prisma.XOR<Prisma.ThesisUpdateWithoutQuizInput, Prisma.ThesisUncheckedUpdateWithoutQuizInput>
-}
-
-export type ThesisUpdateWithoutQuizInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
-  importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  ticket?: Prisma.TicketUpdateOneRequiredWithoutThesesNestedInput
-}
-
-export type ThesisUncheckedUpdateWithoutQuizInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ticketId?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
-  importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
 export type ThesisCreateManyTicketInput = {
   id?: string
   value: string
@@ -533,7 +453,6 @@ export type ThesisUpdateWithoutTicketInput = {
   importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  quiz?: Prisma.QuizUpdateOneWithoutThesisNestedInput
 }
 
 export type ThesisUncheckedUpdateWithoutTicketInput = {
@@ -542,7 +461,6 @@ export type ThesisUncheckedUpdateWithoutTicketInput = {
   importance?: Prisma.EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  quiz?: Prisma.QuizUncheckedUpdateOneWithoutThesisNestedInput
 }
 
 export type ThesisUncheckedUpdateManyWithoutTicketInput = {
@@ -563,7 +481,6 @@ export type ThesisSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   ticket?: boolean | Prisma.TicketDefaultArgs<ExtArgs>
-  quiz?: boolean | Prisma.Thesis$quizArgs<ExtArgs>
 }, ExtArgs["result"]["thesis"]>
 
 export type ThesisSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -598,7 +515,6 @@ export type ThesisSelectScalar = {
 export type ThesisOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ticketId" | "value" | "importance" | "createdAt" | "updatedAt", ExtArgs["result"]["thesis"]>
 export type ThesisInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ticket?: boolean | Prisma.TicketDefaultArgs<ExtArgs>
-  quiz?: boolean | Prisma.Thesis$quizArgs<ExtArgs>
 }
 export type ThesisIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ticket?: boolean | Prisma.TicketDefaultArgs<ExtArgs>
@@ -611,7 +527,6 @@ export type $ThesisPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Thesis"
   objects: {
     ticket: Prisma.$TicketPayload<ExtArgs>
-    quiz: Prisma.$QuizPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1015,7 +930,6 @@ readonly fields: ThesisFieldRefs;
 export interface Prisma__ThesisClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   ticket<T extends Prisma.TicketDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TicketDefaultArgs<ExtArgs>>): Prisma.Prisma__TicketClient<runtime.Types.Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  quiz<T extends Prisma.Thesis$quizArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Thesis$quizArgs<ExtArgs>>): Prisma.Prisma__QuizClient<runtime.Types.Result.GetResult<Prisma.$QuizPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1444,25 +1358,6 @@ export type ThesisDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Theses to delete.
    */
   limit?: number
-}
-
-/**
- * Thesis.quiz
- */
-export type Thesis$quizArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Quiz
-   */
-  select?: Prisma.QuizSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Quiz
-   */
-  omit?: Prisma.QuizOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.QuizInclude<ExtArgs> | null
-  where?: Prisma.QuizWhereInput
 }
 
 /**

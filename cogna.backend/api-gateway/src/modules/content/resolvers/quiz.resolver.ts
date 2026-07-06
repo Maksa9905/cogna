@@ -5,8 +5,10 @@ import {
   CreateQuizRequestGql,
   CreateQuizResponseGql,
   DeleteQuizRequestGql,
-  FindAllQuizzesByTicketIdRequestGql,
-  FindAllQuizzesByTicketIdResponseGql,
+  FindAllQuizzesBySubjectIdRequestGql,
+  FindAllQuizzesBySubjectIdResponseGql,
+  GenerateQuizRequestGql,
+  GenerateQuizResponseGql,
   GetQuizRequestGql,
   PatchQuizRequestGql,
   QuizResponseGql,
@@ -22,6 +24,11 @@ export class QuizResolver {
   @Mutation(() => CreateQuizResponseGql)
   public quizCreate(@Args('data') dto: CreateQuizRequestGql) {
     return this.quizService.createQuiz(dto);
+  }
+
+  @Mutation(() => GenerateQuizResponseGql)
+  public quizGenerate(@Args('data') dto: GenerateQuizRequestGql) {
+    return this.quizService.generateQuiz(dto);
   }
 
   @Query(() => QuizResponseGql)
@@ -42,10 +49,10 @@ export class QuizResolver {
     return this.quizService.deleteQuiz(dto);
   }
 
-  @Query(() => FindAllQuizzesByTicketIdResponseGql)
-  public quizFindAllByTicketId(
-    @Args('data') dto: FindAllQuizzesByTicketIdRequestGql,
+  @Query(() => FindAllQuizzesBySubjectIdResponseGql)
+  public quizFindAllBySubjectId(
+    @Args('data') dto: FindAllQuizzesBySubjectIdRequestGql,
   ) {
-    return this.quizService.findAllQuizzesByTicketId(dto);
+    return this.quizService.findAllQuizzesBySubjectId(dto);
   }
 }

@@ -4,24 +4,28 @@ package content.quiz.v1;
 
 import "content/common.proto";
 import "google/protobuf/timestamp.proto";
+import "shared/quiz.proto";
 
 service QuizService {
   rpc CreateQuiz(CreateQuizRequest) returns (CreateQuizResponse);
+  rpc GenerateQuiz(GenerateQuizRequest) returns (GenerateQuizResponse);
   rpc GetQuiz(GetQuizRequest) returns (QuizResponse);
   rpc PatchQuiz(PatchQuizRequest) returns (QuizResponse);
   rpc DeleteQuiz(DeleteQuizRequest) returns (common.content.v1.SuccessResponse);
-  rpc FindAllQuizzesByTicketId(FindAllQuizzesByTicketIdRequest)
-      returns (FindAllQuizzesByTicketIdResponse);
+  rpc FindAllQuizzesBySubjectId(FindAllQuizzesBySubjectIdRequest)
+      returns (FindAllQuizzesBySubjectIdResponse);
 }
 
 message Quiz {
   string id = 1;
-  string thesis_id = 2;
-  string ticket_id = 3;
-  string question = 4;
-  repeated AnswerOption answer_options = 5;
-  google.protobuf.Timestamp created_at = 6;
-  google.protobuf.Timestamp updated_at = 7;
+  string subject_id = 2;
+  optional string ticket_id = 3;
+  shared.quiz.v1.QuestionType type = 4;
+  string question = 5;
+  optional string reference_answer = 6;
+  repeated AnswerOption answer_options = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
 }
 
 message AnswerOption {
@@ -35,11 +39,28 @@ message QuizResponse {
 }
 
 message CreateQuizRequest {
-  string ticket_id = 1;
-  repeated string thesis_ids = 2;
+  string subject_id = 1;
+  optional string ticket_id = 2;
+  bool should_link_with_ticket = 7;
+  shared.quiz.v1.QuestionType type = 3;
+  string question = 4;
+  optional string reference_answer = 5;
+  repeated shared.quiz.v1.AnswerOptionInput answer_options = 6;
 }
 
 message CreateQuizResponse {
+  Quiz quiz = 1;
+}
+
+message GenerateQuizRequest {
+  string subject_id = 1;
+  optional string ticket_id = 2;
+  bool should_link_with_ticket = 5;
+  shared.quiz.v1.QuestionType type = 3;
+  optional int32 count = 4;
+}
+
+message GenerateQuizResponse {
   repeated Quiz quizzes = 1;
 }
 
@@ -47,31 +68,27 @@ message GetQuizRequest {
   string id = 1;
 }
 
-message AnswerOptionInput {
-  string text = 1;
-  bool is_correct = 2;
-  optional string id = 3;
-}
-
 message AnswerOptionInputList {
-  repeated AnswerOptionInput items = 1;
+  repeated shared.quiz.v1.AnswerOptionInput items = 1;
 }
 
 message PatchQuizRequest {
   string id = 1;
   optional string question = 2;
-  optional AnswerOptionInputList answer_options = 3;
+  optional string reference_answer = 3;
+  optional AnswerOptionInputList answer_options = 4;
 }
 
 message DeleteQuizRequest {
   string id = 1;
 }
 
-message FindAllQuizzesByTicketIdRequest {
-  string ticket_id = 1;
+message FindAllQuizzesBySubjectIdRequest {
+  string subject_id = 1;
+  optional string ticket_id = 2;
 }
 
-message FindAllQuizzesByTicketIdResponse {
+message FindAllQuizzesBySubjectIdResponse {
   repeated Quiz quizzes = 1;
   int32 total_count = 2;
 }

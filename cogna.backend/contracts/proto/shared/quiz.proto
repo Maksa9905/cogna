@@ -2,7 +2,15 @@ syntax = "proto3";
 
 package shared.quiz.v1;
 
+enum QuestionType {
+  QUESTION_TYPE_UNSPECIFIED = 0;
+  OPEN = 1;
+  SINGLE_CHOICE = 2;
+  MULTIPLE_CHOICE = 3;
+}
+
 message AnswerOptionInput {
   string text = 1;
   bool is_correct = 2;
+  optional string id = 3;
 }

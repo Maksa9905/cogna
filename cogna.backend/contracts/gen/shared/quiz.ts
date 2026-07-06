@@ -8,9 +8,18 @@
 
 export const protobufPackage = "shared.quiz.v1";
 
+export enum QuestionType {
+  QUESTION_TYPE_UNSPECIFIED = "QUESTION_TYPE_UNSPECIFIED",
+  OPEN = "OPEN",
+  SINGLE_CHOICE = "SINGLE_CHOICE",
+  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
 export interface AnswerOptionInput {
   text: string;
   isCorrect: boolean;
+  id?: string | undefined;
 }
 
 export const SHARED_QUIZ_V1_PACKAGE_NAME = "shared.quiz.v1";

@@ -90,7 +90,8 @@ export class TicketResolver {
 
   @ResolveField(() => [QuizGql])
   public async quizzes(@Parent() ticket: TicketGql) {
-    const response = await this.quizService.findAllQuizzesByTicketId({
+    const response = await this.quizService.findAllQuizzesBySubjectId({
+      subjectId: ticket.subjectId,
       ticketId: ticket.id,
     });
     return response.quizzes;

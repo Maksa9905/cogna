@@ -4,8 +4,10 @@ import {
   CreateQuizRequest,
   CreateQuizResponse,
   DeleteQuizRequest,
-  FindAllQuizzesByTicketIdRequest,
-  FindAllQuizzesByTicketIdResponse,
+  FindAllQuizzesBySubjectIdRequest,
+  FindAllQuizzesBySubjectIdResponse,
+  GenerateQuizRequest,
+  GenerateQuizResponse,
   GetQuizRequest,
   QuizResponse,
   QuizServiceController,
@@ -25,6 +27,10 @@ export class QuizController implements QuizServiceController {
     return this.quizService.createQuiz(request);
   }
 
+  generateQuiz(request: GenerateQuizRequest): Promise<GenerateQuizResponse> {
+    return this.quizService.generateQuiz(request);
+  }
+
   getQuiz(request: GetQuizRequest): Promise<QuizResponse> {
     return this.quizService.getQuiz(request);
   }
@@ -37,9 +43,9 @@ export class QuizController implements QuizServiceController {
     return this.quizService.deleteQuiz(request);
   }
 
-  findAllQuizzesByTicketId(
-    request: FindAllQuizzesByTicketIdRequest,
-  ): Promise<FindAllQuizzesByTicketIdResponse> {
-    return this.quizService.findAllQuizzesByTicketId(request);
+  findAllQuizzesBySubjectId(
+    request: FindAllQuizzesBySubjectIdRequest,
+  ): Promise<FindAllQuizzesBySubjectIdResponse> {
+    return this.quizService.findAllQuizzesBySubjectId(request);
   }
 }

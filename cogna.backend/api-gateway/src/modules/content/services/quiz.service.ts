@@ -2,11 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateQuizRequest,
   DeleteQuizRequest,
-  FindAllQuizzesByTicketIdRequest,
+  FindAllQuizzesBySubjectIdRequest,
+  GenerateQuizRequest,
   GetQuizRequest,
   QuizServiceClient,
   PatchQuizRequest,
-} from '@cogna-edu/contracts/dist/content/quiz';
+} from '@cogna-edu/contracts/gen/content/quiz';
 import { ClientGrpc } from '@nestjs/microservices';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import {
@@ -33,6 +34,10 @@ export class QuizService {
     return this.quizClient.createQuiz(dto);
   }
 
+  public generateQuiz(dto: GenerateQuizRequest) {
+    return this.quizClient.generateQuiz(dto);
+  }
+
   public getQuiz(dto: GetQuizRequest) {
     return this.quizClient.getQuiz(dto);
   }
@@ -45,7 +50,7 @@ export class QuizService {
     return this.quizClient.deleteQuiz(dto);
   }
 
-  public findAllQuizzesByTicketId(dto: FindAllQuizzesByTicketIdRequest) {
-    return this.quizClient.findAllQuizzesByTicketId(dto);
+  public findAllQuizzesBySubjectId(dto: FindAllQuizzesBySubjectIdRequest) {
+    return this.quizClient.findAllQuizzesBySubjectId(dto);
   }
 }

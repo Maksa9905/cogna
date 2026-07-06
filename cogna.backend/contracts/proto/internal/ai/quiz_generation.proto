@@ -9,11 +9,14 @@ service QuizGenerationService {
 }
 
 message GenerateQuizRequest {
-  string thesis_value = 1;
-  string ticket_question = 2;
+  optional string ticket_question = 1;
+  optional string ticket_answer = 2;
+  optional string subject_title = 4;
+  shared.quiz.v1.QuestionType type = 3;
 }
 
 message GenerateQuizResponse {
   string question = 1;
-  repeated shared.quiz.v1.AnswerOptionInput answer_options = 2;
+  optional string reference_answer = 2;
+  repeated shared.quiz.v1.AnswerOptionInput answer_options = 3;
 }

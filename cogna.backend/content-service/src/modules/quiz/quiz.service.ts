@@ -6,28 +6,36 @@ import { RpcStatus } from '@cogna-edu/corn';
 import { SuccessResponse } from '@cogna-edu/contracts/gen/content/common';
 import {
   AnswerOption,
-  AnswerOptionInput,
   CreateQuizRequest,
   CreateQuizResponse,
   DeleteQuizRequest,
-  FindAllQuizzesByTicketIdRequest,
-  FindAllQuizzesByTicketIdResponse,
+  FindAllQuizzesBySubjectIdRequest,
+  FindAllQuizzesBySubjectIdResponse,
+  GenerateQuizRequest,
+  GenerateQuizResponse,
   GetQuizRequest,
   PatchQuizRequest,
   Quiz,
   QuizResponse,
 } from '@cogna-edu/contracts/gen/content/quiz';
 import {
-  GenerateQuizRequest,
+  GenerateQuizRequest as AiGenerateQuizRequest,
   QuizGenerationServiceClient,
 } from '@cogna-edu/contracts/gen/internal/ai/quiz_generation';
+import {
+  AnswerOptionInput,
+  QuestionType as ProtoQuestionType,
+} from '@cogna-edu/contracts/dist/shared/quiz';
+import { QuestionType as PrismaQuestionType } from '../../../prisma/generated/client';
 import { PrismaService } from '../../infra/prisma/prisma.service';
 
 type QuizWithOptions = {
   id: string;
-  thesisId: string;
+  subjectId: string;
   ticketId: string;
+  type: PrismaQuestionType;
   question: string;
+  referenceAnswer: string | null;
   createdAt: Date;
   updatedAt: Date;
   answerOptions: {
@@ -53,13 +61,11 @@ export class QuizService {
 
   public async createQuiz(dto: CreateQuizRequest): Promise<CreateQuizResponse> {
     const userId = this.requireUserId();
-    const ticket = await this.prisma.ticket.findFirst({
-      where: {
-        id: dto.ticketId,
-        subject: { userId },
-      },
-      include: { theses: true },
-    });
+    const ticket = await this.findOwnedTicket(
+      dto.subjectId,
+      dto.ticketId,
+      userId,
+    );
 
     if (!ticket) {
       throw new RpcException({
@@ -68,61 +74,85 @@ export class QuizService {
       });
     }
 
-    const thesisIds =
-      dto.thesisIds.length > 0
-        ? dto.thesisIds
-        : ticket.theses.map((thesis) => thesis.id);
-
-    const theses = ticket.theses.filter((thesis) =>
-      thesisIds.includes(thesis.id),
+    const type = this.toPrismaQuestionType(dto.type);
+    this.validateQuizPayload(
+      type,
+      dto.question,
+      dto.referenceAnswer,
+      dto.answerOptions,
     );
 
-    if (theses.length !== thesisIds.length) {
+    const created = await this.prisma.quiz.create({
+      data: {
+        subjectId: dto.subjectId,
+        ticketId: dto.ticketId,
+        type,
+        question: dto.question,
+        referenceAnswer: dto.referenceAnswer,
+        answerOptions:
+          type === PrismaQuestionType.OPEN
+            ? undefined
+            : {
+                create: dto.answerOptions.map((option) => ({
+                  text: option.text,
+                  isCorrect: option.isCorrect,
+                })),
+              },
+      },
+      include: { answerOptions: true },
+    });
+
+    return { quiz: this.toQuiz(created) };
+  }
+
+  public async generateQuiz(
+    dto: GenerateQuizRequest,
+  ): Promise<GenerateQuizResponse> {
+    const userId = this.requireUserId();
+    const ticket = await this.findOwnedTicket(
+      dto.subjectId,
+      dto.ticketId,
+      userId,
+    );
+
+    if (!ticket) {
       throw new RpcException({
-        code: RpcStatus.INVALID_ARGUMENT,
-        message: 'some thesis ids do not belong to the ticket',
+        code: RpcStatus.NOT_FOUND,
+        message: 'ticket not found or access denied',
       });
     }
 
+    const type = this.toPrismaQuestionType(dto.type);
+    const count = dto.count && dto.count > 0 ? dto.count : 1;
     const quizzes: Quiz[] = [];
 
-    for (const thesis of theses) {
-      const existing = await this.prisma.quiz.findUnique({
-        where: { thesisId: thesis.id },
-      });
-
-      if (existing) {
-        throw new RpcException({
-          code: RpcStatus.ALREADY_EXISTS,
-          message: `quiz already exists for thesis ${thesis.id}`,
-        });
-      }
-
+    for (let i = 0; i < count; i++) {
       const generated = await firstValueFrom(
         this.quizGenerationClient.generateQuiz({
-          thesisValue: thesis.value,
           ticketQuestion: ticket.question,
-        } satisfies GenerateQuizRequest),
+          ticketAnswer: ticket.answer,
+          type: dto.type,
+        } satisfies AiGenerateQuizRequest),
       );
 
-      if ((generated.answerOptions?.length ?? 0) !== 4) {
-        throw new RpcException({
-          code: RpcStatus.INTERNAL,
-          message: 'quiz generation returned invalid answer options count',
-        });
-      }
+      this.validateGeneratedQuiz(type, generated);
 
       const created = await this.prisma.quiz.create({
         data: {
-          thesisId: thesis.id,
-          ticketId: ticket.id,
+          subjectId: dto.subjectId,
+          ticketId: dto.ticketId,
+          type,
           question: generated.question,
-          answerOptions: {
-            create: generated.answerOptions.map((option) => ({
-              text: option.text,
-              isCorrect: option.isCorrect,
-            })),
-          },
+          referenceAnswer: generated.referenceAnswer,
+          answerOptions:
+            type === PrismaQuestionType.OPEN
+              ? undefined
+              : {
+                  create: generated.answerOptions.map((option) => ({
+                    text: option.text,
+                    isCorrect: option.isCorrect,
+                  })),
+                },
         },
         include: { answerOptions: true },
       });
@@ -149,17 +179,42 @@ export class QuizService {
 
   public async patchQuiz(dto: PatchQuizRequest): Promise<QuizResponse> {
     const userId = this.requireUserId();
-    const { id, question, answerOptions } = dto;
+    const existing = await this.findOwnedQuiz(dto.id, userId);
+
+    if (!existing) {
+      throw new RpcException({
+        code: RpcStatus.NOT_FOUND,
+        message: 'quiz not found or access denied',
+      });
+    }
+
+    const { id, question, referenceAnswer, answerOptions } = dto;
+
+    if (answerOptions?.items) {
+      this.validateAnswerOptions(existing.type, answerOptions.items);
+    }
+
+    if (
+      existing.type === PrismaQuestionType.OPEN &&
+      referenceAnswer !== undefined &&
+      !referenceAnswer.trim()
+    ) {
+      throw new RpcException({
+        code: RpcStatus.INVALID_ARGUMENT,
+        message: 'reference answer is required for open question type',
+      });
+    }
 
     try {
       const quiz = await this.prisma.$transaction(async (tx) => {
         await tx.quiz.update({
           where: {
             id,
-            ticket: { subject: { userId } },
+            subject: { userId },
           },
           data: {
             ...(question !== undefined ? { question } : {}),
+            ...(referenceAnswer !== undefined ? { referenceAnswer } : {}),
           },
         });
 
@@ -222,7 +277,7 @@ export class QuizService {
     const result = await this.prisma.quiz.deleteMany({
       where: {
         id: dto.id,
-        ticket: { subject: { userId } },
+        subject: { userId },
       },
     });
 
@@ -236,33 +291,55 @@ export class QuizService {
     return { ok: true };
   }
 
-  public async findAllQuizzesByTicketId(
-    dto: FindAllQuizzesByTicketIdRequest,
-  ): Promise<FindAllQuizzesByTicketIdResponse> {
+  public async findAllQuizzesBySubjectId(
+    dto: FindAllQuizzesBySubjectIdRequest,
+  ): Promise<FindAllQuizzesBySubjectIdResponse> {
     const userId = this.requireUserId();
 
-    const ticket = await this.prisma.ticket.findFirst({
+    const subject = await this.prisma.subject.findFirst({
       where: {
-        id: dto.ticketId,
-        subject: { userId },
+        id: dto.subjectId,
+        userId,
       },
       select: { id: true },
     });
 
-    if (!ticket) {
+    if (!subject) {
       throw new RpcException({
         code: RpcStatus.NOT_FOUND,
-        message: 'ticket not found or access denied',
+        message: 'subject not found or access denied',
       });
     }
 
+    if (dto.ticketId) {
+      const ticket = await this.prisma.ticket.findFirst({
+        where: {
+          id: dto.ticketId,
+          subjectId: dto.subjectId,
+        },
+        select: { id: true },
+      });
+
+      if (!ticket) {
+        throw new RpcException({
+          code: RpcStatus.INVALID_ARGUMENT,
+          message: 'ticket does not belong to the subject',
+        });
+      }
+    }
+
+    const where = {
+      subjectId: dto.subjectId,
+      ...(dto.ticketId ? { ticketId: dto.ticketId } : {}),
+    };
+
     const [quizzes, totalCount] = await Promise.all([
       this.prisma.quiz.findMany({
-        where: { ticketId: dto.ticketId },
+        where,
         include: { answerOptions: true },
         orderBy: { createdAt: 'asc' },
       }),
-      this.prisma.quiz.count({ where: { ticketId: dto.ticketId } }),
+      this.prisma.quiz.count({ where }),
     ]);
 
     return {
@@ -282,22 +359,159 @@ export class QuizService {
     return userId;
   }
 
+  private findOwnedTicket(subjectId: string, ticketId: string, userId: string) {
+    return this.prisma.ticket.findFirst({
+      where: {
+        id: ticketId,
+        subjectId,
+        subject: { userId },
+      },
+    });
+  }
+
   private findOwnedQuiz(id: string, userId: string) {
     return this.prisma.quiz.findFirst({
       where: {
         id,
-        ticket: { subject: { userId } },
+        subject: { userId },
       },
       include: { answerOptions: true },
     });
   }
 
+  private toPrismaQuestionType(type: ProtoQuestionType): PrismaQuestionType {
+    switch (type) {
+      case ProtoQuestionType.OPEN:
+        return PrismaQuestionType.OPEN;
+      case ProtoQuestionType.SINGLE_CHOICE:
+        return PrismaQuestionType.SINGLE_CHOICE;
+      case ProtoQuestionType.MULTIPLE_CHOICE:
+        return PrismaQuestionType.MULTIPLE_CHOICE;
+      default:
+        throw new RpcException({
+          code: RpcStatus.INVALID_ARGUMENT,
+          message: 'invalid question type',
+        });
+    }
+  }
+
+  private toProtoQuestionType(type: PrismaQuestionType): ProtoQuestionType {
+    switch (type) {
+      case PrismaQuestionType.OPEN:
+        return ProtoQuestionType.OPEN;
+      case PrismaQuestionType.SINGLE_CHOICE:
+        return ProtoQuestionType.SINGLE_CHOICE;
+      case PrismaQuestionType.MULTIPLE_CHOICE:
+        return ProtoQuestionType.MULTIPLE_CHOICE;
+      default:
+        return ProtoQuestionType.UNRECOGNIZED;
+    }
+  }
+
+  private validateQuizPayload(
+    type: PrismaQuestionType,
+    question: string,
+    referenceAnswer: string | undefined,
+    answerOptions: AnswerOptionInput[],
+  ) {
+    if (!question.trim()) {
+      throw new RpcException({
+        code: RpcStatus.INVALID_ARGUMENT,
+        message: 'question is required',
+      });
+    }
+
+    if (type === PrismaQuestionType.OPEN) {
+      if (!referenceAnswer?.trim()) {
+        throw new RpcException({
+          code: RpcStatus.INVALID_ARGUMENT,
+          message: 'reference answer is required for open question type',
+        });
+      }
+      if (answerOptions.length > 0) {
+        throw new RpcException({
+          code: RpcStatus.INVALID_ARGUMENT,
+          message: 'open question type must not have answer options',
+        });
+      }
+      return;
+    }
+
+    this.validateAnswerOptions(type, answerOptions);
+  }
+
+  private validateAnswerOptions(
+    type: PrismaQuestionType,
+    answerOptions: AnswerOptionInput[],
+  ) {
+    if (type === PrismaQuestionType.OPEN) {
+      if (answerOptions.length > 0) {
+        throw new RpcException({
+          code: RpcStatus.INVALID_ARGUMENT,
+          message: 'open question type must not have answer options',
+        });
+      }
+      return;
+    }
+
+    const correctCount = answerOptions.filter(
+      (option) => option.isCorrect,
+    ).length;
+
+    if (answerOptions.length < 2) {
+      throw new RpcException({
+        code: RpcStatus.INVALID_ARGUMENT,
+        message: 'at least two answer options are required',
+      });
+    }
+
+    if (type === PrismaQuestionType.SINGLE_CHOICE && correctCount !== 1) {
+      throw new RpcException({
+        code: RpcStatus.INVALID_ARGUMENT,
+        message: 'single choice question must have exactly one correct option',
+      });
+    }
+
+    if (type === PrismaQuestionType.MULTIPLE_CHOICE && correctCount < 2) {
+      throw new RpcException({
+        code: RpcStatus.INVALID_ARGUMENT,
+        message:
+          'multiple choice question must have at least two correct options',
+      });
+    }
+  }
+
+  private validateGeneratedQuiz(
+    type: PrismaQuestionType,
+    generated: {
+      question: string;
+      referenceAnswer?: string;
+      answerOptions: AnswerOptionInput[];
+    },
+  ) {
+    if (!generated.question.trim()) {
+      throw new RpcException({
+        code: RpcStatus.INTERNAL,
+        message: 'quiz generation returned empty question',
+      });
+    }
+
+    this.validateQuizPayload(
+      type,
+      generated.question,
+      generated.referenceAnswer,
+      generated.answerOptions,
+    );
+  }
+
   private toQuiz(quiz: QuizWithOptions): Quiz {
     return {
       id: quiz.id,
-      thesisId: quiz.thesisId,
+      subjectId: quiz.subjectId,
       ticketId: quiz.ticketId,
+      type: this.toProtoQuestionType(quiz.type),
       question: quiz.question,
+      referenceAnswer: quiz.referenceAnswer ?? undefined,
       answerOptions: quiz.answerOptions.map(
         (option): AnswerOption => ({
           id: option.id,

@@ -31,6 +31,7 @@ import { QuizResolver } from './resolvers/quiz.resolver';
                 'subject.v1',
                 'ticket.v1',
                 'content.quiz.v1',
+                'shared.quiz.v1',
               ],
               // Теперь пути указываем ОТНОСИТЕЛЬНО rootProtoDir
               protoPath: [
@@ -38,6 +39,7 @@ import { QuizResolver } from './resolvers/quiz.resolver';
                 'content/subject.proto',
                 'content/ticket.proto',
                 'content/quiz.proto',
+                'shared/quiz.proto',
               ],
               loader: {
                 keepCase: false,

@@ -111,9 +111,11 @@ export type ThesisScalarFieldEnum = (typeof ThesisScalarFieldEnum)[keyof typeof 
 
 export const QuizScalarFieldEnum = {
   id: 'id',
-  thesisId: 'thesisId',
+  subjectId: 'subjectId',
   ticketId: 'ticketId',
+  type: 'type',
   question: 'question',
+  referenceAnswer: 'referenceAnswer',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -147,4 +149,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

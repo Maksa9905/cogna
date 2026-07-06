@@ -854,9 +854,11 @@ export type ThesisScalarFieldEnum = (typeof ThesisScalarFieldEnum)[keyof typeof 
 
 export const QuizScalarFieldEnum = {
   id: 'id',
-  thesisId: 'thesisId',
+  subjectId: 'subjectId',
   ticketId: 'ticketId',
+  type: 'type',
   question: 'question',
+  referenceAnswer: 'referenceAnswer',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -890,6 +892,14 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -937,6 +947,20 @@ export type EnumImportanceFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'Importance[]'
  */
 export type ListEnumImportanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Importance[]'>
+    
+
+
+/**
+ * Reference to a field of type 'QuestionType'
+ */
+export type EnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionType'>
+    
+
+
+/**
+ * Reference to a field of type 'QuestionType[]'
+ */
+export type ListEnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionType[]'>
     
 
 

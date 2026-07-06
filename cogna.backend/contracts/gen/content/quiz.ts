@@ -8,15 +8,18 @@
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
+import { AnswerOptionInput, QuestionType } from "../shared/quiz";
 import { SuccessResponse } from "./common";
 
 export const protobufPackage = "content.quiz.v1";
 
 export interface Quiz {
   id: string;
-  thesisId: string;
-  ticketId: string;
+  subjectId: string;
+  ticketId?: string | undefined;
+  type: QuestionType;
   question: string;
+  referenceAnswer?: string | undefined;
   answerOptions: AnswerOption[];
   createdAt: Date | undefined;
   updatedAt: Date | undefined;
@@ -33,22 +36,33 @@ export interface QuizResponse {
 }
 
 export interface CreateQuizRequest {
-  ticketId: string;
-  thesisIds: string[];
+  subjectId: string;
+  ticketId?: string | undefined;
+  shouldLinkWithTicket: boolean;
+  type: QuestionType;
+  question: string;
+  referenceAnswer?: string | undefined;
+  answerOptions: AnswerOptionInput[];
 }
 
 export interface CreateQuizResponse {
+  quiz: Quiz | undefined;
+}
+
+export interface GenerateQuizRequest {
+  subjectId: string;
+  ticketId?: string | undefined;
+  shouldLinkWithTicket: boolean;
+  type: QuestionType;
+  count?: number | undefined;
+}
+
+export interface GenerateQuizResponse {
   quizzes: Quiz[];
 }
 
 export interface GetQuizRequest {
   id: string;
-}
-
-export interface AnswerOptionInput {
-  text: string;
-  isCorrect: boolean;
-  id?: string | undefined;
 }
 
 export interface AnswerOptionInputList {
@@ -58,6 +72,7 @@ export interface AnswerOptionInputList {
 export interface PatchQuizRequest {
   id: string;
   question?: string | undefined;
+  referenceAnswer?: string | undefined;
   answerOptions?: AnswerOptionInputList | undefined;
 }
 
@@ -65,11 +80,12 @@ export interface DeleteQuizRequest {
   id: string;
 }
 
-export interface FindAllQuizzesByTicketIdRequest {
-  ticketId: string;
+export interface FindAllQuizzesBySubjectIdRequest {
+  subjectId: string;
+  ticketId?: string | undefined;
 }
 
-export interface FindAllQuizzesByTicketIdResponse {
+export interface FindAllQuizzesBySubjectIdResponse {
   quizzes: Quiz[];
   totalCount: number;
 }
@@ -88,13 +104,15 @@ wrappers[".google.protobuf.Timestamp"] = {
 export interface QuizServiceClient {
   createQuiz(request: CreateQuizRequest): Observable<CreateQuizResponse>;
 
+  generateQuiz(request: GenerateQuizRequest): Observable<GenerateQuizResponse>;
+
   getQuiz(request: GetQuizRequest): Observable<QuizResponse>;
 
   patchQuiz(request: PatchQuizRequest): Observable<QuizResponse>;
 
   deleteQuiz(request: DeleteQuizRequest): Observable<SuccessResponse>;
 
-  findAllQuizzesByTicketId(request: FindAllQuizzesByTicketIdRequest): Observable<FindAllQuizzesByTicketIdResponse>;
+  findAllQuizzesBySubjectId(request: FindAllQuizzesBySubjectIdRequest): Observable<FindAllQuizzesBySubjectIdResponse>;
 }
 
 export interface QuizServiceController {
@@ -102,23 +120,34 @@ export interface QuizServiceController {
     request: CreateQuizRequest,
   ): Promise<CreateQuizResponse> | Observable<CreateQuizResponse> | CreateQuizResponse;
 
+  generateQuiz(
+    request: GenerateQuizRequest,
+  ): Promise<GenerateQuizResponse> | Observable<GenerateQuizResponse> | GenerateQuizResponse;
+
   getQuiz(request: GetQuizRequest): Promise<QuizResponse> | Observable<QuizResponse> | QuizResponse;
 
   patchQuiz(request: PatchQuizRequest): Promise<QuizResponse> | Observable<QuizResponse> | QuizResponse;
 
   deleteQuiz(request: DeleteQuizRequest): Promise<SuccessResponse> | Observable<SuccessResponse> | SuccessResponse;
 
-  findAllQuizzesByTicketId(
-    request: FindAllQuizzesByTicketIdRequest,
+  findAllQuizzesBySubjectId(
+    request: FindAllQuizzesBySubjectIdRequest,
   ):
-    | Promise<FindAllQuizzesByTicketIdResponse>
-    | Observable<FindAllQuizzesByTicketIdResponse>
-    | FindAllQuizzesByTicketIdResponse;
+    | Promise<FindAllQuizzesBySubjectIdResponse>
+    | Observable<FindAllQuizzesBySubjectIdResponse>
+    | FindAllQuizzesBySubjectIdResponse;
 }
 
 export function QuizServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createQuiz", "getQuiz", "patchQuiz", "deleteQuiz", "findAllQuizzesByTicketId"];
+    const grpcMethods: string[] = [
+      "createQuiz",
+      "generateQuiz",
+      "getQuiz",
+      "patchQuiz",
+      "deleteQuiz",
+      "findAllQuizzesBySubjectId",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("QuizService", method)(constructor.prototype[method], method, descriptor);
