@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package content.quiz.v1;
+
+import "content/common.proto";
+import "google/protobuf/timestamp.proto";
+import "shared/quiz.proto";
+
+service QuizService {
+  rpc CreateQuiz(CreateQuizRequest) returns (CreateQuizResponse);
+  rpc GenerateQuiz(GenerateQuizRequest) returns (GenerateQuizResponse);
+  rpc GetQuiz(GetQuizRequest) returns (QuizResponse);
+  rpc PatchQuiz(PatchQuizRequest) returns (QuizResponse);
+  rpc DeleteQuiz(DeleteQuizRequest) returns (common.content.v1.SuccessResponse);
+  rpc FindAllQuizzesBySubjectId(FindAllQuizzesBySubjectIdRequest)
+      returns (FindAllQuizzesBySubjectIdResponse);
+}
+
+message Quiz {
+  string id = 1;
+  string subject_id = 2;
+  optional string ticket_id = 3;
+  shared.quiz.v1.QuestionType type = 4;
+  string question = 5;
+  optional string reference_answer = 6;
+  repeated AnswerOption answer_options = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+}
+
+message AnswerOption {
+  string id = 1;
+  string text = 2;
+  bool is_correct = 3;
+}
+
+message QuizResponse {
+  Quiz quiz = 1;
+}
+
+message CreateQuizRequest {
+  string subject_id = 1;
+  optional string ticket_id = 2;
+  bool should_link_with_ticket = 7;
+  shared.quiz.v1.QuestionType type = 3;
+  string question = 4;
+  optional string reference_answer = 5;
+  repeated shared.quiz.v1.AnswerOptionInput answer_options = 6;
+}
+
+message CreateQuizResponse {
+  Quiz quiz = 1;
+}
+
+message GenerateQuizRequest {
+  string subject_id = 1;
+  repeated string ticket_ids = 2;
+  bool should_link_with_ticket = 5;
+  shared.quiz.v1.QuestionType type = 3;
+  optional int32 count = 4;
+}
+
+message GenerateQuizResponse {
+  repeated Quiz quizzes = 1;
+}
+
+message GetQuizRequest {
+  string id = 1;
+}
+
+message AnswerOptionInputList {
+  repeated shared.quiz.v1.AnswerOptionInput items = 1;
+}
+
+message PatchQuizRequest {
+  string id = 1;
+  optional string question = 2;
+  optional string reference_answer = 3;
+  optional AnswerOptionInputList answer_options = 4;
+}
+
+message DeleteQuizRequest {
+  string id = 1;
+}
+
+message FindAllQuizzesBySubjectIdRequest {
+  string subject_id = 1;
+  optional string ticket_id = 2;
+}
+
+message FindAllQuizzesBySubjectIdResponse {
+  repeated Quiz quizzes = 1;
+  int32 total_count = 2;
+}

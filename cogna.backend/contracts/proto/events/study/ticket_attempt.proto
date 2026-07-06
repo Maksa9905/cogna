@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package events.study.v1;
+
+import "study/ticket-attempt.proto";
+
+// Topic: study.ticket-attempt
+// Producer: ai-service -> Consumer: study-service
+message TicketAttemptEvent {
+  string ticket_id = 1;
+  string user_id = 2;
+  string subject_id = 3;
+  int64 score = 4;
+  repeated .study.ticket.attempt.v1.ThesisAssessment theses = 5;
+  string summary = 6;
+}

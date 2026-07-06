@@ -4,8 +4,8 @@ import {
   FindAllTicketsAttemptsResponse,
   ThesisAssessment,
   TicketAttempt as TicketAttemptGrpc,
-  TicketAttemptRequest,
 } from '@cogna-edu/contracts/gen/study/ticket-attempt';
+import { TicketAttemptEvent } from '@cogna-edu/contracts/gen/events/study/ticket_attempt';
 import { LogExecutionTime, toTimestamp } from '@cogna-edu/corn';
 import {
   Rating as PrismaRating,
@@ -32,7 +32,7 @@ export class TicketAttemptService {
   ) {}
 
   @LogExecutionTime()
-  public async handleTicketAttempt(dto: TicketAttemptRequest) {
+  public async handleTicketAttempt(dto: TicketAttemptEvent) {
     const progress = await this.ticketProgressRepository.findOne(
       dto.userId,
       dto.ticketId,

@@ -21,21 +21,46 @@ export type WithGrpcMetadata<T> = {
     : T[K];
 };
 
+// Сборка gRPC metadata из контекста запроса. Новые ключи добавлять здесь.
+function buildRequestMetadata(context: UserContextStore): Metadata {
+  const metadata = new Metadata();
+  metadata.set(USER_ID_METADATA_KEY, context.userId);
+  return metadata;
+}
+
+// Низкий уровень: unary gRPC-вызов с уже собранным Metadata.
+function callGrpcWithMetadata<TReq, TRes>(
+  method: GrpcMethod<TReq, TRes>,
+  request: TReq,
+  metadata: Metadata,
+): Promise<TRes> {
+  return firstValueFrom(method(request, metadata));
+}
+
+// Явный контекст — когда ALS недоступен (вне HTTP/gRPC-запроса).
+export function callGrpcWithContext<TReq, TRes>(
+  method: GrpcMethod<TReq, TRes>,
+  request: TReq,
+  context: UserContextStore,
+): Promise<TRes> {
+  return callGrpcWithMetadata(method, request, buildRequestMetadata(context));
+}
+
+// Контекст из ALS — для root Query/Mutation через createGrpcClientWithMetadata.
 function callWithMetadata<TReq, TRes>(
   als: AsyncLocalStorage<UserContextStore>,
   method: GrpcMethod<TReq, TRes>,
   request: TReq,
 ): Promise<TRes> {
-  const userId = als.getStore()?.userId;
-  if (!userId) {
+  const store = als.getStore();
+  if (!store?.userId) {
     throw new UnauthorizedException();
   }
 
-  const metadata = new Metadata();
-  metadata.set(USER_ID_METADATA_KEY, userId);
-  return firstValueFrom(method(request, metadata));
+  return callGrpcWithContext(method, request, store);
 }
 
+// Proxy: методы клиента автоматически читают UserContextStore из ALS.
 export function createGrpcClientWithMetadata<T extends object>(
   client: T,
   als: AsyncLocalStorage<UserContextStore>,

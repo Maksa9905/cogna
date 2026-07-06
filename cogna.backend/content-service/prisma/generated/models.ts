@@ -11,4 +11,6 @@
 export type * from './models/Subject'
 export type * from './models/Ticket'
 export type * from './models/Thesis'
+export type * from './models/Quiz'
+export type * from './models/AnswerOption'
 export type * from './commonInputTypes'

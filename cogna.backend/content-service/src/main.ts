@@ -3,10 +3,8 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import {
   GrpcOptions,
-  MicroserviceOptions,
   Transport,
 } from '@nestjs/microservices';
-import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,14 +16,16 @@ async function bootstrap() {
   app.connectMicroservice<GrpcOptions>({
     transport: Transport.GRPC,
     options: {
-      package: ['common.content.v1', 'subject.v1', 'ticket.v1'],
+      package: ['common.content.v1', 'subject.v1', 'ticket.v1', 'content.quiz.v1'],
       protoPath: [
         'content/common.proto',
         'content/subject.proto',
         'content/ticket.proto',
+        'content/quiz.proto',
       ],
       loader: {
         includeDirs: [rootProtoDir],
+        enums: String,
       },
       url: config.getOrThrow<string>('CONTENT_GRPC_URL', '0.0.0.0:50052'),
     },

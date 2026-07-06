@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transporter, SentMessageInfo } from 'nodemailer';
 import * as nodemailer from 'nodemailer';
-import { SendOtpRequest } from '@cogna-edu/contracts/gen/notification/notification';
+import { SendOtpEvent } from '@cogna-edu/contracts/gen/events/notification/send_otp';
 
 @Injectable()
 export class MailService {
@@ -39,7 +39,7 @@ export class MailService {
     });
   }
 
-  public async sendOtp(data: SendOtpRequest): Promise<SentMessageInfo> {
+  public async sendOtp(data: SendOtpEvent): Promise<SentMessageInfo> {
     const { email, otp } = data;
     const subject = 'Код подтверждения — Cogna';
     const text = `Ваш код подтверждения: ${otp}. Никому не сообщайте этот код. Действителен ограниченное время.`;

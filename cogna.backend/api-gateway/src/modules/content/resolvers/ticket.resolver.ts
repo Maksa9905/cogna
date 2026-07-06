@@ -1,8 +1,9 @@
 import {
   Args,
-  Context,
   Mutation,
+  Parent,
   Query,
+  ResolveField,
   Resolver,
   Subscription,
 } from '@nestjs/graphql';
@@ -18,25 +19,30 @@ import {
   SuccessResponseContentGql,
   TicketResponseGql,
   PatchTicketRequestGql,
+  QuizGql,
+  TicketGql,
 } from '../dto';
 import { TicketService } from '../services/ticket.service';
-import { Request } from 'express';
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn';
 import { PubSub } from 'graphql-subscriptions';
 import { interval, map, take } from 'rxjs';
+import { QuizService } from '../services/quiz.service';
 
 export type PubSubEvents = {
   TEST_STREAM_1: { testStream: string };
-  [key: string]: any; // Для динамических каналов тикетов
+  [key: string]: any;
 };
 
 const pubSub = new PubSub();
 
 @Protected(UserRole.USER)
-@Resolver()
+@Resolver(() => TicketGql)
 export class TicketResolver {
-  constructor(private readonly ticketService: TicketService) {}
+  constructor(
+    private readonly ticketService: TicketService,
+    private readonly quizService: QuizService,
+  ) {}
 
   @Mutation(() => TicketResponseGql)
   public async ticketCreateTicket(@Args('data') dto: CreateTicketRequestGql) {
@@ -44,14 +50,8 @@ export class TicketResolver {
   }
 
   @Query(() => TicketResponseGql)
-  public async ticketFindOneTicket(
-    @Context('req') req: Request,
-    @Args('data') dto: FindOneTicketRequestGql,
-  ) {
-    return await this.ticketService.findOneTicket({
-      userId: req.user.sub,
-      ...dto,
-    });
+  public async ticketFindOneTicket(@Args('data') dto: FindOneTicketRequestGql) {
+    return await this.ticketService.findOneTicket(dto);
   }
 
   @Query(() => FindAllTicketsResponseGql)
@@ -62,26 +62,16 @@ export class TicketResolver {
   }
 
   @Mutation(() => TicketResponseGql)
-  public async ticketPatchTicket(
-    @Context('req') req: Request,
-    @Args('data') dto: PatchTicketRequestGql,
-  ) {
+  public async ticketPatchTicket(@Args('data') dto: PatchTicketRequestGql) {
     return await this.ticketService.patchTicket({
-      userId: req.user.sub,
       ...dto,
       theses: dto.theses && { items: dto.theses },
     });
   }
 
   @Mutation(() => SuccessResponseContentGql)
-  public async ticketDeleteTicket(
-    @Context('req') req: Request,
-    @Args('data') dto: DeleteTicketRequestGql,
-  ) {
-    return await this.ticketService.deleteTicket({
-      userId: req.user.sub,
-      ...dto,
-    });
+  public async ticketDeleteTicket(@Args('data') dto: DeleteTicketRequestGql) {
+    return await this.ticketService.deleteTicket(dto);
   }
 
   @Mutation(() => TicketResponseGql)
@@ -96,6 +86,15 @@ export class TicketResolver {
     @Args('data') dto: GenerateAnswerRequestGql,
   ) {
     return await this.ticketService.generateAnswer(dto);
+  }
+
+  @ResolveField(() => [QuizGql])
+  public async quizzes(@Parent() ticket: TicketGql) {
+    const response = await this.quizService.findAllQuizzesBySubjectId({
+      subjectId: ticket.subjectId,
+      ticketId: ticket.id,
+    });
+    return response.quizzes;
   }
 
   @Subscription(() => String, {})

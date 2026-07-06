@@ -10,7 +10,7 @@ import {
 
 import { StudySubjectProgressServiceControllerMethods } from '@cogna-edu/contracts/dist/study/subject-progress';
 import { EventPattern } from '@nestjs/microservices';
-import { DeleteSubjectRequest } from '@cogna-edu/contracts/gen/content/subject';
+import { DeleteSubjectProgressEvent } from '@cogna-edu/contracts/gen/events/study/subject_progress';
 
 @Controller('subject-progress')
 @StudySubjectProgressServiceControllerMethods()
@@ -20,7 +20,7 @@ export class SubjectProgressController implements StudySubjectProgressServiceCon
   ) {}
 
   @EventPattern('study.delete.subject.progress')
-  public async deleteSubjectProgress(dto: DeleteSubjectRequest) {
+  public async deleteSubjectProgress(dto: DeleteSubjectProgressEvent) {
     await this.subjectProgressService.delete(dto);
   }
 

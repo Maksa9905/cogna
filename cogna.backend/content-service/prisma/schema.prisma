@@ -16,6 +16,7 @@ model Subject {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
   Ticket    Ticket[]
+  Quiz      Quiz[]
 
   @@index([userId])
   @@map("subjects")
@@ -28,6 +29,7 @@ model Ticket {
   question  String
   answer    String
   theses    Thesis[]
+  quizzes   Quiz[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
@@ -59,4 +61,46 @@ model Thesis {
 
   @@index([ticketId])
   @@map("theses")
+}
+
+enum QuestionType {
+  OPEN
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+}
+
+model Quiz {
+  id              String       @id @default(uuid())
+  subjectId       String       @map("subject_id")
+  ticketId        String?      @map("ticket_id")
+  type            QuestionType
+  question        String
+  referenceAnswer String?      @map("reference_answer")
+
+  answerOptions AnswerOption[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  ticket  Ticket? @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+
+  @@index([subjectId])
+  @@index([ticketId])
+  @@map("quizzes")
+}
+
+model AnswerOption {
+  id        String  @id @default(uuid())
+  quizId    String  @map("quiz_id")
+  text      String
+  isCorrect Boolean @map("is_correct")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@index([quizId])
+  @@map("answer_options")
 }

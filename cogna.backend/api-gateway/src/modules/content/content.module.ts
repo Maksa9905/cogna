@@ -6,6 +6,8 @@ import { SubjectResolver } from './resolvers/subject.resolver';
 import { SubjectService } from './services/subject.service';
 import { TicketService } from './services/ticket.service';
 import { StudyModule } from '../study/study.module';
+import { QuizService } from './services/quiz.service';
+import { QuizResolver } from './resolvers/quiz.resolver';
 
 @Module({
   imports: [
@@ -24,12 +26,20 @@ import { StudyModule } from '../study/study.module';
                 'CONTENT_GRPC_URL',
                 'localhost:50052',
               ),
-              package: ['common.content.v1', 'subject.v1', 'ticket.v1'],
+              package: [
+                'common.content.v1',
+                'subject.v1',
+                'ticket.v1',
+                'content.quiz.v1',
+                'shared.quiz.v1',
+              ],
               // Теперь пути указываем ОТНОСИТЕЛЬНО rootProtoDir
               protoPath: [
                 'content/common.proto',
                 'content/subject.proto',
                 'content/ticket.proto',
+                'content/quiz.proto',
+                'shared/quiz.proto',
               ],
               loader: {
                 keepCase: false,
@@ -45,6 +55,13 @@ import { StudyModule } from '../study/study.module';
       },
     ]),
   ],
-  providers: [SubjectService, TicketService, SubjectResolver, TicketResolver],
+  providers: [
+    SubjectService,
+    TicketService,
+    SubjectResolver,
+    TicketResolver,
+    QuizService,
+    QuizResolver,
+  ],
 })
 export class ContentModule {}

@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { PrismaService } from '../../infra/prisma/prisma.service';
 import {
   CreateSubjectRequest,
@@ -19,28 +20,28 @@ export class SubjectService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly studyKafkaClient: KafkaStudyClient,
+    @Inject('ALS') private readonly als: AsyncLocalStorage<{ userId: string }>,
   ) {}
 
   public async createSubject(
     dto: CreateSubjectRequest,
   ): Promise<SubjectResponse> {
-    const { title, userId } = dto;
+    const userId = this.requireUserId();
     const subject = await this.prismaService.subject.create({
       data: {
-        title,
+        title: dto.title,
         userId,
       },
     });
-    return { subject: subject };
+    return { subject };
   }
 
   public async findOneSubject(
     dto: FindOneSubjectRequest,
   ): Promise<SubjectResponse> {
-    const { userId, id } = dto;
-
+    const userId = this.requireUserId();
     const subject = await this.prismaService.subject.findUnique({
-      where: { id },
+      where: { id: dto.id },
     });
 
     if (!subject) {
@@ -56,13 +57,14 @@ export class SubjectService {
       });
     }
 
-    return { subject: subject };
+    return { subject };
   }
 
   public async findAllSubjects(
     dto: FindAllSubjectRequest,
   ): Promise<FindAllSubjectsResponse> {
-    const { userId, limit, offset } = dto;
+    const userId = this.requireUserId();
+    const { limit, offset } = dto;
     const [subjects, totalCount] = await Promise.all([
       this.prismaService.subject.findMany({
         where: { userId },
@@ -75,28 +77,42 @@ export class SubjectService {
       }),
     ]);
 
-    return { subjects: subjects, totalCount: totalCount };
+    return { subjects, totalCount };
   }
 
   public async updateSubject(
     dto: UpdateSubjectRequest,
   ): Promise<SubjectResponse> {
-    const { id, userId, title } = dto;
+    const userId = this.requireUserId();
     const subject = await this.prismaService.subject.update({
-      where: { id, userId },
-      data: { title },
+      where: { id: dto.id, userId },
+      data: { title: dto.title },
     });
-    return { subject: subject };
+    return { subject };
   }
 
   public async deleteObject(
     dto: DeleteSubjectRequest,
   ): Promise<SuccessResponse> {
-    const { id, userId } = dto;
+    const userId = this.requireUserId();
     await this.prismaService.subject.delete({
-      where: { id, userId },
+      where: { id: dto.id, userId },
     });
-    await this.studyKafkaClient.deleteSubjectProgress(dto);
+    await this.studyKafkaClient.deleteSubjectProgress({
+      subjectId: dto.id,
+      userId,
+    });
     return { ok: true };
+  }
+
+  private requireUserId(): string {
+    const userId = this.als.getStore()?.userId;
+    if (!userId) {
+      throw new RpcException({
+        code: RpcStatus.UNAUTHENTICATED,
+        message: 'missing user-id metadata',
+      });
+    }
+    return userId;
   }
 }

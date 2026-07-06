@@ -4,17 +4,14 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { AuthModule } from '../modules/auth/auth/auth.module';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { ConfigModule } from '@nestjs/config';
-import { JwtStrategy } from '../common/strategies';
 import { ContentModule } from '../modules/content/content.module';
 import { ThesisModule } from '../modules/thesis/thesis.module';
 import { Module } from '@nestjs/common';
-import { GraphQLUpload } from 'graphql-upload-ts';
 import { AnswerModule } from '../modules/answer/answer.module';
 import { UserModule } from '../modules/auth/user/user.module';
 import { InfraModule } from '../common/infra/infra/infra.module';
-import { startWith } from 'rxjs';
 import { StudyModule } from '../modules/study/study.module';
 
 @Module({
@@ -25,10 +22,11 @@ import { StudyModule } from '../modules/study/study.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      // Interceptors (MetadataInterceptor → ALS) не вызываются на @ResolveField без этого.
+      fieldResolverEnhancers: ['interceptors'],
       csrfPrevention: {
         requestHeaders: ['apollo-require-preflight'],
       },
-      // csrfPrevention: false,
       sortSchema: true,
       playground: false,
       includeStacktraceInErrorResponses: false,
@@ -46,24 +44,25 @@ import { StudyModule } from '../modules/study/study.module';
           onConnect: (context: any) => {
             const connectionParams = context.connectionParams ?? {};
             const authorizationFromClient =
-              (typeof connectionParams.Authorization === 'string' && connectionParams.Authorization) ||
-              (typeof connectionParams.authorization === 'string' && connectionParams.authorization) ||
+              (typeof connectionParams.Authorization === 'string' &&
+                connectionParams.Authorization) ||
+              (typeof connectionParams.authorization === 'string' &&
+                connectionParams.authorization) ||
               '';
             if (authorizationFromClient && context.extra?.request?.headers) {
-              context.extra.request.headers.authorization = authorizationFromClient.startsWith('Bearer ')
-                ? authorizationFromClient
-                : `Bearer ${authorizationFromClient}`;
+              context.extra.request.headers.authorization =
+                authorizationFromClient.startsWith('Bearer ')
+                  ? authorizationFromClient
+                  : `Bearer ${authorizationFromClient}`;
             }
           },
         },
       },
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       context: ({ req, res, extra }) => {
-        // Если есть extra, значит это WebSocket. Берем запрос из него.
         if (extra) {
           return { req: extra.request, res };
         }
-        // Иначе это обычный HTTP
         return { req, res };
       },
     }),

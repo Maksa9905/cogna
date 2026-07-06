@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka, ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom, Observable } from 'rxjs';
-import { ProcessRequest } from '@cogna-edu/contracts/gen/assessment/assessment';
+import { AssessmentProcessEvent } from '@cogna-edu/contracts/gen/events/assessment/assessment';
 import {
   TranscriptionRequest,
   TranscriptionResponse,
@@ -32,7 +32,7 @@ export class AnswerService implements OnModuleInit {
     return this.transcriptionClient.transcribeChunk(requestStream);
   }
 
-  public async submitTextAnswer(dto: ProcessRequest) {
+  public async submitTextAnswer(dto: AssessmentProcessEvent) {
     await firstValueFrom(this.assessmentKafka.emit('assessment.process', dto));
     return { success: true };
   }

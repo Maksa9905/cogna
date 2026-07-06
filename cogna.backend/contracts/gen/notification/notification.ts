@@ -7,23 +7,19 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
+import { SendOtpEvent } from "../events/notification/send_otp";
 import { Empty } from "../google/protobuf/empty";
 
 export const protobufPackage = "notification.v1";
 
-export interface SendOtpRequest {
-  email: string;
-  otp: number;
-}
-
 export const NOTIFICATION_V1_PACKAGE_NAME = "notification.v1";
 
 export interface NotificationServiceClient {
-  sendOtp(request: SendOtpRequest): Observable<Empty>;
+  sendOtp(request: SendOtpEvent): Observable<Empty>;
 }
 
 export interface NotificationServiceController {
-  sendOtp(request: SendOtpRequest): void | Promise<void>;
+  sendOtp(request: SendOtpEvent): void | Promise<void>;
 }
 
 export function NotificationServiceControllerMethods() {

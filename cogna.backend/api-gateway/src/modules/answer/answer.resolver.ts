@@ -22,7 +22,7 @@ import { Protected } from '../../common/decorators/protected.decorator';
 import { UserRole } from '@cogna-edu/corn';
 import { Inject } from '@nestjs/common';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { AssessmentCompletedResponse } from '@cogna-edu/contracts/gen/assessment/assessment';
+import { AssessmentCompletedEvent } from '@cogna-edu/contracts/gen/events/assessment/assessment';
 
 export function AssessmentCompletedChannel(userId: string) {
   return `ASSESSMENT_EVENT:${userId}`;
@@ -98,8 +98,8 @@ export class AnswerResolver {
 
   @Subscription(() => AssessmentCompletedResponseGql, {
     resolve: (payload: {
-      onAssessmentCompleted: AssessmentCompletedResponse;
-    }): AssessmentCompletedResponse => payload.onAssessmentCompleted,
+      onAssessmentCompleted: AssessmentCompletedEvent;
+    }): AssessmentCompletedEvent => payload.onAssessmentCompleted,
   })
   onAssessmentCompleted(@Context('req') req: Request) {
     return this.pubSub.asyncIterator(AssessmentCompletedChannel(req.user.sub));

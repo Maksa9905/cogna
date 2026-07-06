@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package events.notification.v1;
+
+// Topic: notification.send.otp
+// Producer: auth-service -> Consumer: notification-service
+message SendOtpEvent {
+  string email = 1;
+  int32 otp = 2;
+}

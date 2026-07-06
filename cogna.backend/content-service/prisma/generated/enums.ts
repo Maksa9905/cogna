@@ -16,3 +16,12 @@ export const Importance = {
 } as const
 
 export type Importance = (typeof Importance)[keyof typeof Importance]
+
+
+export const QuestionType = {
+  OPEN: 'OPEN',
+  SINGLE_CHOICE: 'SINGLE_CHOICE',
+  MULTIPLE_CHOICE: 'MULTIPLE_CHOICE'
+} as const
+
+export type QuestionType = (typeof QuestionType)[keyof typeof QuestionType]

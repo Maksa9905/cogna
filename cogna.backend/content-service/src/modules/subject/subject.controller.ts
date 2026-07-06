@@ -1,5 +1,5 @@
+import { Controller, UseInterceptors } from '@nestjs/common';
 import { SubjectService } from './subject.service';
-import { GrpcMethod, GrpcService } from '@nestjs/microservices';
 import {
   CreateSubjectRequest,
   DeleteSubjectRequest,
@@ -12,13 +12,13 @@ import {
 } from '@cogna-edu/contracts/gen/content/subject';
 import { SubjectServiceControllerMethods } from '@cogna-edu/contracts/dist/content/subject';
 import { SuccessResponse } from '@cogna-edu/contracts/gen/content/common';
+import { MetadataInterceptor } from '../../common/interseptors/metadata.interceptor';
 
-@GrpcService()
+@Controller()
+@UseInterceptors(MetadataInterceptor)
 @SubjectServiceControllerMethods()
 export class SubjectController implements SubjectServiceController {
-  constructor(
-    private readonly subjectService: SubjectService,
-  ) {}
+  constructor(private readonly subjectService: SubjectService) {}
 
   createSubject(request: CreateSubjectRequest): Promise<SubjectResponse> {
     return this.subjectService.createSubject(request);

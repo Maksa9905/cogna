@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package internal.ai.quiz.v1;
+
+import "shared/quiz.proto";
+
+service QuizGenerationService {
+  rpc GenerateQuiz(GenerateQuizRequest) returns (GenerateQuizResponse);
+}
+
+message GenerateQuizRequest {
+  optional string ticket_question = 1;
+  optional string ticket_answer = 2;
+  optional string subject_title = 4;
+  shared.quiz.v1.QuestionType type = 3;
+}
+
+message GenerateQuizResponse {
+  string question = 1;
+  optional string reference_answer = 2;
+  repeated shared.quiz.v1.AnswerOptionInput answer_options = 3;
+}

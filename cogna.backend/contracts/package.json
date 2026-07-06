@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "generate": "npx protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_opt=nestJs=true --ts_proto_opt=esModuleInterop=true, --ts_proto_opt=useDate=true --ts_proto_opt=stringEnums=true --ts_proto_out=./gen -I ./proto ./proto/**/*.proto && npx tsc"
+    "generate": "npx protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_opt=nestJs=true --ts_proto_opt=esModuleInterop=true, --ts_proto_opt=useDate=true --ts_proto_opt=stringEnums=true --ts_proto_out=./gen -I ./proto $(find ./proto -name '*.proto') && npx tsc"
   },
   "devDependencies": {
     "@types/node": "^22.0.0"

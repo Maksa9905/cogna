@@ -32,3 +32,13 @@ export type Ticket = Prisma.TicketModel
  * 
  */
 export type Thesis = Prisma.ThesisModel
+/**
+ * Model Quiz
+ * 
+ */
+export type Quiz = Prisma.QuizModel
+/**
+ * Model AnswerOption
+ * 
+ */
+export type AnswerOption = Prisma.AnswerOptionModel

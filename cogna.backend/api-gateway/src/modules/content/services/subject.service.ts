@@ -1,3 +1,4 @@
+import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateSubjectRequest,
   DeleteSubjectRequest,
@@ -6,45 +7,45 @@ import {
   SubjectServiceClient,
   UpdateSubjectRequest,
 } from '@cogna-edu/contracts/gen/content/subject';
-import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import {
-  CreateSubjectRequestGql,
-  FindAllSubjectsRequestGql,
-  FindOneSubjectRequestGql,
-  UserIdRequestGql,
-} from '../dto';
-import { firstValueFrom } from 'rxjs';
+  createGrpcClientWithMetadata,
+  UserContextStore,
+  WithGrpcMetadata,
+} from '../../../common/utils/grpc-with-metadata.util';
 
 @Injectable()
 export class SubjectService {
-  private subjectClient: SubjectServiceClient;
+  private readonly subjectClient: WithGrpcMetadata<SubjectServiceClient>;
 
-  constructor(@Inject('CONTENT_GRPC') private readonly client: ClientGrpc) {
-    this.subjectClient =
-      client.getService<SubjectServiceClient>('SubjectService');
+  constructor(
+    @Inject('CONTENT_GRPC') client: ClientGrpc,
+    @Inject('ALS') als: AsyncLocalStorage<UserContextStore>,
+  ) {
+    this.subjectClient = createGrpcClientWithMetadata(
+      client.getService<SubjectServiceClient>('SubjectService'),
+      als,
+    );
   }
 
-  public async createSubject(dto: CreateSubjectRequest) {
-    console.log(dto);
-    return await firstValueFrom(this.subjectClient.createSubject(dto));
+  public createSubject(dto: CreateSubjectRequest) {
+    return this.subjectClient.createSubject(dto);
   }
 
-  public async findOneSubject(dto: FindOneSubjectRequest) {
-    console.log(dto);
-    return await firstValueFrom(this.subjectClient.findOneSubject(dto));
+  public findOneSubject(dto: FindOneSubjectRequest) {
+    return this.subjectClient.findOneSubject(dto);
   }
 
-  public async findAllSubjects(dto: FindAllSubjectRequest) {
-    console.log(dto);
-    return await firstValueFrom(this.subjectClient.findAllSubjects(dto));
+  public findAllSubjects(dto: FindAllSubjectRequest) {
+    return this.subjectClient.findAllSubjects(dto);
   }
 
-  public async updateSubject(dto: UpdateSubjectRequest) {
-    return await firstValueFrom(this.subjectClient.updateSubject(dto));
+  public updateSubject(dto: UpdateSubjectRequest) {
+    return this.subjectClient.updateSubject(dto);
   }
 
-  public async deleteSubject(dto: DeleteSubjectRequest) {
-    return await firstValueFrom(this.subjectClient.deleteSubject(dto));
+  public deleteSubject(dto: DeleteSubjectRequest) {
+    return this.subjectClient.deleteSubject(dto);
   }
 }

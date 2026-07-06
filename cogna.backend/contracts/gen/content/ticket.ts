@@ -72,7 +72,6 @@ export interface FindAllTicketsResponse {
 
 export interface FindOneTicketRequest {
   id: string;
-  userId: string;
 }
 
 export interface ThesisInputList {
@@ -81,7 +80,6 @@ export interface ThesisInputList {
 
 export interface PatchTicketRequest {
   id: string;
-  userId: string;
   question?: string | undefined;
   answer?: string | undefined;
   theses?: ThesisInputList | undefined;
@@ -89,7 +87,6 @@ export interface PatchTicketRequest {
 
 export interface DeleteTicketRequest {
   id: string;
-  userId: string;
 }
 
 /** Запрос на генерацию тезисов */

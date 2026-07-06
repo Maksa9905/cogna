@@ -5,6 +5,7 @@ import { KafkaModule } from './kafka/kafka.module';
 import { ContentGenerationModule } from './modules/content-generation/content-generation.module';
 import { AssessmentModule } from './modules/assessment/assessment.module';
 import { TranscriptionModule } from './modules/transcription/transcription.module';
+import { QuizGenerationModule } from './modules/quiz-generation/quiz-generation.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TranscriptionModule } from './modules/transcription/transcription.modul
     ContentGenerationModule,
     AssessmentModule,
     TranscriptionModule,
+    QuizGenerationModule,
   ],
 })
 export class AppModule {}
