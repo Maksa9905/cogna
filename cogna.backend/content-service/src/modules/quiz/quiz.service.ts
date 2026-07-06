@@ -32,7 +32,7 @@ import { PrismaService } from '../../infra/prisma/prisma.service';
 type QuizWithOptions = {
   id: string;
   subjectId: string;
-  ticketId: string;
+  ticketId: string | null;
   type: PrismaQuestionType;
   question: string;
   referenceAnswer: string | null;
@@ -61,17 +61,31 @@ export class QuizService {
 
   public async createQuiz(dto: CreateQuizRequest): Promise<CreateQuizResponse> {
     const userId = this.requireUserId();
-    const ticket = await this.findOwnedTicket(
-      dto.subjectId,
-      dto.ticketId,
-      userId,
-    );
+    const subject = await this.prisma.subject.findFirst({
+      where: { id: dto.subjectId, userId },
+      select: { id: true },
+    });
 
-    if (!ticket) {
+    if (!subject) {
       throw new RpcException({
         code: RpcStatus.NOT_FOUND,
-        message: 'ticket not found or access denied',
+        message: 'subject not found or access denied',
       });
+    }
+
+    if (dto.ticketId) {
+      const ticket = await this.findOwnedTicket(
+        dto.subjectId,
+        dto.ticketId,
+        userId,
+      );
+
+      if (!ticket) {
+        throw new RpcException({
+          code: RpcStatus.NOT_FOUND,
+          message: 'ticket not found or access denied',
+        });
+      }
     }
 
     const type = this.toPrismaQuestionType(dto.type);
@@ -82,10 +96,13 @@ export class QuizService {
       dto.answerOptions,
     );
 
+    const ticketIdToSave =
+      dto.shouldLinkWithTicket && dto.ticketId ? dto.ticketId : undefined;
+
     const created = await this.prisma.quiz.create({
       data: {
         subjectId: dto.subjectId,
-        ticketId: dto.ticketId,
+        ticketId: ticketIdToSave,
         type,
         question: dto.question,
         referenceAnswer: dto.referenceAnswer,
@@ -109,38 +126,64 @@ export class QuizService {
     dto: GenerateQuizRequest,
   ): Promise<GenerateQuizResponse> {
     const userId = this.requireUserId();
-    const ticket = await this.findOwnedTicket(
-      dto.subjectId,
-      dto.ticketId,
-      userId,
-    );
+    const subject = await this.prisma.subject.findFirst({
+      where: { id: dto.subjectId, userId },
+      select: { id: true, title: true },
+    });
 
-    if (!ticket) {
+    if (!subject) {
       throw new RpcException({
         code: RpcStatus.NOT_FOUND,
-        message: 'ticket not found or access denied',
+        message: 'subject not found or access denied',
       });
+    }
+
+    let ticketQuestion: string | undefined;
+    let ticketAnswer: string | undefined;
+
+    if (dto.ticketId) {
+      const ticket = await this.findOwnedTicket(
+        dto.subjectId,
+        dto.ticketId,
+        userId,
+      );
+
+      if (!ticket) {
+        throw new RpcException({
+          code: RpcStatus.NOT_FOUND,
+          message: 'ticket not found or access denied',
+        });
+      }
+
+      ticketQuestion = ticket.question;
+      ticketAnswer = ticket.answer;
     }
 
     const type = this.toPrismaQuestionType(dto.type);
     const count = dto.count && dto.count > 0 ? dto.count : 1;
     const quizzes: Quiz[] = [];
 
+    const ticketIdToSave =
+      dto.shouldLinkWithTicket && dto.ticketId ? dto.ticketId : undefined;
+
     for (let i = 0; i < count; i++) {
       const generated = await firstValueFrom(
         this.quizGenerationClient.generateQuiz({
-          ticketQuestion: ticket.question,
-          ticketAnswer: ticket.answer,
+          ticketQuestion,
+          ticketAnswer,
+          subjectTitle: ticketQuestion ? undefined : subject.title,
           type: dto.type,
         } satisfies AiGenerateQuizRequest),
       );
 
+      console.log('до валидации');
       this.validateGeneratedQuiz(type, generated);
+      console.log('после воледации');
 
       const created = await this.prisma.quiz.create({
         data: {
           subjectId: dto.subjectId,
-          ticketId: dto.ticketId,
+          ticketId: ticketIdToSave,
           type,
           question: generated.question,
           referenceAnswer: generated.referenceAnswer,
@@ -428,7 +471,7 @@ export class QuizService {
           message: 'reference answer is required for open question type',
         });
       }
-      if (answerOptions.length > 0) {
+      if (answerOptions?.length > 0) {
         throw new RpcException({
           code: RpcStatus.INVALID_ARGUMENT,
           message: 'open question type must not have answer options',
@@ -508,7 +551,7 @@ export class QuizService {
     return {
       id: quiz.id,
       subjectId: quiz.subjectId,
-      ticketId: quiz.ticketId,
+      ticketId: quiz.ticketId ?? undefined,
       type: this.toProtoQuestionType(quiz.type),
       question: quiz.question,
       referenceAnswer: quiz.referenceAnswer ?? undefined,

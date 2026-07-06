@@ -8,8 +8,11 @@ export class CreateQuizRequestGql implements CreateQuizRequest {
   @Field()
   subjectId: string;
 
-  @Field()
-  ticketId: string;
+  @Field({ nullable: true })
+  ticketId?: string;
+
+  @Field(() => Boolean, { defaultValue: false })
+  shouldLinkWithTicket: boolean;
 
   @Field(() => QuestionType)
   type: QuestionType;

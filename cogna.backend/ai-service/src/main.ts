@@ -23,7 +23,9 @@ async function bootstrap() {
       url: config.getOrThrow('AI_GRPC_URL', '0.0.0.0:50051'),
       loader: {
         includeDirs: [rootProtoDir],
+        enums: String
       },
+
     },
   });
 

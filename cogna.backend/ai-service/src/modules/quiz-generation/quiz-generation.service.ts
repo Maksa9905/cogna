@@ -16,16 +16,23 @@ export class QuizGenerationService {
   public async generateQuiz(
     dto: GenerateQuizRequest,
   ): Promise<GenerateQuizResponse> {
+    const isTicketMode = !!dto.ticketQuestion;
+
+    const userContent = isTicketMode
+      ? `Вопрос билета: ${dto.ticketQuestion}\n\nЭталонный ответ: ${dto.ticketAnswer}`
+      : `Тема: ${dto.subjectTitle}`;
+
+    // console.log(`user content: ${userContent}`);
     const response = await this.groqService.client.chat.completions.create({
       model: 'openai/gpt-oss-20b',
       messages: [
         {
           role: 'system',
-          content: this.buildSystemPrompt(dto.type),
+          content: this.buildSystemPrompt(dto.type, isTicketMode),
         },
         {
           role: 'user',
-          content: `Вопрос билета: ${dto.ticketQuestion}\n\nЭталонный ответ: ${dto.ticketAnswer}`,
+          content: userContent,
         },
       ],
       max_completion_tokens: 2048,
@@ -40,6 +47,7 @@ export class QuizGenerationService {
         },
       },
     });
+    // console.log(`response:`, response.choices[0].message.content);
 
     const content = response.choices[0].message.content ?? '';
     const parsed = JSON.parse(content) as {
@@ -48,7 +56,7 @@ export class QuizGenerationService {
       answer_options?: { text: string; is_correct: boolean }[];
     };
 
-    return {
+    const result =  {
       question: parsed.question,
       referenceAnswer: parsed.reference_answer,
       answerOptions: (parsed.answer_options ?? []).map(
@@ -58,28 +66,33 @@ export class QuizGenerationService {
         }),
       ),
     };
+    // console.log('result:', result);
+    return result
   }
 
-  private buildSystemPrompt(type: QuestionType): string {
+  private buildSystemPrompt(type: QuestionType, isTicketMode: boolean): string {
+    const context = isTicketMode ? 'по экзаменационному билету' : 'по теме';
+    console.log('тип ответа', type);
     switch (type) {
       case QuestionType.OPEN:
         return (
-          'Сгенерируй один вопрос с открытым ответом по экзаменационному билету. ' +
+          `Сгенерируй один вопрос с открытым ответом ${context}. ` +
           'Также напиши эталонный ответ, с которым потом можно будет сравнить ответ студента. ' +
-          'Отвечай строго на русском языке.'
+          'Отвечай строго на русском языке.' +
+          'Положи эталоный ответ в reference_answer'
         );
       case QuestionType.SINGLE_CHOICE:
         return (
-          'Сгенерируй один вопрос с ровно 4 вариантами ответа по экзаменационному билету. ' +
+          `Сгенерируй один вопрос с ровно 4 вариантами ответа ${context}. ` +
           'Ровно один вариант должен быть правильным. Отвечай строго на русском языке.'
         );
       case QuestionType.MULTIPLE_CHOICE:
         return (
-          'Сгенерируй один вопрос с ровно 4 вариантами ответа по экзаменационному билету. ' +
+          `Сгенерируй один вопрос с ровно 4 вариантами ответа ${context}. ` +
           'Минимум два варианта должны быть правильными. Отвечай строго на русском языке.'
         );
       default:
-        return 'Сгенерируй quiz-вопрос по экзаменационному билету. Отвечай строго на русском языке.';
+        return `Сгенерируй quiz-вопрос ${context}. Отвечай строго на русском языке.`;
     }
   }
 

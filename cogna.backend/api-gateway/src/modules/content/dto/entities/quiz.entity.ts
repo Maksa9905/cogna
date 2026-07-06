@@ -34,8 +34,8 @@ export class QuizGql implements Quiz {
   @Field()
   subjectId: string;
 
-  @Field()
-  ticketId: string;
+  @Field({ nullable: true })
+  ticketId?: string;
 
   @Field(() => QuestionType)
   type: QuestionType;
