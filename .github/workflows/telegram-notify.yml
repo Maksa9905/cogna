@@ -38,7 +38,7 @@ jobs:
 
           # Экранирование для JSON
           MSG=$(cat << EOF
-          🔴 <b>CI упал: ${WORKFLOW}</b>
+          ✅  <b>Новый коммит: ${WORKFLOW}</b>
 
           📦 Репозиторий: ${REPO}
           🌿 Ветка: ${BRANCH}
