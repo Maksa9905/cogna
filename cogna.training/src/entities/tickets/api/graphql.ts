@@ -76,3 +76,27 @@ export const ticketGenerateThesesMutationDocument = `
     }
   }
 `;
+
+export const ticketSubmitTextAnswer = `
+  mutation SubmitTextAnswer($data: SubmitTextAnswerRequestGql!) {
+    submitTextAnswer(data: $data) {
+      success
+    }
+  }
+`;
+
+export const onAssessmentCompletedSubscriptionDocument = `
+  subscription OnAssessmentCompleted {
+    onAssessmentCompleted {
+      ticketId
+      userId
+      subjectId
+      score
+      summary
+      theses {
+        thesis
+        assessment
+      }
+    }
+  }
+`;

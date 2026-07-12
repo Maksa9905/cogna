@@ -150,7 +150,7 @@ provide('tickerEditingStore', { title, answer, theses })
 		</Skeleton>
 
 		<div class="ticket-page__main">
-			<Skeleton :is-loading="isLoading || isPending">
+			<Skeleton v-if="!isNew" :is-loading="isLoading || isPending">
 				<template #default>
 					<TicketThesesEditor 
 						@change="handleChangeThesis" 

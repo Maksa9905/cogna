@@ -1,5 +1,5 @@
 {
-	"editorHint": "«/» — block commands, «@» — mentions. Use the handle on the left to move a block or open its menu.",
+	"editorHint": "«/» — block commands, «@» — mentions, «$$» — formulas. Use the handle on the left to move a block or open its menu.",
 	"editorSwitchToReadOnly": "View only",
 	"editorSwitchToEdit": "Edit",
 	"searchPlaceholder": "Search ticket",
@@ -72,6 +72,36 @@
 			"concept": "Concept",
 			"definition": "Definition",
 			"example": "Example"
+		},
+		"math": {
+			"tooltip": "Formula",
+			"insertTitle": "Insert formula",
+			"editTitle": "Edit formula",
+			"inline": "Inline",
+			"block": "Block",
+			"inlineFormula": "Inline formula",
+			"blockFormula": "Block formula",
+			"placeholder": "LaTeX, e.g. E=mc^2 or \\frac{a}{b}",
+			"hint": "Tip: $$E=mc^2$$ for inline, $$$\\sum x_i$$$ for a block. Cmd/Ctrl+Enter to insert.",
+			"apply": "Insert",
+			"remove": "Remove"
+		},
+		"table": {
+			"tooltip": "Table",
+			"insertTitle": "Insert table",
+			"insertItem": "Table",
+			"rows": "Rows",
+			"columns": "Columns",
+			"withHeaderRow": "Header row",
+			"insert": "Insert",
+			"addRowBefore": "Add row above",
+			"addRowAfter": "Add row below",
+			"deleteRow": "Delete row",
+			"addColumnBefore": "Add column left",
+			"addColumnAfter": "Add column right",
+			"deleteColumn": "Delete column",
+			"toggleHeaderRow": "Toggle header row",
+			"deleteTable": "Delete table"
 		}
 	}
 }

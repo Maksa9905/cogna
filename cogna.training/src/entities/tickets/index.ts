@@ -12,8 +12,11 @@ export {
 	useTicketFindAllQuery,
 	useTicketFindOneQuery,
 	usePatchTicketMutation,
+	useSubmitTicketAnswer,
+	useAssessmentCompletedSubscription,
 } from "./api/api";
 export type {
+	AssessmentCompletedResponse,
 	CreateTicketPayload,
 	PatchTicketPayload,
 	DeleteTicketPayload,
@@ -22,6 +25,7 @@ export type {
 	FindOneTicketPayload,
 	GenerateThesesPayload,
 	SuccessResponseContent,
+	ThesisAssessment,
 	Thesis as ApiThesis,
 	ThesisInput,
 	Ticket,

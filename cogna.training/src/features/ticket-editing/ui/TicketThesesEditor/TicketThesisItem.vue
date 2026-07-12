@@ -70,23 +70,23 @@ const items = ref<DropdownMenuItem[]>([
 }
 
 .importance-indicator {
-  width: 24px;
-  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
   padding: 4px;
   display: inline-block;
   border-radius: 50%;
   margin-right: 4px;
 }
 
-.importance-indicator.high {
+.importance-indicator.HIGH {
   color: var(--ui-color-error-500);
 }
 
-.importance-indicator.medium {
+.importance-indicator.MEDIUM {
   color: var(--ui-color-warning-500);
 }
 
-.importance-indicator.low {
+.importance-indicator.LOW {
   color: var(--ui-color-success-500);
 }
 

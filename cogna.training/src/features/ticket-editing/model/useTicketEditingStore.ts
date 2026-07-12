@@ -11,19 +11,14 @@ export type TicketEditingStore = {
 	changeThesis: (payload: ChangeThesisPayload) => void
 };
 
-export const useTicketEditingStore = (id: Ref<string>): TicketEditingStore => {
+export const useTicketEditingStore = (id: Ref<string>, isReproduce = false): TicketEditingStore => {
 	const ticket = useTicketFindOneQuery(id);
 
 	const { data } = ticket
 
-	const title = ref("");
+	const title = ref("Билет без названия");
 	const answer = ref("");
 	const theses = ref<Thesis[]>([]);
-
-	watchEffect(() => {
-		console.debug(ticket.data)
-		console.debug(id)
-	})
 
 	const addNewThesis = () => {
 		if (theses.value.some(thesis => thesis.isNew && !thesis.value)) return;
@@ -66,7 +61,7 @@ export const useTicketEditingStore = (id: Ref<string>): TicketEditingStore => {
 	watchEffect(() => {
 		if (data.value?.ticket) {
 			title.value = data.value.ticket.question;
-			answer.value = data.value.ticket.answer;
+			if (!isReproduce) answer.value = data.value.ticket.answer;
 			theses.value = data.value.ticket.theses.map((thesis) => ({
 				...thesis,
 				isNew: false,

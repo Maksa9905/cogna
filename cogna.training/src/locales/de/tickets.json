@@ -1,5 +1,5 @@
 {
-	"editorHint": "«/» — Befehle und Blöcke, «@» — Erwähnungen. Links am Block: verschieben und Menü.",
+	"editorHint": "«/» — Befehle und Blöcke, «@» — Erwähnungen, «$$» — Formeln. Links am Block: verschieben und Menü.",
 	"editorSwitchToReadOnly": "Nur lesen",
 	"editorSwitchToEdit": "Bearbeiten",
 	"searchPlaceholder": "Ticket suchen",
@@ -72,6 +72,36 @@
 			"concept": "Begriff",
 			"definition": "Definition",
 			"example": "Beispiel"
+		},
+		"math": {
+			"tooltip": "Formel",
+			"insertTitle": "Formel einfügen",
+			"editTitle": "Formel bearbeiten",
+			"inline": "Inline",
+			"block": "Block",
+			"inlineFormula": "Inline-Formel",
+			"blockFormula": "Blockformel",
+			"placeholder": "LaTeX, z. B. E=mc^2 oder \\frac{a}{b}",
+			"hint": "Tipp: $$E=mc^2$$ inline, $$$\\sum x_i$$$ als Block. Cmd/Ctrl+Enter zum Einfügen.",
+			"apply": "Einfügen",
+			"remove": "Entfernen"
+		},
+		"table": {
+			"tooltip": "Tabelle",
+			"insertTitle": "Tabelle einfügen",
+			"insertItem": "Tabelle",
+			"rows": "Zeilen",
+			"columns": "Spalten",
+			"withHeaderRow": "Kopfzeile",
+			"insert": "Einfügen",
+			"addRowBefore": "Zeile darüber",
+			"addRowAfter": "Zeile darunter",
+			"deleteRow": "Zeile löschen",
+			"addColumnBefore": "Spalte links",
+			"addColumnAfter": "Spalte rechts",
+			"deleteColumn": "Spalte löschen",
+			"toggleHeaderRow": "Kopfzeile umschalten",
+			"deleteTable": "Tabelle löschen"
 		}
 	}
 }

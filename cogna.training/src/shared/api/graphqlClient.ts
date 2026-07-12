@@ -1,9 +1,11 @@
 import { GraphQLClient } from "graphql-request";
+import { createClient as createWsClient, type Client } from "graphql-ws";
 import { tokenStorage } from "./tokenStorage";
 
 const API_BASE =
 	(typeof import.meta !== "undefined" && import.meta.env?.VITE_API_URL) || "https://www.cogna.ru";
 const API_URL = `${API_BASE.replace(/\/$/, "")}/graphql`;
+const WS_URL = API_URL.replace(/^http/, "ws");
 
 const REFRESH_MUTATION = `
   mutation RefreshTokens {
@@ -52,7 +54,7 @@ function isUnauthorizedError(error: unknown): boolean {
 	return msg.includes("Unauthorized") || msg.includes("401") || msg.includes("UNAUTHENTICATED");
 }
 
-function createClient(token?: string | null): GraphQLClient {
+function createHttpClient(token?: string | null): GraphQLClient {
 	const headers: Record<string, string> = {};
 	if (token) headers.Authorization = `Bearer ${token}`;
 	return new GraphQLClient(API_URL, { headers });
@@ -69,14 +71,14 @@ export async function authRequest<T>(
 	variables?: Record<string, unknown>,
 ): Promise<T> {
 	try {
-		return await createClient(tokenStorage.getAccessToken()).request<T>(document, variables);
+		return await createHttpClient(tokenStorage.getAccessToken()).request<T>(document, variables);
 	} catch (error) {
 		if (!isUnauthorizedError(error)) throw error;
 
 		const refreshed = await tryRefresh();
 		if (!refreshed) throw error;
 
-		return await createClient(tokenStorage.getAccessToken()).request<T>(document, variables);
+		return await createHttpClient(tokenStorage.getAccessToken()).request<T>(document, variables);
 	}
 }
 
@@ -84,5 +86,41 @@ export function publicRequest<T>(
 	document: string,
 	variables?: Record<string, unknown>,
 ): Promise<T> {
-	return createClient().request<T>(document, variables);
+	return createHttpClient().request<T>(document, variables);
+}
+
+let wsClient: Client | null = null;
+
+function getWsClient(): Client {
+	if (!wsClient) {
+		wsClient = createWsClient({
+			url: WS_URL,
+			connectionParams: () => {
+				const token = tokenStorage.getAccessToken();
+				return token ? { Authorization: `Bearer ${token}` } : {};
+			},
+		});
+	}
+	return wsClient;
+}
+
+export interface AuthSubscribeHandlers<T> {
+	onNext: (data: T) => void;
+	onError?: (error: unknown) => void;
+	onComplete?: () => void;
+}
+
+export function authSubscribe<T>(document: string, handlers: AuthSubscribeHandlers<T>): () => void {
+	const client = getWsClient();
+
+	return client.subscribe(
+		{ query: document },
+		{
+			next: (result) => {
+				if (result.data) handlers.onNext(result.data as T);
+			},
+			error: handlers.onError ?? (() => {}),
+			complete: handlers.onComplete ?? (() => {}),
+		},
+	);
 }

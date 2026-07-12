@@ -1,5 +1,5 @@
 {
-	"editorHint": "«/» — команды и блоки, «@» — упоминание. Слева от блока — перенос и меню.",
+	"editorHint": "«/» — команды и блоки, «@» — упоминание, «$$» — формула. Слева от блока — перенос и меню.",
 	"editorSwitchToReadOnly": "Только просмотр",
 	"editorSwitchToEdit": "Редактировать",
 	"searchPlaceholder": "Поиск билета",
@@ -72,6 +72,36 @@
 			"concept": "Понятие",
 			"definition": "Определение",
 			"example": "Пример"
+		},
+		"math": {
+			"tooltip": "Формула",
+			"insertTitle": "Вставить формулу",
+			"editTitle": "Редактировать формулу",
+			"inline": "В строке",
+			"block": "Блок",
+			"inlineFormula": "Формула в строке",
+			"blockFormula": "Формула-блок",
+			"placeholder": "LaTeX, например: E=mc^2 или \\frac{a}{b}",
+			"hint": "Подсказка: $$E=mc^2$$ — в строке, $$$\\sum x_i$$$ — отдельным блоком. Cmd/Ctrl+Enter — вставить.",
+			"apply": "Вставить",
+			"remove": "Удалить"
+		},
+		"table": {
+			"tooltip": "Таблица",
+			"insertTitle": "Вставить таблицу",
+			"insertItem": "Таблица",
+			"rows": "Строки",
+			"columns": "Столбцы",
+			"withHeaderRow": "Строка заголовков",
+			"insert": "Вставить",
+			"addRowBefore": "Добавить строку выше",
+			"addRowAfter": "Добавить строку ниже",
+			"deleteRow": "Удалить строку",
+			"addColumnBefore": "Добавить столбец слева",
+			"addColumnAfter": "Добавить столбец справа",
+			"deleteColumn": "Удалить столбец",
+			"toggleHeaderRow": "Переключить заголовок",
+			"deleteTable": "Удалить таблицу"
 		}
 	}
 }

@@ -1,7 +1,7 @@
 export enum EThesisImportance {
-	HIGH = "high",
-	MEDIUM = "medium",
-	LOW = "low",
+	HIGH = "HIGH",
+	MEDIUM = "MEDIUM",
+	LOW = "LOW",
 }
 
 export interface ThesisInput {
@@ -69,4 +69,27 @@ export interface GenerateThesesPayload {
 	ticketId: string;
 	question: string;
 	answer: string;
+}
+
+export interface SubmitAnswerPayload {
+	answer: string,
+	ticketId: string
+}
+
+export interface SubmitAnswerResponse {
+	success: boolean
+}
+
+export interface ThesisAssessment {
+	thesis: string;
+	assessment: string;
+}
+
+export interface AssessmentCompletedResponse {
+	ticketId: string;
+	userId: string;
+	subjectId: string;
+	score: number;
+	theses: ThesisAssessment[];
+	summary: string;
 }

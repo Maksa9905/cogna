@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
-import { authRequest } from "@/shared/api";
+import { authRequest, authSubscribe } from "@/shared/api";
 import { subjectFindAllKey } from "@/entities/subjects/api/api";
 import {
 	ticketCreateTicketMutationDocument,
@@ -8,8 +8,11 @@ import {
 	ticketFindOneQueryDocument,
 	ticketGenerateThesesMutationDocument,
 	ticketPatchTicketMutationDocument,
+	ticketSubmitTextAnswer,
+	onAssessmentCompletedSubscriptionDocument,
 } from "./graphql";
 import type {
+	AssessmentCompletedResponse,
 	CreateTicketPayload,
 	DeleteTicketPayload,
 	FindAllTicketsPayload,
@@ -19,9 +22,11 @@ import type {
 	SuccessResponseContent,
 	TicketResponse,
 	PatchTicketPayload,
+	SubmitAnswerPayload,
+	SubmitAnswerResponse,
 } from "./types";
 import { CreateTicketSchema, FindOneTicketSchema, PatchTicketSchema } from "./schemas";
-import { computed, type Ref } from "vue";
+import { computed, onScopeDispose, ref, watch, type Ref } from "vue";
 
 export const TICKET_FIND_ALL_STALE_MS = 60_000;
 
@@ -140,5 +145,47 @@ export function useGenerateThesesMutation() {
 		},
 	});
 }
+
+export function useSubmitTicketAnswer() {
+	return useMutation<SubmitAnswerResponse, Error, SubmitAnswerPayload>({
+		mutationFn: (payload) => authRequest(ticketSubmitTextAnswer, {
+			data: payload,
+		}),
+	})
+}
+
+export function useAssessmentCompletedSubscription(
+	onData: (data: AssessmentCompletedResponse) => void,
+	enabled: Ref<boolean> = ref(true),
+) {
+	let unsubscribe: (() => void) | null = null;
+
+	const connect = () => {
+		unsubscribe?.();
+		unsubscribe = authSubscribe<{ onAssessmentCompleted: AssessmentCompletedResponse }>(
+			onAssessmentCompletedSubscriptionDocument,
+			{
+				onNext: (payload) => onData(payload.onAssessmentCompleted),
+			},
+		);
+	};
+
+	const disconnect = () => {
+		unsubscribe?.();
+		unsubscribe = null;
+	};
+
+	watch(
+		enabled,
+		(isEnabled) => {
+			if (isEnabled) connect();
+			else disconnect();
+		},
+		{ immediate: true },
+	);
+
+	onScopeDispose(disconnect);
+}
+
 
 export { ticketFindAllKey, ticketFindOneKey, ticketsKey };

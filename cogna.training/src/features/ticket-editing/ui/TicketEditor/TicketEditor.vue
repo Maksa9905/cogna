@@ -8,11 +8,15 @@ import type {
 } from "@nuxt/ui";
 import type { Editor, JSONContent } from "@tiptap/vue-3";
 import { mapEditorItems } from "@nuxt/ui/utils/editor";
+import { Mathematics } from "@tiptap/extension-mathematics";
+import { TableKit } from "@tiptap/extension-table/kit";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { upperFirst } from "scule";
-import { computed, ref } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import EditorLinkPopover from "./EditorLinkPopover.vue";
+import EditorMathPopover from "./EditorMathPopover.vue";
+import EditorTablePopover from "./EditorTablePopover.vue";
 
 const { t } = useI18n();
 
@@ -45,7 +49,70 @@ const emit = defineEmits<{
 
 const resolvedPlaceholder = computed(() => props.placeholder ?? t("tickets.editor.answerPlaceholder"));
 
-const customHandlers = {} satisfies EditorCustomHandlers;
+const mathPopoverRef = useTemplateRef("mathPopover");
+const tablePopoverRef = useTemplateRef("tablePopover");
+
+const customHandlers = {
+	inlineMath: {
+		canExecute: () => true,
+		execute: (editor: Editor) => {
+			mathPopoverRef.value?.openInsert("inline");
+			return editor.chain();
+		},
+		isActive: () => false,
+		isDisabled: (editor: Editor) => !editor.isEditable,
+	},
+	blockMath: {
+		canExecute: () => true,
+		execute: (editor: Editor) => {
+			mathPopoverRef.value?.openInsert("block");
+			return editor.chain();
+		},
+		isActive: () => false,
+		isDisabled: (editor: Editor) => !editor.isEditable,
+	},
+	table: {
+		canExecute: () => true,
+		execute: (editor: Editor) => {
+			tablePopoverRef.value?.openInsert();
+			return editor.chain();
+		},
+		isActive: () => false,
+		isDisabled: (editor: Editor) => !editor.isEditable,
+	},
+} satisfies EditorCustomHandlers;
+
+const editorExtensions = computed(() => [
+	TextAlign.configure({ types: ["heading", "paragraph"] }),
+	TableKit.configure({
+		table: {
+			HTMLAttributes: {
+				class: "ticket-editor-table",
+			},
+		},
+	}),
+	Mathematics.configure({
+		katexOptions: { throwOnError: false },
+		inlineOptions: {
+			onClick: (node, pos) => {
+				mathPopoverRef.value?.openEdit({
+					latex: node.attrs.latex ?? "",
+					pos,
+					type: "inline",
+				});
+			},
+		},
+		blockOptions: {
+			onClick: (node, pos) => {
+				mathPopoverRef.value?.openEdit({
+					latex: node.attrs.latex ?? "",
+					pos,
+					type: "block",
+				});
+			},
+		},
+	}),
+]);
 
 const fixedToolbarToggleGroup = [
 	{
@@ -112,6 +179,8 @@ const fixedToolbarGroupsEdit = computed((): EditorToolbarItem<typeof customHandl
 		{ kind: "mark", mark: "code", icon: "i-lucide-code", tooltip: { text: t("tickets.editor.code") } },
 	],
 	[{ slot: "link" as const, icon: "i-lucide-link" }],
+	[{ slot: "math" as const, icon: "i-lucide-sigma" }],
+	[{ slot: "table" as const, icon: "i-lucide-table" }],
 	[
 		{
 			icon: "i-lucide-align-justify",
@@ -247,6 +316,55 @@ const imageToolbarItems = (editor: Editor): EditorToolbarItem[][] => {
 	];
 };
 
+const tableToolbarItems = (editor: Editor): EditorToolbarItem[][] => [
+	[
+		{
+			icon: "i-lucide-arrow-up-from-line",
+			tooltip: { text: t("tickets.editor.table.addRowBefore") },
+			onClick: () => editor.chain().focus().addRowBefore().run(),
+		},
+		{
+			icon: "i-lucide-arrow-down-from-line",
+			tooltip: { text: t("tickets.editor.table.addRowAfter") },
+			onClick: () => editor.chain().focus().addRowAfter().run(),
+		},
+		{
+			icon: "i-lucide-minus",
+			tooltip: { text: t("tickets.editor.table.deleteRow") },
+			onClick: () => editor.chain().focus().deleteRow().run(),
+		},
+	],
+	[
+		{
+			icon: "i-lucide-arrow-left-from-line",
+			tooltip: { text: t("tickets.editor.table.addColumnBefore") },
+			onClick: () => editor.chain().focus().addColumnBefore().run(),
+		},
+		{
+			icon: "i-lucide-arrow-right-from-line",
+			tooltip: { text: t("tickets.editor.table.addColumnAfter") },
+			onClick: () => editor.chain().focus().addColumnAfter().run(),
+		},
+		{
+			icon: "i-lucide-minus",
+			tooltip: { text: t("tickets.editor.table.deleteColumn") },
+			onClick: () => editor.chain().focus().deleteColumn().run(),
+		},
+	],
+	[
+		{
+			icon: "i-lucide-table-properties",
+			tooltip: { text: t("tickets.editor.table.toggleHeaderRow") },
+			onClick: () => editor.chain().focus().toggleHeaderRow().run(),
+		},
+		{
+			icon: "i-lucide-trash",
+			tooltip: { text: t("tickets.editor.table.deleteTable") },
+			onClick: () => editor.chain().focus().deleteTable().run(),
+		},
+	],
+];
+
 const selectedNode = ref<{ node: JSONContent; pos: number }>();
 
 const handleItems = (editor: Editor): DropdownMenuItem[][] => {
@@ -342,6 +460,17 @@ const suggestionItems = computed((): EditorSuggestionMenuItem<typeof customHandl
 	[
 		{ type: "label", label: t("tickets.editor.insert") },
 		{ kind: "mention", label: t("tickets.editor.mention"), icon: "i-lucide-at-sign" },
+		{
+			kind: "inlineMath",
+			label: t("tickets.editor.math.inlineFormula"),
+			icon: "i-lucide-sigma",
+		},
+		{
+			kind: "blockMath",
+			label: t("tickets.editor.math.blockFormula"),
+			icon: "i-lucide-square-sigma",
+		},
+		{ kind: "table", label: t("tickets.editor.table.insertItem"), icon: "i-lucide-table" },
 		{ kind: "horizontalRule", label: t("tickets.editor.horizontalRule"), icon: "i-lucide-separator-horizontal" },
 	],
 ]);
@@ -364,7 +493,8 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 		v-model="model"
 		content-type="markdown"
 		@blur="() => emit('commit')"
-		:extensions="[TextAlign.configure({ types: ['heading', 'paragraph'] })]"
+		:extensions="editorExtensions"
+		:handlers="customHandlers"
 		:placeholder="resolvedPlaceholder"
 		:ui="{ base: ['w-full', editorClass] }"
 		:class="['w-full bg-default transition-opacity duration-200', !editorEditable && 'ticket-editor--read-only']"
@@ -379,6 +509,12 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 		>
 			<template #link>
 				<EditorLinkPopover :editor="editor" auto-open />
+			</template>
+			<template #math>
+				<EditorMathPopover ref="mathPopover" :editor="editor" />
+			</template>
+			<template #table>
+				<EditorTablePopover ref="tablePopover" :editor="editor" />
 			</template>
 			<template #editableToggle>
 				<UTooltip :text="editorEditable ? t('tickets.editorSwitchToReadOnly') : t('tickets.editorSwitchToEdit')">
@@ -399,7 +535,7 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 			:items="bubbleToolbarItems"
 			layout="bubble"
 			:should-show="({ editor: ed, view, state }) => {
-				if (!ed.isEditable || ed.isActive('image')) return false;
+				if (!ed.isEditable || ed.isActive('image') || ed.isActive('table')) return false;
 				const { selection } = state;
 				return view.hasFocus() && !selection.empty;
 			}"
@@ -415,6 +551,14 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 			layout="bubble"
 			:should-show="({ editor: ed, view }) =>
 				ed.isEditable && ed.isActive('image') && view.hasFocus()"
+		/>
+
+		<UEditorToolbar
+			:editor="editor"
+			:items="tableToolbarItems(editor)"
+			layout="bubble"
+			:should-show="({ editor: ed, view }) =>
+				ed.isEditable && ed.isActive('table') && view.hasFocus()"
 		/>
 
 		<UEditorSuggestionMenu v-if="editorEditable" :editor="editor" :items="suggestionItems" />
@@ -501,5 +645,48 @@ const resolvedMentionItems = computed(() => props.mentionItems ?? defaultMention
 
 .tiptap pre code {
 	font-size: 0.875em;
+}
+
+.tiptap .tiptap-mathematics-render--editable {
+	cursor: pointer;
+	border-radius: var(--ui-radius);
+}
+
+.tiptap .tiptap-mathematics-render--editable:hover {
+	background-color: var(--ui-bg-muted);
+}
+
+.tiptap [data-type="block-math"] {
+	display: block;
+	margin: 0.75rem 0;
+}
+
+.tiptap .ticket-editor-table,
+.tiptap table {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0.75rem 0;
+	table-layout: fixed;
+}
+
+.tiptap .ticket-editor-table th,
+.tiptap .ticket-editor-table td,
+.tiptap table th,
+.tiptap table td {
+	border: 1px solid var(--ui-border);
+	padding: 0.5rem 0.75rem;
+	vertical-align: top;
+	min-width: 4rem;
+}
+
+.tiptap .ticket-editor-table th,
+.tiptap table th {
+	background-color: var(--ui-bg-muted);
+	font-weight: 600;
+}
+
+.tiptap .ticket-editor-table .selectedCell::after,
+.tiptap table .selectedCell::after {
+	background-color: color-mix(in srgb, var(--ui-primary) 12%, transparent);
 }
 </style>

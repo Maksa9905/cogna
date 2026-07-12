@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {
-  SubjectExamDateChip,
   useCreateSubjectMutation,
   useSubjectFindOneQuery,
   SubjectStatisticsProgressBar,
@@ -15,7 +14,7 @@ defineOptions({
 	name: "SubjectPage",
 });
 
-const subjectTitle = ref("")
+const subjectTitle = ref("Предмет без названия")
 
 const route = useRoute();
 const subjectId = computed(() => route.params.subjectId as string);
@@ -76,7 +75,6 @@ const handleCreateTicket = async () => {
   <template v-else>
     <header v-if="!isLoading" class="subject-page__header">
       <h1 class="subject-page__title">{{subjectData?.subject.title}}</h1>
-      <!-- <SubjectExamDateChip class="subject-page__exam-date-chip" :date="'2026-03-26T12:00:00.000Z'" /> -->
       <UButton variant="link" @click="handleCreateTicket" trailing-icon="i-lucide-plus">Добавить билет</UButton>
     </header>
     <USkeleton v-else class="h-[36px] subject-page__header" />
